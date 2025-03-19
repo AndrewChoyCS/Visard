@@ -1,0 +1,19 @@
+{
+  "Title": "{A concise title for the visual}",
+  "Overview": "{A brief summary describing what the visual represents.}",
+  "Elements": {
+    "Element1": "{Description of the first major visual component (type, color, shape, size, position)}",
+    "Element2": "{Description of the second major component}",
+    "...": "{Additional visual elements as needed}"
+  },
+
+  "Layout": "{Details on the spatial relationships and arrangement of elements (e.g., 'Element1 is centered; Element2 is to the left of Element1')}",
+  "Annotations": {
+    "Annotation1": "{Text or labels added to the visual, including style, placement, and any pointer or arrow details}",
+    "Annotation2": "{Additional annotation details}",
+    "...": "{Other annotations if applicable}"
+  },
+  "Axes/Scale/Legends": "{Description of axes (if present), scales, legends, grid lines, or any reference markers}",
+  "Styling": "{Stylistic details such as color schemes, fonts, transparency, and overall design choices}",
+  "Pedagogical Conclusion": "{A short statement summarizing the overall message or insight conveyed by the visual. WHat is this visual trying to teach?}"
+}

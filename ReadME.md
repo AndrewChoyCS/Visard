@@ -3,10 +3,10 @@ CS 194 Project
 
 
 
-### TODO:
-- Create syntheitc data which consist of queries
 
-### Questions
-- What synthetic data to create
-- What should our pipeline look like 
-- l
+## TODO
+input = paragraph about graident descent, output = General description
+ 
+input = General Description,output = Visual Description
+
+input = Visual Description, output = Code for visualization
