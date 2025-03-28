@@ -10,3 +10,7 @@ input = paragraph about graident descent, output = General description
 input = General Description,output = Visual Description
 
 input = Visual Description, output = Code for visualization
+
+
+## Misc
+- User BERTopic to chunk large corpus of data 
