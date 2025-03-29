@@ -49,24 +49,15 @@ class Pipeline():
 
     def save_visualization(self, code):
         try:
-            # Ensure the code is a clean, executable string
             cleaned_code = code.strip().replace('```python', '').replace('```', '').strip()
             
-            # Create a local namespace to execute the code
             local_namespace = {}
-            
-            # Execute the code
             exec(cleaned_code, globals(), local_namespace)
-            
-            # Try to save the current figure
             plt.tight_layout()
             figure_path = os.path.join(self.output_dir, 'gradient_descent_visualization.png')
-            
-            # Check if a figure exists before saving
             if plt.gcf().get_axes():
                 plt.savefig(figure_path, dpi=300, bbox_inches='tight')
-                plt.close()  # Close the figure to free up memory
-                
+                plt.close() 
                 print(f"Visualization saved to {figure_path}")
                 return figure_path
             else:
@@ -75,7 +66,6 @@ class Pipeline():
         
         except Exception as e:
             print(f"Error saving visualization: {e}")
-            # Print the traceback for more detailed error information
             import traceback
             traceback.print_exc()
             return None
