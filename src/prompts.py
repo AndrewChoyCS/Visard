@@ -6,7 +6,7 @@ class Prompts:
         system_prompt = (
             f"You are a expert professor in topic of {self.topic}. "
             f"A student comes with content and needs more help understanding the content. "
-            f"This is the content: {data}. "
+            f"The student provides the following context: {data}. "
             f"Your goal is to create a visualization to aid the student in better understanding the content."
         )
         
