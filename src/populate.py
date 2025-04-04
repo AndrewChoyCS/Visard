@@ -17,7 +17,7 @@ from reportlab.lib.units import inch
 from prompts import Prompts  
 
 class PopulatePipeline(): 
-    def __init__(self, data, output_dir='research_results'):
+    def __init__(self, data, category, output_dir='research_results'):
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
         
@@ -28,6 +28,7 @@ class PopulatePipeline():
         self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
         self.pipeline = transformers.pipeline("text-generation", model="meta-llama/Llama-3.2-3B-Instruct", model_kwargs={"torch_dtype": torch.float16})
         self.TOPIC = "Gradient Descent"
+        self.category = category
         
         self.prompts = Prompts(self.TOPIC)
         number_data_points = data.shape[0]
@@ -44,15 +45,22 @@ class PopulatePipeline():
         finalCode = self.run_code(code)
         self.save_data_entry(data, goalRet, generalDescription, visualDescription, finalCode)
 
-    def save_data_entry(self, data, goal, generalDescription, visualDescription, code):
-        fileName = f"data_entry_{self.start_index}"
-        entry  = {
-            "data" : data,
-            "goal" : goal, 
-            "general_description" : generalDescription, 
-            "viual_description" : visualDescription,
-            "code" : code
+    def save_data_entry(self, data, goal, generalDescription, visualDescription, code, ):
+        directory = f"data/{self.category}"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        fileName = os.path.join(directory, f"data_entry_{self.category}_{self.data_index}.json")
+        
+        entry = {
+            "data": data,
+            "goal": goal,
+            "general_description": generalDescription,
+            "visual_description": visualDescription,
+            "code": code
         }
+
+        # Save the entry to the file in the specified directory
         with open(fileName, "w") as currFile:
             json.dump(entry, currFile, indent=4)
 
@@ -89,7 +97,10 @@ class PopulatePipeline():
         return response
 
     def run_code(self, code):
-        additional_models = ["llama3_3b_instruct", "Qwen/Qwen2.5-7B-Instruct"]
+        # additional_models = ["llama3_3b_instruct", "Qwen/Qwen2.5-7B-Instruct"]
+        # additional_models = ["llama3_3b_instruct"]
+        additional_models = []
+
         max_attempts = 8
         attempt = 0
         model_loaded = False
