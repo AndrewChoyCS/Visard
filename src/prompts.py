@@ -8,13 +8,11 @@ class Prompts:
             f"You need to create a visualization to explain {self.topic} clearly and simply. "
             f"Your are provided the following context: {data}. "
             f"Extract and summarize the key entities provided in {data} in 6-10 concise sentences." 
-            f"Clearly list the most important entities, concepts, relationships, 
-            and equations from the data that must be visually represented to effectively explain {self.topic}."       
+            f"Clearly list the most important entities, concepts, relationships, and equations from the data that must be visually represented to effectively explain {self.topic}."       
         )
         
         user_prompt = (
-            f"Given your summarization above generate a complex and insightful goal in 4-5 
-            concise sentences about visualizing {self.topic} based on data"
+            f"Given your summarization above generate a complex and insightful goal in 4-5 concise sentences about visualizing {self.topic} based on data"
             "The goal you generate MUST only be in text with no code at all."
             f"The goal must clearly specify what the planned visualization aims to explain."
             f"The goal must clearly specify the relationships and main figures of the planned visualization."
