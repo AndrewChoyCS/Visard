@@ -60,7 +60,6 @@ class PopulatePipeline():
             "code": code
         }
 
-        # Save the entry to the file in the specified directory
         with open(fileName, "w") as currFile:
             json.dump(entry, currFile, indent=4)
 
@@ -113,6 +112,7 @@ class PopulatePipeline():
                 exec(cleaned_code, globals(), local_vars)
                 # exec(cleaned_code)
                 model_loaded = True
+                plt.close()
                 print(f"Code executed successfully on attempt {attempt + 1}")
             except Exception as e:
                 print(f"Error on attempt {attempt + 1}: {str(e)}")
@@ -141,9 +141,3 @@ class PopulatePipeline():
             raise RuntimeError("Could not execute the code after max attempts with all models.")
         
         return current_code
-    
-    def generate_learning_blurb_agent(self, data, goal, generalDescription, visualDescription, code):
-        messages = self.prompts.learning_blurb_prompt(data, goal, generalDescription, visualDescription, code)
-        outputs = self.pipeline(messages, max_new_tokens=256)
-        response = outputs[0]["generated_text"][-1]['content']
-        return response

@@ -2,7 +2,7 @@ from pipeline import Pipeline
 
 # Your input data
 data = """
-What is a derivative? And how is related to gradient descent?
+Visualize the effect of initial guess on the convergence of a minimization algorithm.
 """
 
 pipe = Pipeline(data)
