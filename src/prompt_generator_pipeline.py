@@ -2,6 +2,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import transformers
 import torch
 import os
+import json
 
 class PromptGenerator:
     def __init__(self):
@@ -13,13 +14,16 @@ class PromptGenerator:
                             model_kwargs={"torch_dtype": torch.bfloat16},
                         )
         # self.run()
-        topic = 'Gardient Descent'
+        topic = 'Gardient Descent in regards to Machine Learning'
         student_level = 'Univertity Undergraduate'
         subcategories, subcategory_to_questions = self.create_questions_by_maturity_level(topic, student_level)
         self.save_data(subcategories, subcategory_to_questions)
 
     def save_data(self, subcategories, subcategory_to_questions): 
-        os.makedirs("data", exist_ok=True)
+        # os.makedirs("data", exist_ok=True)
+        with open("data/subcategory_to_questions.json", "w") as f:
+            json.dump(subcategory_to_questions, f, indent=4)
+    
     
         pass
         
