@@ -8,11 +8,13 @@ class Prompts:
             f"You need to create a visualization to explain {self.topic} clearly and simply. "
             f"Your are provided the following context: {data}. "
             f"Extract and summarize the key entities provided in {data} in 6-10 concise sentences." 
-            f"Clearly list the most important entities, concepts, relationships, and equations from the data that must be visually represented to effectively explain {self.topic}."       
+            f"Clearly list the most important entities, concepts, relationships, 
+            and equations from the data that must be visually represented to effectively explain {self.topic}."       
         )
         
         user_prompt = (
-            f"Given your summarization above generate a complex and insightful goal in 4-5 concise sentences about visualizing {self.topic} based on data"
+            f"Given your summarization above generate a complex and insightful goal in 4-5 
+            concise sentences about visualizing {self.topic} based on data"
             "The goal you generate MUST only be in text with no code at all."
             f"The goal must clearly specify what the planned visualization aims to explain."
             f"The goal must clearly specify the relationships and main figures of the planned visualization."
@@ -43,11 +45,12 @@ class Prompts:
             "{\n"
             '  "Concept": "{A clear and concrete expression of the core concept in that is being explained(1-4 words)}",\n'
             '  "Title": "{A short, descriptive title of the visualization (1-4 words)}",\n'
-            '  "Description": "{A clear description of the visualization in 7-8 sentences that is fully enough to reproduce the visualization.",\n'
             '  "Objective": "{A clear, concrete and measurable learning outcome of the visualization without any ambiguity. For example, \"After seeing this visualizations, learners will be able to explain why the derivative of a function at turning points is zero. \"}",\n'
+            '  "Description": "{A clear description of the visualization in 7-8 sentences that is fully enough to reproduce the visualization.",\n'
+            '  "Emphasis": "{A list of 3-5 key conceptual points the visualization must highlight in a clear and reproducible way.",\n'
+            '  "Outline": "{A clear description of the visual flow of figures in 2-3 sentences, For example, \" The visualization shows a function on 2D axes with maximas and minimas, the gradient tangent is drawn at some points, and clearly drawn at turning points to be horizontal. \"}",\n'
             '  "Type": "{A category for the content the visualization is explaining. It muse be either Definition or Process Explanation or Problem Explanation or Example Explanation}",\n'
             '  "Student Background": "{A clear specification of the expected student background level needed to understand the visualization in 2-6 words(e.g., introductory calculus)}",\n'
-            '  "Emphasis": "{A list of 3-5 key points the visualization must highlight in a clear and reproducible way.",\n'
             '  "Related Topics": "{A list of 2-5 relevant topics to the visualization}",\n'
             "}\n\n"
             "THE OUTPUT MUST ONLY USE THE JSON FORMAT ABOVE."
@@ -67,7 +70,7 @@ class Prompts:
                 f"Goal: '{goal}'\n"
                 f"Description: '{general_description}'\n\n"
                 f"The visualization plan you produce MUST follow data visualization best practices "
-                f"(e.g., use bar charts instead of pie charts for comparing quantities, label axes clearly, avoid unnecessary chartjunk). "
+                f"(e.g. use a histogram instead of a bar chart for probability distribution, use 3d axis for multivariable functions, label axes clearly, avoid unnecessary chart junk). "
                 f"It MUST be meaningful, pedagogically sound, and appropriate for the stated goal and topic. "
                 "The visualization must be pedagogically effective — using simple and clear visual elements, strong color contrast, legible fonts, and clearly placed annotations. "
                 "It should be optimized for teaching and easy comprehension by students."
@@ -84,21 +87,22 @@ class Prompts:
             
             "\n\n"
             "{\n"
-            '  "Title": "{A concise title for the visual}",\n'
+            '  "Title": "{A concise title for the visual (1-4 words)}",\n'
             '  "Overview": "{A brief summary describing what the visual represents.}",\n'
             '  "Elements": {\n'
-            '    "Element1": "{Description of the first major visual component (type, color, shape, size, position)}",\n'
+            '    "Element1": "{Description of the first major visual component (type, color, shape, size, position) with the following structure   Element1: [{"Type": "curve | line | point | vline | hline | area | shape", "Expression": "Optional for curve (e.g., y = x^2)", "Coordinates": [x, y],  // for points, or "At" for tangents, "Color": "CSS color name or hex","Width": number, "Style": "solid | dashed | dotted", "Orientation": "horizontal | vertical", "Size": number, // for points, "Label": "Optional label"}]""}",\n'
             '    "Element2": "{Description of the second major component}",\n'
             '    "...": "{Additional visual elements as needed}"\n'
             '  },\n'
+            
             '  "Layout": "{Details on the spatial relationships and arrangement of elements (e.g., \'Element1 is centered; Element2 is to the left of Element1\')}",\n'
             '  "Annotations": {\n'
-            '    "Annotation1": "{Text or labels added to the visual, including style, placement, and any pointer or arrow details}",\n'
+            '    "Annotation1": "{Text or labels added to the visual, including style, placement, and any pointer or arrow details with the following structure ["Text": "Annotation content", "Position": "above_point | below_point | above_line | custom", "ReferencePoint": [x, y], "FontSize": number, "FontWeight": "normal | bold", "FontStyle": "normal | italic", "Color": "text color","Arrow": true,"ArrowColor": "color"]}",\n'
             '    "Annotation2": "{Additional annotation details}",\n'
             '    "...": "{Other annotations if applicable}"\n'
             '  },\n'
-            '  "Axes/Scale/Legends": "{Description of axes (if present), scales, legends, grid lines, or any reference markers}",\n'
-            '  "Styling": "{Stylistic details such as color schemes, fonts, transparency, and overall design choices}",\n'
+            '  "Axes/Scale/Legends": "{Description of axes (if present), scales, legends, grid lines, or any reference markers with the following structure  ["Axes": {"X": { "Range": [minX, maxX], "Ticks": step, "Label": "x-axis label", "Arrow": true}, "Y": { "Range": [minY, maxY], "Ticks": step, "Label": "y-axis label","Arrow": true}, "Grid": {"Enabled": true, "Style": "dashed | solid", "Color": "gray | lightgray | etc."}]}",\n'
+            '  "Styling": "{Stylistic details such as color schemes, fonts, transparency, and overall design choices with the following structure ["Styling": {"Font": "Font family name (e.g., sans-serif)", "Background": "white | transparent | color", "Layout": "centered | grid | split | overlay", "TightLayout": true | false}]}",\n'
             '  "Conclusion": "{A short statement summarizing the overall message or insight conveyed by the visual}"\n'
             "}\n\n"
             
@@ -115,13 +119,17 @@ class Prompts:
             "You are a world-class expert in data visualization code generation. "
             f"You are highly skilled in using Python libraries such as matplotlib, seaborn, and others to create high-quality, aesthetically pleasing, and educational visualizations.\n\n"
             f"Your task is to generate Python code that fulfills the following visualization goal:\n'{goal}'\n\n"
-            "You will receive a detailed visual description that includes elements such as the title, overview, layout, axes, annotations, and styling preferences. "
-            "Your job is to interpret this description and generate the corresponding Python code.\n\n"
+            "You will receive a detailed visual description that includes a detailed list of visual elements as well as title, layout, axes, annotations, and styling preferences. "
+            "Your job is to:\n"
+            "1. Interpret the description precisely — do not make assumptions or skip any detail.\n"
+            "2. Generate a complete Python code block that creates the exact described visualization.\n"
+            "3. Use appropriate plotting libraries (matplotlib, seaborn, plotly, turtle, manim, etc).\n"
+            "4. Write clean, readable code with short comments to explain each section.\n\n"
         )
         
         user_prompt = (
             f"Here is the visual description you need to interpret and convert into Python code:\n\n{visual_description}\n\n"
-            "Using the information above, generate clean, executable Python code using matplotlib (or another appropriate library). "
+            "Using the information above, generate clean, executable Python code using an appropriate library. "
             "The code must implement the described visualization exactly, including layout, axes, labels, annotations, and any required styling or transparency effects.\n\n"
             "IMPORTANT INSTRUCTIONS:\n"
             "- Only output Python code. No explanations or comments.\n"

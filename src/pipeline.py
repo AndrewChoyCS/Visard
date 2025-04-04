@@ -129,6 +129,12 @@ class Pipeline():
         response = outputs[0]["generated_text"][-1]['content']
         return response
     
+    # def code_evaluation_agent(self, original_code, generalDescription):
+    #     messages = self.prompts.code_error_correction_prompt(original_code, error_message)
+    #     outputs = self.pipeline(messages, max_new_tokens=1024)
+    #     response = outputs[0]["generated_text"][-1]['content']
+    #     return response
+    
     def code_error_correction_agent(self, original_code, error_message):
         messages = self.prompts.code_error_correction_prompt(original_code, error_message)
         outputs = self.pipeline(messages, max_new_tokens=1024)
