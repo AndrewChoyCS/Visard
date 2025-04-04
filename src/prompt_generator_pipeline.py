@@ -23,10 +23,7 @@ class PromptGenerator:
         # os.makedirs("data", exist_ok=True)
         with open("data/subcategory_to_questions.json", "w") as f:
             json.dump(subcategory_to_questions, f, indent=4)
-    
-    
         pass
-        
 
     def create_questions_by_maturity_level(self, topic, maturity_level):
         sub_categories = self.create_subcategories(topic)

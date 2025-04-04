@@ -1,4 +1,4 @@
-from populate import PopulatePipeline
+from populate_pipeline import PopulatePipeline
 import json
 import pandas as pd 
 

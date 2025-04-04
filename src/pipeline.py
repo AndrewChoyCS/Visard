@@ -14,41 +14,83 @@ from datetime import datetime
 from reportlab.platypus import Image, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
-from prompts import Prompts  
+from prompts import Prompts
+import logging
 
-class Pipeline(): 
-    def __init__(self, data, output_dir='research_results'):
-        # Create output directory if it doesn't exist
+MAX_ATTEMPTS = 8
+
+class Pipeline():
+    def __init__(self, data, output_dir='logger'):
+
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
+        self.setup_logger()
+        self.logger.info("Pipeline initialized.")
+        self.load_models()
+
+        self.TOPIC = "Gradient Descent"
+        self.prompts = Prompts(self.TOPIC)
+
         
-        self.models = ["llama3_3b_instruct", "deepseek-ai/DeepSeek-V3-0324"]
+    def run(self, data):
+        try:
+            goalRet = self.goal_explorer_agent(data)
+            self.logger.info(f"Goal Explorer Output: {goalRet}")
+            
+            generalDescription = self.goal_to_general_description_agent(data, goalRet)
+            self.logger.info(f"General Description: {generalDescription}")
+            
+            visualDescription = self.general_description_to_visual_description_agent(data, goalRet, generalDescription)
+            self.logger.info(f"Visual Description: {visualDescription}")
+            
+            code = self.visual_description_to_visualization_code_agent(goalRet, visualDescription)
+            self.logger.info(f"Visualization Code: {code}")
+            
+            finalCode = self.run_code(code)
+            self.logger.info("Code execution completed.")
+            
+            # visualization_path = self.save_visualization(finalCode)
+            # self.logger.info(f"Visualization saved at: {visualization_path}")
+            
+            # learning_blurb = self.generate_learning_blurb_agent(data, goalRet, generalDescription, visualDescription, finalCode)
+            # self.logger.info(f"Learning Blurb: {learning_blurb}")
+            
+            # self.create_pdf(visualization_path, learning_blurb)
+        except Exception as e:
+            self.logger.error(f"Pipeline execution failed: {str(e)}")
+            traceback.print_exc()
+    
+    def setup_logger(self):
+        """Set up logger for pipeline."""
+        self.logger = logging.getLogger('PipelineLogger')
+        self.logger.setLevel(logging.INFO)
+        
+        # Create handlers for logging to both console and file
+        console_handler = logging.StreamHandler()
+        file_handler = logging.FileHandler(os.path.join(self.output_dir, 'pipeline_log.txt'))
+        
+        # Set log format
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(formatter)
+        file_handler.setFormatter(formatter)
+        
+        # Add handlers to the logger
+        self.logger.addHandler(console_handler)
+        self.logger.addHandler(file_handler)
+
+    def load_models(self):
+        self.models = ["llama3_3b_instruct"]
         self.base_model = "llama3_3b_instruct"
         self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
         self.model = AutoModelForCausalLM.from_pretrained(self.base_model)
         self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
-        self.pipeline = transformers.pipeline("text-generation", model="meta-llama/Llama-3.2-3B-Instruct", model_kwargs={"torch_dtype": torch.float16})
-        self.TOPIC = "Gradient Descent"
-        
-        # Initialize the prompts
-        self.prompts = Prompts(self.TOPIC)
+        self.base_model_pipeline = transformers.pipeline("text-generation", model="meta-llama/Llama-3.2-3B-Instruct", model_kwargs={"torch_dtype": torch.float16})
 
-        # Run the pipeline
-        goalRet = self.goal_explorer_agent(data)
-        print(goalRet)
-        generalDescription = self.goal_to_general_description_agent(data, goalRet)
-        print(generalDescription)
-        visualDescription = self.general_description_to_visual_description_agent(data, goalRet, generalDescription)
-        print(visualDescription)
-        code = self.visual_description_to_visualization_code_agent(goalRet, visualDescription)
-        print(code)
-        finalCode = self.run_code(code)
-        visualization_path = self.save_visualization(finalCode)
-        learning_blurb = self.generate_learning_blurb_agent(data, goalRet, generalDescription, visualDescription, finalCode)
-        print("Learning Blurb:", learning_blurb)
-        self.create_pdf(visualization_path, learning_blurb)
+        self.code_generation_model = "codellama/CodeLlama-7b-hf"
+        self.code_generation_model_tokenizer = AutoTokenizer.from_pretrained(self.code_generation_model)
+        self.code_generation_model_pipeline = transformers.pipeline("text-generation", model="codellama/CodeLlama-7b-hf", torch_dtype=torch.float16)
 
-    def clean_data():
+    def clean_data(self):
         pass
 
     def save_visualization(self, code):
@@ -58,25 +100,24 @@ class Pipeline():
             local_namespace = {}
             exec(cleaned_code, globals(), local_namespace)
             plt.tight_layout()
-            figure_path = os.path.join(self.output_dir, 'gradient_descent_visualization.png')
+            figure_path = os.path.join('research_results', 'gradient_descent_visualization.png')
             if plt.gcf().get_axes():
                 plt.savefig(figure_path, dpi=300, bbox_inches='tight')
                 plt.close() 
-                print(f"Visualization saved to {figure_path}")
+                self.logger.info(f"Visualization saved to {figure_path}")
                 return figure_path
             else:
-                print("No figure was generated to save.")
+                self.logger.warning("No figure was generated to save.")
                 return None
         
         except Exception as e:
-            print(f"Error saving visualization: {e}")
-            import traceback
+            self.logger.error(f"Error saving visualization: {e}")
             traceback.print_exc()
             return None
 
     def create_pdf(self, image_path, blurb):
         try:
-            pdf_path = os.path.join(self.output_dir, f'{self.TOPIC}_visualization_report.pdf')
+            pdf_path = os.path.join('research_results', f'{self.TOPIC}_visualization_report.pdf')
             
             doc = SimpleDocTemplate(pdf_path, pagesize=letter, 
                                     rightMargin=72, leftMargin=72, 
@@ -100,32 +141,35 @@ class Pipeline():
             # Build PDF
             doc.build(story)
             
-            print(f"PDF report created at {pdf_path}")
+            self.logger.info(f"PDF report created at {pdf_path}")
         except Exception as e:
-            print(f"Error creating PDF: {e}")
+            self.logger.error(f"Error creating PDF: {e}")
 
     def goal_explorer_agent(self, data):
-        print("Executing Goal Explorer Agent")
+        self.logger.info("Executing Goal Explorer Agent")
         messages = self.prompts.goal_explorer_prompt(data)
-        outputs = self.pipeline(messages, max_new_tokens=512)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=512)
         response = outputs[0]["generated_text"][-1]['content']
         return response
 
     def goal_to_general_description_agent(self, data: str, goal: str):
+        self.logger.info("Executing Goal to General Description Agent")
         messages = self.prompts.general_description_prompt(data, goal)
-        outputs = self.pipeline(messages, max_new_tokens=1024)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
         return response
 
     def general_description_to_visual_description_agent(self, data, goal, generalDescription):
+        self.logger.info("Executing General Description to Visual Description Agent")
         messages = self.prompts.visual_description_prompt(data, goal, generalDescription)
-        outputs = self.pipeline(messages, max_new_tokens=1024)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
         return response
 
     def visual_description_to_visualization_code_agent(self, goal, visualDescription):
+        self.logger.info("Executing Visual Description to Visualization Code Agent")
         messages = self.prompts.visualization_code_prompt(goal, visualDescription)
-        outputs = self.pipeline(messages, max_new_tokens=1024)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
         return response
     
@@ -136,56 +180,90 @@ class Pipeline():
     #     return response
     
     def code_error_correction_agent(self, original_code, error_message):
+        self.logger.info("Executing Code Error Correction Agent")
         messages = self.prompts.code_error_correction_prompt(original_code, error_message)
-        outputs = self.pipeline(messages, max_new_tokens=1024)
+        # outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
+        outputs = self.code_generation_model_pipeline(messages, max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
         return response
 
-    def run_code(self, code):
-        additional_models = ["llama3_3b_instruct", "Qwen/Qwen2.5-7B-Instruct"]
-        max_attempts = 8
-        attempt = 0
-        model_loaded = False
-        current_code = code
+
+    """
+    This run_code function has the functionality to attempt multiple models, but I have taken it out for now. It has a bug that the next model will not load.
+    """
+    # def run_code(self, code):
+    #     self.logger.info("Executing Code")
+    #     code_generation_model = self.base_model
+    #     additional_models = ["llama3_3b_instruct", "Qwen/Qwen2.5-7B-Instruct"]
+    #     max_attempts = 8
+    #     attempt = 0
+    #     model_loaded = False
+    #     current_code = code
         
-        while attempt < max_attempts and not model_loaded:
-            try:
-                cleaned_code = current_code.strip().replace('```python', '').replace('```', '').strip()
+    #     while attempt < max_attempts and not model_loaded:
+    #         try:
+    #             cleaned_code = current_code.strip().replace('```python', '').replace('```', '').strip()
+    #             local_vars = {}
+    #             exec(cleaned_code, globals(), local_vars)
+    #             plt.close()
+    #             model_loaded = True
+    #             self.logger.info(f"Code executed successfully on attempt {attempt + 1}")
+    #         except Exception as e:
+    #             self.logger.warning(f"Error on attempt {attempt + 1}: {str(e)}")
+    #             try:
+    #                 corrected_code = self.code_error_correction_agent(current_code, str(e))
+    #                 self.logger.info(f"Corrected Code: {corrected_code}")
+    #                 current_code = corrected_code
+    #                 self.logger.info("Attempting to run corrected code...")
+    #             except Exception as correction_error:
+    #                 self.logger.error(f"Error during code correction: {correction_error}")
+                    
+    #             if attempt + 1 == max_attempts:
+    #                 self.logger.error("Maximum attempts reached for the current model. Switching to a new model.")
+    #                 current_model_index = additional_models.index(self.base_model)
+    #                 next_model_index = current_model_index + 1
+    #                 if next_model_index == len(additional_models): 
+    #                     break
+    #                 self.base_model = additional_models[next_model_index]
+    #                 self.base_model_pipeline = transformers.pipeline("text-generation", model=self.base_model, trust_remote_code=True)
+    #                 attempt = 0 
+    #             else:
+    #                 attempt += 1
+
+    #     if not model_loaded:
+    #         self.logger.error("Failed to execute code after maximum attempts with all models.")
+    #         raise RuntimeError("Could not execute the code after max attempts with all models.")
+        
+    #     return current_code  # Return the final executed code
+    
+
+    def run_code(self, code):
+        self.logger.info("Executing Code")
+        attempt = 1
+        while attempt < MAX_ATTEMPTS:
+            try: 
+                cleaned_code = code.strip().replace('```python', '').replace('```', '').strip()
                 local_vars = {}
                 exec(cleaned_code, globals(), local_vars)
-                # exec(cleaned_code)
-                model_loaded = True
-                print(f"Code executed successfully on attempt {attempt + 1}")
-            except Exception as e:
-                print(f"Error on attempt {attempt + 1}: {str(e)}")
+                plt.close()
+                self.logger.info(f"Code executed successfully on attempt {attempt}")
+                return cleaned_code
+            except Exception as e: 
+                self.logger.warning(f"Error on attempt {attempt}: {str(e)}")
                 try:
-                    corrected_code = self.code_error_correction_agent(current_code, str(e))
-                    print("Corrected Code:", corrected_code)
-                    current_code = corrected_code
-                    print("Attempting to run corrected code...")
+                    corrected_code = self.code_error_correction_agent(code, str(e))
+                    self.logger.info(f"Corrected Code: {corrected_code}")
+                    code = corrected_code
+                    self.logger.info("Attempting to run corrected code...")
                 except Exception as correction_error:
-                    print(f"Error during code correction: {correction_error}")
-                    
-                if attempt + 1 == max_attempts:
-                    print("Maximum attempts reached for the current model. Switching to a new model.")
-                    current_model_index = additional_models.index(self.base_model)
-                    next_model_index = current_model_index + 1
-                    if next_model_index == len(additional_models): 
-                        break
-                    self.base_model = additional_models[next_model_index]
-                    self.pipeline = transformers.pipeline("text-generation", model=self.base_model, trust_remote_code=True)
-                    attempt = 0 
-                else:
-                    attempt += 1
-
-        if not model_loaded:
-            print("Failed to execute code after maximum attempts with all models.")
-            raise RuntimeError("Could not execute the code after max attempts with all models.")
+                    self.logger.error(f"Error during code correction: {correction_error}")
+            attempt += 1
+        self.logger.error("Failed to execute code after maximum attempts")
+        return "NO CODE GENERATED"
         
-        return current_code  # Return the final executed code
-    
     def generate_learning_blurb_agent(self, data, goal, generalDescription, visualDescription, code):
+        self.logger.info("Executing Learning Blurb Agent")
         messages = self.prompts.learning_blurb_prompt(data, goal, generalDescription, visualDescription, code)
-        outputs = self.pipeline(messages, max_new_tokens=256)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=256)
         response = outputs[0]["generated_text"][-1]['content']
         return response
