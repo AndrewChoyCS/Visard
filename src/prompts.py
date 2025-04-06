@@ -129,7 +129,6 @@ class Prompts:
             "- Do not include any additional text. Only return the raw, complete Python code."
     )
         
-        
         return [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}

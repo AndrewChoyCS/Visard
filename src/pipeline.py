@@ -30,6 +30,8 @@ class Pipeline():
 
         self.TOPIC = "Gradient Descent"
         self.prompts = Prompts(self.TOPIC)
+        # Comment the line below when running run_populate
+        self.run(data)
 
         
     def run(self, data):
@@ -176,8 +178,8 @@ class Pipeline():
     def code_error_correction_agent(self, original_code, error_message):
         self.logger.info("Executing Code Error Correction Agent")
         messages = self.prompts.code_error_correction_prompt(original_code, error_message)
-        # outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
-        outputs = self.code_generation_model_pipeline(messages, max_new_tokens=1024)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=2048)
+        # outputs = self.code_generation_model_pipeline(messages, max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
         return response
 
