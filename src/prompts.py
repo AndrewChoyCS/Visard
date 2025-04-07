@@ -165,8 +165,6 @@ class Prompts:
             {"role": "user", "content": user_prompt}
         ]
     
-    
-    
     def code_error_correction_prompt(self, original_code, error_message):
         system_prompt = (
             "You are an expert Python programmer and debugging assistant. "
@@ -192,6 +190,73 @@ class Prompts:
             {"role": "user", "content": user_prompt}
         ]
     
+    def visual_refinement_prompt(self, code):
+        system_prompt = {
+            "You are a highly skilled Python programmer specializing in data visualization using popular Python graphing libraries. "
+            "As a visualization expert, your focus is on creating clear, engaging, and effective visuals that enhance student understanding and learning."
+        }
+        user_prompt = {
+            f"Original Code:\n{code}\n\n"
+            "Your task is to stylize the visualization without altering its core functionality or the data it represents. "
+            "Ensure that the axes are labeled appropriately, the title is clear, and different elements of the visualization are distinguishable through color, size, or style. "
+            "Focus purely on enhancing the aesthetics and usability of the plot, improving clarity and visual appeal. "
+            "Do not modify the underlying logic or structure of the visualization, just refine the visual aspects."
+            "\nOnly return the updated code; do not include explanations or any other commentary."
+        }
+        return [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+    
+
+    def visualization_judge_prompt(self, goal, general_description, code):
+        system_prompt = (
+            f"You are an expert visualization evaluator with deep knowledge in {self.topic}, data visualization best practices, "
+            "and educational design principles. Your task is to objectively score a visualization based on how well it achieves "
+            "its educational purpose and follows visualization best practices. Your evaluation must be rigorous, consistent, and fair."
+        )
+        
+        user_prompt = (
+            f"Please evaluate the following visualization:\n\n"
+            f"GOAL: {goal}\n\n"
+            f"DESCRIPTION: {general_description}\n\n"
+            f"CODE: {code}\n\n"
+            "Score this visualization on a scale of 0-100 based on the following criteria:\n\n"
+            "1. CONCEPT ALIGNMENT (0-20 points)\n"
+            "   - How well does the visualization align with the stated learning goal?\n"
+            "   - Does it accurately represent the core concepts described in the general description?\n"
+            "   - Does it emphasize the key points mentioned in the 'Emphasis' section?\n\n"
+            
+            "2. TECHNICAL CORRECTNESS (0-20 points)\n"
+            "   - Is the visualization mathematically/scientifically accurate?\n"
+            "   - Are axes, labels, scales, and units appropriate and accurate?\n"
+            "   - Are relationships between elements correctly depicted?\n\n"
+            
+            "3. VISUAL CLARITY (0-20 points)\n"
+            "   - Is the visualization immediately interpretable without excessive cognitive load?\n"
+            "   - Are colors, contrasts, and visual hierarchies effectively used?\n"
+            "   - Are annotations clear, well-placed, and helpful?\n\n"
+            
+            "4. PEDAGOGICAL EFFECTIVENESS (0-20 points)\n"
+            "   - Does the visualization facilitate understanding of the concept?\n"
+            "   - Are complexity and detail appropriate for the stated student background?\n"
+            "   - Does it provide insight beyond what text alone could convey?\n\n"
+            
+            "5. IMPLEMENTATION QUALITY (0-20 points)\n"
+            "   - Is the code well-structured, efficient, and without errors?\n"
+            "   - Does the implementation match the visual description requirements?\n"
+            "   - Are appropriate libraries and techniques used?\n\n"
+            
+            "IMPORTANT: Return ONLY a single numerical score between 0-100. Do not include any explanation, "
+            "comments, or other text. Just the final score as a single number."
+        )
+        
+        return [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+
+        
     # def learning_blurb_prompt(self, data, goal, general_description, visual_description, code):
     #     system_prompt = (
     #         f"You are an expert educational content creator specializing in explaining complex topics like {self.topic}. "

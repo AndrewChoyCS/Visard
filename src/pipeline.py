@@ -14,7 +14,8 @@ from datetime import datetime
 from reportlab.platypus import Image, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
-from prompts import Prompts
+# from prompts import Prompts
+from refined_prompts import Prompts
 import logging
 
 MAX_ATTEMPTS = 8
@@ -42,13 +43,26 @@ class Pipeline():
             generalDescription = self.goal_to_general_description_agent(data, goalRet)
             self.logger.info(f"General Description: {generalDescription}")
             
-            visualDescription = self.general_description_to_visual_description_agent(data, goalRet, generalDescription)
-            self.logger.info(f"Visual Description: {visualDescription}")
+            # visualDescription = self.general_description_to_visual_description_agent(data, goalRet, generalDescription)
+            # self.logger.info(f"Visual Description: {visualDescription}")
+            visualDescription = generalDescription
             
-            code = self.visual_description_to_visualization_code_agent(goalRet, visualDescription)
-            self.logger.info(f"Visualization Code: {code}")
-            
-            finalCode = self.run_code(code)
+            # This is the base code 
+            codeGenerated = self.visual_description_to_visualization_code_agent(goalRet, visualDescription)
+            self.logger.info(f"Visualization Code: {codeGenerated}")
+
+            # Run the judge, on the visualized code, and only exectue it when you above threshold
+            score = 0
+            while int(score) < 70:
+                styledVisualizationCode = self.visual_refinement_agent(codeGenerated)
+                self.logger.info(f"Styled Visualization Code: {styledVisualizationCode}")
+                executableCode = self.run_code(styledVisualizationCode)
+                if executableCode == "NO CODE GENERATED": 
+                    raise ValueError("No code was generated during visualization.")
+                
+                score = self.visualization_judge_agent(goalRet, generalDescription, styledVisualizationCode)
+                self.logger.info(f"This Visualization scored: {score}")
+
             self.logger.info("Code execution completed.")
             
             # visualization_path = self.save_visualization(finalCode)
@@ -95,58 +109,6 @@ class Pipeline():
     def clean_data(self):
         pass
 
-    def save_visualization(self, code):
-        try:
-            cleaned_code = code.strip().replace('```python', '').replace('```', '').strip()
-            
-            local_namespace = {}
-            exec(cleaned_code, globals(), local_namespace)
-            plt.tight_layout()
-            figure_path = os.path.join('research_results', 'gradient_descent_visualization.png')
-            if plt.gcf().get_axes():
-                plt.savefig(figure_path, dpi=300, bbox_inches='tight')
-                plt.close() 
-                self.logger.info(f"Visualization saved to {figure_path}")
-                return figure_path
-            else:
-                self.logger.warning("No figure was generated to save.")
-                return None
-        
-        except Exception as e:
-            self.logger.error(f"Error saving visualization: {e}")
-            traceback.print_exc()
-            return None
-
-    def create_pdf(self, image_path, blurb):
-        try:
-            pdf_path = os.path.join('research_results', f'{self.TOPIC}_visualization_report.pdf')
-            
-            doc = SimpleDocTemplate(pdf_path, pagesize=letter, 
-                                    rightMargin=72, leftMargin=72, 
-                                    topMargin=72, bottomMargin=18)
-            
-            story = []
-            
-            styles = getSampleStyleSheet()
-            title_style = styles['Title']
-            normal_style = styles['Normal']
-            
-            story.append(Paragraph(f"{self.TOPIC} Visualization", title_style))
-            
-            if image_path and os.path.exists(image_path):
-                img = Image(image_path, width=6*inch, height=4*inch)
-                img.hAlign = 'CENTER'
-                story.append(img)
-            
-            story.append(Paragraph("<br/><br/>Learning Insights:", styles['Heading3']))
-            story.append(Paragraph(blurb, normal_style))
-            # Build PDF
-            doc.build(story)
-            
-            self.logger.info(f"PDF report created at {pdf_path}")
-        except Exception as e:
-            self.logger.error(f"Error creating PDF: {e}")
-
     def goal_explorer_agent(self, data):
         self.logger.info("Executing Goal Explorer Agent")
         messages = self.prompts.goal_explorer_prompt(data)
@@ -180,7 +142,21 @@ class Pipeline():
     #     outputs = self.pipeline(messages, max_new_tokens=1024)
     #     response = outputs[0]["generated_text"][-1]['content']
     #     return response
+
+    def visual_refinement_agent(self, code):
+        self.logger.info("Executing Visual Description to Visualization Code Agent")
+        messages = self.prompts.visual_refinement_prompt(code)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
+        response = outputs[0]["generated_text"][-1]['content']
+        return response
     
+    def visualization_judge_agent(self, goal, general_description, code ):
+        self.logger.info("Executing Jude Agent")
+        messages = self.prompts.visualization_judge_prompt(goal, general_description, code)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
+        response = outputs[0]["generated_text"][-1]['content']
+        return response
+
     def code_error_correction_agent(self, original_code, error_message):
         self.logger.info("Executing Code Error Correction Agent")
         messages = self.prompts.code_error_correction_prompt(original_code, error_message)
