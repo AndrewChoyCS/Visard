@@ -4,31 +4,27 @@ class Prompts:
     
     def goal_explorer_prompt(self, data):
         system_prompt = (
-            f"You are a world-class expert in {self.topic}, instructional visualization design, and educational content creation. "
-            f"Your task is to extract the essential knowledge from provided materials to plan a highly effective visualization about {self.topic}. "
-            f"Based on this data: {data}\n\n"
-            f"First, analyze and synthesize the provided content to identify:\n"
-            f"1. Core concepts and principles related to {self.topic}\n"
-            f"2. Key relationships between entities that should be visualized\n"
-            f"3. Critical equations, formulas, or mathematical relationships\n"
-            f"4. Common misconceptions or learning challenges students face with {self.topic}\n"
-            f"5. Potential visual metaphors or representations that could aid understanding\n\n"
-            f"Present your synthesis in 6-10 concise, information-dense sentences focusing only on what must be visualized."
+            f"You are an expert in {self.topic}, instructional visualization, and visualization creation."
+            f"You need to create a visualization to explain {self.topic} clearly and simply. "
+            f"Your are provided the following context: {data}. "
+            f"Extract and summarize the key entities provided in {data} in 6-10 concise sentences." 
+            f"Clearly list the most important entities, concepts, relationships, and equations from the data that must be visually represented to effectively explain {self.topic}."       
         )
         
         user_prompt = (
-            f"Based on your analysis, develop a precise visualization goal for {self.topic} that:\n\n"
-            f"1. Defines exactly what aspect of {self.topic} will be visualized (be specific rather than general)\n"
-            f"2. Identifies the exact relationships, transformations, or processes that will be made visible\n"
-            f"3. Specifies how the visualization will address common misconceptions or learning challenges\n"
-            f"4. Establishes clear criteria for what a successful visualization should demonstrate\n\n"
-            f"Express this goal in 4-5 concise, directive sentences with no code. Focus on cognitive outcomes rather than visual specifications."
+            f"Given your summarization above generate a complex and insightful goal in 4-5 concise sentences about visualizing {self.topic} based on data"
+            "The goal you generate MUST only be in text with no code at all."
+            f"The goal must clearly specify what the planned visualization aims to explain."
+            f"The goal must clearly specify the relationships and main figures of the planned visualization."
+            f"The goal must specify how the planned visualization would aid student understanding of {self.topic}"
+            
         )
         
         return [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
         ]
+
         
     def general_description_prompt(self, data, goal):
         system_prompt = (
@@ -217,7 +213,28 @@ class Prompts:
             {"role": "user", "content": user_prompt}
         ]
     
-    def code_error_correction_prompt(self, original_code, error_message):
+    def code_error_identifier_prompt(self, original_code, error_message):
+        system_prompt = (
+            "You are a Python debugging specialist with expertise in matplotlib and visualization libraries. "
+            "Your task is to diagnose and fix execution errors in visualization code, producing working solutions "
+            "that maintain the original code's intent while resolving all technical issues. "
+            "You have exceptional ability to interpret error traces, identify root causes, and implement proper fixes."
+        )
+
+        user_prompt = (
+            f"CODE WITH ERROR: {original_code}"
+            f"ERROR MESSEAGE: {error_message}"
+            "Given this code with the erorr message and the code, explain how the error message and how it occured."
+            "In addition, also explain in great detail how you would fix this error. Clearly indicate what you need to change"
+            "in order to change this code and have it be executable with no errors"
+            "Do not return any code. Just return an explanation of how you would fix the errors, so they a no longer produced. "
+        )
+        return [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+    
+    def code_error_correction_prompt(self, original_code, error_message, explanation):
         system_prompt = (
             "You are a Python debugging specialist with expertise in matplotlib and visualization libraries. "
             "Your task is to diagnose and fix execution errors in visualization code, producing working solutions "
@@ -235,9 +252,10 @@ class Prompts:
             "3. Fix ALL potential issues, not just the immediate error\n"
             "4. Maintain the original visualization's appearance and functionality\n"
             "5. Return ONLY the complete, corrected code ready for execution\n\n"
+
+            f"Here is a guide on how to fix it: {explanation}"
             "Your output must be ONLY the fixed code with no explanations, comments about changes, or markdown formatting."
         )
-        
         return [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
@@ -301,6 +319,7 @@ class Prompts:
             "   - Are annotations clear, well-placed, and helpful?\n\n"
             "   -    Do the visuals communicate the data effectively??\n\n"
             
+<<<<<<< Updated upstream
             "4. PEDAGOGICAL EFFECTIVENESS (0-5 points)\n"
             "   - Does the visualization facilitate understanding of the concept?\n"
             "   - Are complexity and detail appropriate for the stated student background?\n"
@@ -311,6 +330,14 @@ class Prompts:
             
             "IMPORTANT: Return ONLY a single numerical score between 0-100. Do not include any explanation, "
             "comments, or other text. Just the final score as a single number."
+=======
+            "5. TECHNICAL IMPLEMENTATION (0-10 points)\n"
+            "   - Appropriate use of visualization libraries\n"
+            "   - Code is executable\n"
+
+            "RETURN ONLY A SINGLE INTEGER SCORE BETWEEN 0-100."
+            "Do not return any extreneous text, only return a number. There shouls be no text in your response."
+>>>>>>> Stashed changes
         )
         
         return [

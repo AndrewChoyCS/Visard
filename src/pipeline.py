@@ -6,6 +6,7 @@ import transformers
 import torch
 import traceback
 import re
+import numpy as np
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Image, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
@@ -17,19 +18,24 @@ from reportlab.lib.units import inch
 # from prompts import Prompts
 from refined_prompts import Prompts
 import logging
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 MAX_ATTEMPTS = 8
 
 class Pipeline():
-    def __init__(self, data, output_dir='logger'):
+    def __init__(self, data, topic, output_dir='logger'):
 
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
         self.setup_logger()
         self.logger.info("Pipeline initialized.")
+        self.logger.info(f"Initial Data: {data}")
         self.load_models()
 
-        self.TOPIC = "Gradient Descent"
+        # self.TOPIC = "Gradient Descent"
+        self.TOPIC = topic
         self.prompts = Prompts(self.TOPIC)
         # Comment the line below when running run_populate
         self.run(data)
@@ -100,11 +106,17 @@ class Pipeline():
         self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
         self.model = AutoModelForCausalLM.from_pretrained(self.base_model)
         self.tokenizer = AutoTokenizer.from_pretrained(self.base_model)
-        self.base_model_pipeline = transformers.pipeline("text-generation", model="meta-llama/Llama-3.2-3B-Instruct", model_kwargs={"torch_dtype": torch.float16})
+        self.base_model_pipeline = transformers.pipeline("text-generation", model="meta-llama/Llama-3.2-3B-Instruct", model_kwargs={"torch_dtype": torch.float16}, device=self.device)
 
-        self.code_generation_model = "codellama/CodeLlama-7b-hf"
+        self.code_generation_model = "codellama/CodeLlama-7b-Instruct-hf"
         self.code_generation_model_tokenizer = AutoTokenizer.from_pretrained(self.code_generation_model)
-        self.code_generation_model_pipeline = transformers.pipeline("text-generation", model="codellama/CodeLlama-7b-hf", torch_dtype=torch.float16)
+        # self.code_generation_model_tokenizer.chat_template = ""
+        self.code_generation_model_pipeline = transformers.pipeline("text-generation", self.code_generation_model, torch_dtype=torch.float16, device=self.device)
+
+        # self.code_model = "codellama/CodeLlama-7b-Instruct-hf"  
+        # self.code_tokenizer = AutoTokenizer.from_pretrained(self.code_model)
+        # self.code_model_pipeline = transformers.pipeline("text-generation", model=self.code_model, torch_dtype=torch.float16)
+        self.logger.info("Models loaded successfully")
 
     def clean_data(self):
         pass
@@ -133,7 +145,9 @@ class Pipeline():
     def visual_description_to_visualization_code_agent(self, goal, visualDescription):
         self.logger.info("Executing Visual Description to Visualization Code Agent")
         messages = self.prompts.visualization_code_prompt(goal, visualDescription)
-        outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
+        # outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
+        # outputs = self.code_generation_model_pipeline(messages[0]['content'], max_new_tokens=1024)
+        outputs = self.code_generation_model_pipeline(messages, max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
         return response
     
@@ -146,7 +160,9 @@ class Pipeline():
     def visual_refinement_agent(self, code):
         self.logger.info("Executing Visual Description to Visualization Code Agent")
         messages = self.prompts.visual_refinement_prompt(code)
-        outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
+        # outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
+        outputs = self.code_generation_model_pipeline(messages, max_new_tokens=1024)
+        # outputs = self.code_generation_model_pipeline(messages[0]['content'], max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
         return response
     
@@ -156,10 +172,18 @@ class Pipeline():
         outputs = self.base_model_pipeline(messages, max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
         return response
+    
+    def code_error_identifier_agent(self, code, error_message):
+        self.logger.info("Executing Code Error Identifier Agent")
+        messages = self.prompts.code_error_identifier_prompt(code, error_message)
+        outputs = self.base_model_pipeline(messages, max_new_tokens=2048)
+        # outputs = self.code_generation_model_pipeline(messages, max_new_tokens=1024)
+        response = outputs[0]["generated_text"][-1]['content']
+        return response
 
-    def code_error_correction_agent(self, original_code, error_message):
+    def code_error_correction_agent(self, original_code, error_message, explanation):
         self.logger.info("Executing Code Error Correction Agent")
-        messages = self.prompts.code_error_correction_prompt(original_code, error_message)
+        messages = self.prompts.code_error_correction_prompt(original_code, error_message, explanation)
         outputs = self.base_model_pipeline(messages, max_new_tokens=2048)
         # outputs = self.code_generation_model_pipeline(messages, max_new_tokens=1024)
         response = outputs[0]["generated_text"][-1]['content']
@@ -215,6 +239,7 @@ class Pipeline():
     #     return current_code  # Return the final executed code
     
 
+
     def run_code(self, code):
         self.logger.info("Executing Code")
         attempt = 1
@@ -229,7 +254,9 @@ class Pipeline():
             except Exception as e: 
                 self.logger.warning(f"Error on attempt {attempt}: {str(e)}")
                 try:
-                    corrected_code = self.code_error_correction_agent(code, str(e))
+                    erorr_explantion = self.code_error_identifier_agent(code, str(e))
+                    self.logger.info(f"The Error Explanation: {erorr_explantion}")
+                    corrected_code = self.code_error_correction_agent(code, str(e), erorr_explantion)
                     self.logger.info(f"Corrected Code: {corrected_code}")
                     code = corrected_code
                     self.logger.info("Attempting to run corrected code...")
