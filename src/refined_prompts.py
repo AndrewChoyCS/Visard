@@ -37,6 +37,13 @@ class Prompts:
             f"Your design must transform abstract concepts into concrete visual elements that create immediate cognitive understanding. "
             f"Focus on creating a visualization that is memorable, reduces cognitive load, and creates clear mental models of {self.topic}. "
             f"Your description must be precise enough that multiple designers would create nearly identical visualizations from it."
+            f"Your specifications must follow established visualization best practices including:\n"
+            f"- Using appropriate chart types for the data relationships involved\n"
+            f"- Employing effective color schemes with strong contrast for instructional clarity\n"
+            f"- Minimizing chart junk while maximizing data-ink ratio\n"
+            f"- Creating clear visual hierarchies through size, position, and color\n"
+            f"- Positioning annotations to minimize overlaps and maximize readability\n"
+            f"Every visual element must directly support student understanding of {self.topic}."
         )
         
         user_prompt = (
@@ -49,6 +56,7 @@ class Prompts:
             '  "Description": "{A detailed visual scenario in 7-8 sentences specifying exactly what will be shown, how elements interact, and what changes or transformations occur}",\n'
             '  "Emphasis": "{3-5 critical insights the visualization must make visually obvious, listed as discrete points}",\n'
             '  "Outline": "{A structural blueprint of the visualization specifying spatial relationships, movement, sequencing, and focal points in 2-3 sentences}",\n'
+            '  "Elements": "{A clear list of the essential components of the visualization in 4-8 words}",\n'
             '  "Type": "{ONE category from: Definition, Process Explanation, Problem Solving, or Conceptual Relationship}",\n'
             '  "Student Background": "{Precise prerequisite knowledge required (2-6 words)}",\n'
             '  "Related Topics": "{2-5 closely connected concepts that could be explored next}"\n'
@@ -61,99 +69,99 @@ class Prompts:
             {"role": "user", "content": user_prompt}
         ]
 
-    def visual_description_prompt(self, data, goal, general_description):
-        system_prompt = (
-            f"You are a technical visualization engineer with expertise in perceptual psychology and {self.topic}. "
-            f"You will translate this visualization goal '{goal}' and description '{general_description}' into precise technical specifications. "
-            f"Your specifications must follow established visualization best practices including:\n"
-            f"- Using appropriate chart types for the data relationships involved\n"
-            f"- Employing effective color schemes with strong contrast for instructional clarity\n"
-            f"- Minimizing chart junk while maximizing data-ink ratio\n"
-            f"- Creating clear visual hierarchies through size, position, and color\n"
-            f"- Positioning annotations to minimize overlaps and maximize readability\n"
-            f"Every visual element must directly support student understanding of {self.topic}."
-        )
+    # def visual_description_prompt(self, data, goal, general_description):
+    #     system_prompt = (
+    #         f"You are a technical visualization engineer with expertise in perceptual psychology and {self.topic}. "
+    #         f"You will translate this visualization goal '{goal}' and description '{general_description}' into precise technical specifications. "
+    #         f"Your specifications must follow established visualization best practices including:\n"
+    #         f"- Using appropriate chart types for the data relationships involved\n"
+    #         f"- Employing effective color schemes with strong contrast for instructional clarity\n"
+    #         f"- Minimizing chart junk while maximizing data-ink ratio\n"
+    #         f"- Creating clear visual hierarchies through size, position, and color\n"
+    #         f"- Positioning annotations to minimize overlaps and maximize readability\n"
+    #         f"Every visual element must directly support student understanding of {self.topic}."
+    #     )
         
-        user_prompt = (
-            "Create a comprehensive implementation specification structured as a VALID JSON object with the following elements:\n\n"
+    #     user_prompt = (
+    #         "Create a comprehensive implementation specification structured as a VALID JSON object with the following elements:\n\n"
             
-            "{\n"
-            '  "Title": "{Concise title for the visualization (1-4 words)}",\n'
-            '  "Overview": "{Brief technical summary of visualization purpose and structure}",\n'
-            '  "Elements": {\n'
-            '    "Element1": [\n'
-            '      {\n'
-            '        "Type": "curve|line|point|vline|hline|area|shape",\n'
-            '        "Expression": "{Mathematical expression for parametric elements}",\n'
-            '        "Coordinates": [x, y],\n'
-            '        "Color": "{CSS color name or hex code}",\n'
-            '        "Width": "{Line width or stroke in pixels}",\n'
-            '        "Style": "solid|dashed|dotted",\n'
-            '        "Size": "{Point size in pixels}",\n'
-            '        "Label": "{Element label text}"\n'
-            '      }\n'
-            '    ],\n'
-            '    "Element2": [{...}],\n'
-            '    "...": "[{Additional elements}]"\n'
-            '  },\n'
-            '  "Layout": "{Precise positioning and spatial relationships between elements}",\n'
-            '  "Annotations": {\n'
-            '    "Annotation1": [\n'
-            '      {\n'
-            '        "Text": "{Annotation content}",\n'
-            '        "Position": "above_point|below_point|above_line|custom",\n'
-            '        "ReferencePoint": [x, y],\n'
-            '        "FontSize": "{Font size in points}",\n'
-            '        "FontWeight": "normal|bold",\n'
-            '        "FontStyle": "normal|italic",\n'
-            '        "Color": "{Text color}",\n'
-            '        "Arrow": true|false,\n'
-            '        "ArrowColor": "{Arrow color}"\n'
-            '      }\n'
-            '    ],\n'
-            '    "Annotation2": [{...}]\n'
-            '  },\n'
-            '  "Axes": {\n'
-            '    "X": {\n'
-            '      "Range": [minX, maxX],\n'
-            '      "Ticks": "{Step size}",\n'
-            '      "Label": "{X-axis label}",\n'
-            '      "Arrow": true|false\n'
-            '    },\n'
-            '    "Y": {\n'
-            '      "Range": [minY, maxY],\n'
-            '      "Ticks": "{Step size}",\n'
-            '      "Label": "{Y-axis label}",\n'
-            '      "Arrow": true|false\n'
-            '    },\n'
-            '    "Grid": {\n'
-            '      "Enabled": true|false,\n'
-            '      "Style": "dashed|solid",\n'
-            '      "Color": "{Grid color}"\n'
-            '    }\n'
-            '  },\n'
-            '  "Styling": {\n'
-            '    "Font": "{Font family name}",\n'
-            '    "Background": "{Background color}",\n'
-            '    "Layout": "centered|grid|split|overlay",\n'
-            '    "TightLayout": true|false\n'
-            '  },\n'
-            '  "Conclusion": "{Core insight the visualization conveys}"\n'
-            "}\n\n"
+    #         "{\n"
+    #         '  "Title": "{Concise title for the visualization (1-4 words)}",\n'
+    #         '  "Overview": "{Brief technical summary of visualization purpose and structure}",\n'
+    #         '  "Elements": {\n'
+    #         '    "Element1": [\n'
+    #         '      {\n'
+    #         '        "Type": "curve|line|point|vline|hline|area|shape",\n'
+    #         '        "Expression": "{Mathematical expression for parametric elements}",\n'
+    #         '        "Coordinates": [x, y],\n'
+    #         '        "Color": "{CSS color name or hex code}",\n'
+    #         '        "Width": "{Line width or stroke in pixels}",\n'
+    #         '        "Style": "solid|dashed|dotted",\n'
+    #         '        "Size": "{Point size in pixels}",\n'
+    #         '        "Label": "{Element label text}"\n'
+    #         '      }\n'
+    #         '    ],\n'
+    #         '    "Element2": [{...}],\n'
+    #         '    "...": "[{Additional elements}]"\n'
+    #         '  },\n'
+    #         '  "Layout": "{Precise positioning and spatial relationships between elements}",\n'
+    #         '  "Annotations": {\n'
+    #         '    "Annotation1": [\n'
+    #         '      {\n'
+    #         '        "Text": "{Annotation content}",\n'
+    #         '        "Position": "above_point|below_point|above_line|custom",\n'
+    #         '        "ReferencePoint": [x, y],\n'
+    #         '        "FontSize": "{Font size in points}",\n'
+    #         '        "FontWeight": "normal|bold",\n'
+    #         '        "FontStyle": "normal|italic",\n'
+    #         '        "Color": "{Text color}",\n'
+    #         '        "Arrow": true|false,\n'
+    #         '        "ArrowColor": "{Arrow color}"\n'
+    #         '      }\n'
+    #         '    ],\n'
+    #         '    "Annotation2": [{...}]\n'
+    #         '  },\n'
+    #         '  "Axes": {\n'
+    #         '    "X": {\n'
+    #         '      "Range": [minX, maxX],\n'
+    #         '      "Ticks": "{Step size}",\n'
+    #         '      "Label": "{X-axis label}",\n'
+    #         '      "Arrow": true|false\n'
+    #         '    },\n'
+    #         '    "Y": {\n'
+    #         '      "Range": [minY, maxY],\n'
+    #         '      "Ticks": "{Step size}",\n'
+    #         '      "Label": "{Y-axis label}",\n'
+    #         '      "Arrow": true|false\n'
+    #         '    },\n'
+    #         '    "Grid": {\n'
+    #         '      "Enabled": true|false,\n'
+    #         '      "Style": "dashed|solid",\n'
+    #         '      "Color": "{Grid color}"\n'
+    #         '    }\n'
+    #         '  },\n'
+    #         '  "Styling": {\n'
+    #         '    "Font": "{Font family name}",\n'
+    #         '    "Background": "{Background color}",\n'
+    #         '    "Layout": "centered|grid|split|overlay",\n'
+    #         '    "TightLayout": true|false\n'
+    #         '  },\n'
+    #         '  "Conclusion": "{Core insight the visualization conveys}"\n'
+    #         "}\n\n"
             
-            "IMPORTANT: Provide complete and explicit specifications for every value - avoid placeholders. Your JSON must be valid and directly implementable without further clarification."
-        )
+    #         "IMPORTANT: Provide complete and explicit specifications for every value - avoid placeholders. Your JSON must be valid and directly implementable without further clarification."
+    #     )
         
-        return [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ]
+    #     return [
+    #         {"role": "system", "content": system_prompt},
+    #         {"role": "user", "content": user_prompt}
+    #     ]
     
 
-    def visualization_code_prompt(self, goal, visual_description):
+    def visualization_code_prompt(self, goal, general_description):
         system_prompt = (
             "You are a senior visualization developer specializing in educational graphics with Python. "
-            f"You will translate this technical specification into executable Python code that creates a visualization meeting the goal: '{goal}'. "
+            f"You will translate this visual specification into executable Python code that creates a visualization meeting the goal: '{goal}'. "
             "Your code must be production-quality: well-structured, efficiently implemented, and fully executable without errors. "
             "You must adhere to these principles:\n"
             "1. Use matplotlib as the primary library with appropriate specialized libraries as needed\n"
@@ -164,7 +172,7 @@ class Prompts:
         )
         
         user_prompt = (
-            f"Create executable Python code implementing this specification exactly:\n\n{visual_description}\n\n"
+            f"Create executable Python code implementing this specification exactly:\n\n{general_description}\n\n"
             "Requirements:\n"
             "1. Generate COMPLETE, STANDALONE code that requires no modifications to run\n"
             "2. Include all necessary imports at the beginning\n"
@@ -235,12 +243,13 @@ class Prompts:
             {"role": "user", "content": user_prompt}
         ]
     
-    def visual_refinement_prompt(self, code):
+    def visual_refinement_prompt(self, goal, general_description, code):
         system_prompt = (
             "You are a visualization artist specializing in educational graphics and data presentation. "
             "Your expertise lies in transforming technically correct visualizations into visually compelling, "
             "aesthetically pleasing educational tools through expert application of color theory, typography, "
             "spacing, and visual hierarchy principles."
+            f"Your goal is to make sure that the {code} aligns with the {goal} and meets the requirements of {general_description}"
         )
         
         user_prompt = (
@@ -260,52 +269,101 @@ class Prompts:
             {"role": "user", "content": user_prompt}
         ]
 
+
     def visualization_judge_prompt(self, goal, general_description, code):
         system_prompt = (
-            f"You are a senior evaluator of educational visualizations specializing in {self.topic}. "
-            "Your task is to objectively assess visualization quality using established principles of "
-            "instructional design, visual perception, and domain accuracy. Your ratings must be consistent, "
-            "calibrated against professional standards, and focused on educational effectiveness."
+            f"You are an expert in visualizations with deep knowledge in {self.topic}, data visualization best practices, "
+            "and educational design principles. Your task is to objectively score the quality of a visualization based on how well it achieves "
+            "its educational purpose and follows visualization best practices. Your evaluation must be rigorous, consistent, and fair from a score 0(awful) to 20(excellent)"
         )
         
         user_prompt = (
-            f"Evaluate this visualization against its intended purpose:\n\n"
-            f"LEARNING GOAL: {goal}\n\n"
-            f"DESIGN SPECIFICATION: {general_description}\n\n"
-            f"IMPLEMENTATION: {code}\n\n"
-            "Score this visualization on a scale of 0-100 based on these weighted criteria:\n\n"
-            "1. CONCEPTUAL PRECISION (0-20 points)\n"
-            "   - Perfect alignment with the stated learning goal\n"
-            "   - Accurate representation of domain knowledge\n"
-            "   - Appropriate emphasis on key concepts\n\n"
+            f"YOU MUST EVALUATE THE VISUALIZATION FOLLOWING THIS RUBRIC:\n\n"
+            "You MUST assign a score for each rubric item and return the SUM of the scores "
+            f"1. GOAL ALIGNMENT (0-5 points)\n"
+            "   - How well does the visualization align with the stated learning goal: {goal}?\n"
+            "   - Does it accurately represent the core concepts described in the general description?{general_description}\n"
+            "   - Does it emphasize the key points mentioned in the 'Emphasis' section?\n\n"
+            "   - Does it have a clear topic that it's trying to explain?\n\n"
+            "   - Are key insights provided clearly, with appropriate context and conclusions??\n\n"
+
             
-            "2. TECHNICAL ACCURACY (0-20 points)\n"
-            "   - Mathematical/scientific correctness\n"
-            "   - Appropriate scales, units, and relationships\n"
-            "   - Absence of misleading visual elements\n\n"
+            "2. TECHNICAL CORRECTNESS (0-5 points)\n"
+            "   - Is the visualization mathematically/scientifically accurate?\n"
+            "   - Are axes, labels, scales, and units appropriate and accurate?\n"
+            "   - Are relationships between elements correctly depicted?\n\n"
+            "   - Does it apply 'appropriate'graphic' variable'types'for'the'data' type'and'scale?\n\n"
             
-            "3. COGNITIVE EFFECTIVENESS (0-25 points)\n"
-            "   - Reduction of cognitive load through clear visual organization\n"
-            "   - Intuitive representation of complex relationships\n"
-            "   - Strategic use of visual elements to guide attention\n\n"
             
-            "4. INSTRUCTIONAL DESIGN (0-25 points)\n"
-            "   - Appropriate complexity for stated student background\n"
-            "   - Effective highlighting of crucial insights\n"
-            "   - Support for knowledge construction and transfer\n\n"
+            "3. VISUAL CLARITY (0-5 points)\n"
+            "   - Is the visualization immediately interpretable without excessive cognitive load?\n"
+            "   - Are colors, contrasts, and visual hierarchies effectively used?\n"
+            "   - Are annotations clear, well-placed, and helpful?\n\n"
+            "   -    Do the visuals communicate the data effectively??\n\n"
             
-            "5. TECHNICAL IMPLEMENTATION (0-10 points)\n"
-            "   - Code quality, efficiency, and maintainability\n"
-            "   - Appropriate use of visualization libraries\n"
-            "   - Robustness and error handling\n\n"
+            "4. PEDAGOGICAL EFFECTIVENESS (0-5 points)\n"
+            "   - Does the visualization facilitate understanding of the concept?\n"
+            "   - Are complexity and detail appropriate for the stated student background?\n"
+            "   - Does it provide insight beyond what text alone could convey?\n\n"
+            "   - Does everything in'the' visualization'conveys some' information'to'the'viewer.'\n\n"
+            "   - Is the visualization to the intended audience. Is the audience properly considered in terms of visual design, conveyed?"
+            "   - Do the Legends should describe and explain every graphic variable type employed."
             
-            "RETURN ONLY A SINGLE INTEGER SCORE BETWEEN 0-100."
+            "IMPORTANT: Return ONLY a single numerical score between 0-100. Do not include any explanation, "
+            "comments, or other text. Just the final score as a single number."
         )
         
         return [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
         ]
+
+    # def visualization_judge_prompt(self, goal, general_description, code):
+    #     system_prompt = (
+    #         f"You are a senior evaluator of educational visualizations specializing in {self.topic}. "
+    #         "Your task is to objectively assess visualization quality using established principles of "
+    #         "instructional design, visual perception, and domain accuracy. Your ratings must be consistent, "
+    #         "calibrated against professional standards, and focused on educational effectiveness."
+    #     )
+        
+    #     user_prompt = (
+    #         f"Evaluate this visualization against its intended purpose:\n\n"
+    #         f"LEARNING GOAL: {goal}\n\n"
+    #         f"DESIGN SPECIFICATION: {general_description}\n\n"
+    #         f"IMPLEMENTATION: {code}\n\n"
+    #         "Score this visualization on a scale of 0-100 based on these weighted criteria:\n\n"
+    #         "1. CONCEPTUAL PRECISION (0-20 points)\n"
+    #         "   - Perfect alignment with the stated learning goal\n"
+    #         "   - Accurate representation of domain knowledge\n"
+    #         "   - Appropriate emphasis on key concepts\n\n"
+            
+    #         "2. TECHNICAL ACCURACY (0-20 points)\n"
+    #         "   - Mathematical/scientific correctness\n"
+    #         "   - Appropriate scales, units, and relationships\n"
+    #         "   - Absence of misleading visual elements\n\n"
+            
+    #         "3. COGNITIVE EFFECTIVENESS (0-25 points)\n"
+    #         "   - Reduction of cognitive load through clear visual organization\n"
+    #         "   - Intuitive representation of complex relationships\n"
+    #         "   - Strategic use of visual elements to guide attention\n\n"
+            
+    #         "4. INSTRUCTIONAL DESIGN (0-25 points)\n"
+    #         "   - Appropriate complexity for stated student background\n"
+    #         "   - Effective highlighting of crucial insights\n"
+    #         "   - Support for knowledge construction and transfer\n\n"
+            
+    #         "5. TECHNICAL IMPLEMENTATION (0-10 points)\n"
+    #         "   - Code quality, efficiency, and maintainability\n"
+    #         "   - Appropriate use of visualization libraries\n"
+    #         "   - Robustness and error handling\n\n"
+            
+    #         "RETURN ONLY A SINGLE INTEGER SCORE BETWEEN 0-100."
+    #     )
+        
+    #     return [
+    #         {"role": "system", "content": system_prompt},
+    #         {"role": "user", "content": user_prompt}
+    #     ]
         
     # def learning_blurb_prompt(self, data, goal, general_description, visual_description, code):
     #     system_prompt = (
