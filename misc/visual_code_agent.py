@@ -16,7 +16,7 @@ from reportlab.platypus import Image, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 # from prompts import Prompts
-from refined_prompts import Prompts
+from prompts_v2 import Prompts
 import logging
 import numpy as np
 import matplotlib.pyplot as plt

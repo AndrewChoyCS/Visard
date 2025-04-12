@@ -14,7 +14,7 @@ from datetime import datetime
 from reportlab.platypus import Image, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
-from prompts import Prompts  
+from prompts_v1 import Prompts  
 
 class PopulatePipeline(): 
     def __init__(self, data, category, output_dir='research_results'):

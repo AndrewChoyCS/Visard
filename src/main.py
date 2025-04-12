@@ -43,5 +43,6 @@ from pipeline import Pipeline
 # The intersection of roads at an intersection. 
 # Opposite of Perpendicular: The opposite of perpendicular lines are parallel lines, which never intersect. 
 # """
-data = "draw a picture of perpendicular lines"
-pipe = Pipeline(data, "Geometry")
+data = "Convexity plays a crucial role in many machine learning algorithms, especially in optimization problems. Convex optimization problems are easier to solve because they guarantee the existence of a unique global minimum, unlike non-convex problems which can have multiple local minima. Understanding convexity helps in designing more reliable and efficient machine learning models. "
+
+pipe = Pipeline(data, "Gradient Descent")
