@@ -60,11 +60,6 @@ from mpl_toolkits.mplot3d import Axes3D
 
 #GPT4 
 
-os.environ["VISARD_OPENAI_KEY"] = "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"
-
-# openai.api_key = os.getenv("VISARD_OPENAI_KEY")
-
-
 # def data_to_visualization_prompt(data): 
 #     system_prompt = (
 #         "You are a world-class expert in data visualization code generation."
@@ -83,6 +78,30 @@ os.environ["VISARD_OPENAI_KEY"] = "sk-proj-WRYM8f6EyywmFrknNatYjVJbjXo1ScIm9MhRd
 #             {"role": "user", "content": user_prompt}
 #         ]
     
+
+
+# """
+
+# The way gradient descent manages to find the minima of functions is easiest to imagine in 
+
+# three dimensions.
+
+# \[f(x, y)\]   defines some hilly terrain when graphed as a height map
+
+
+# We learned that the gradient evaluated at any point represents the direction of steepest ascent up this hilly terrain. 
+#  start at a random input, and as many times as we can, take a small step in the direction of the gradient to move uphill. 
+
+# To minimize the function, we can instead follow the negative of the gradient, and thus go in the direction of steepest descent. 
+# if we start at a point \[x_0\]  and move a positive distance \[\alpha\] in the direction of the negative gradient, 
+# then our new and improved  \[x_1\]  will look like this: \[x_1 = x_0 - \alpha \nabla f(x_0)\] 
+# More generally, we can write a formula for turning  \[x_n\] into \[x_{n + 1}\]:\[x_{n + 1} = x_n - \alpha \nabla f(x_n)\]
+# """
+
+
+
+
+
 def visualization_code_prompt(general_description):
         system_prompt = (
             "You're an expert in educational data visualization and you know everything about best data visualization practices."
@@ -111,11 +130,8 @@ def visualization_code_prompt(general_description):
             system_prompt,
             user_prompt
         ]
-data= """Gradient descent is an algorithm that numerically estimates where a function outputs its lowest values. That means it finds local minima, but not by setting \[\nabla f = 0\] like we've seen before. Instead of finding minima by manipulating symbols, gradient descent approximates the solution with numbers. Furthermore, all it needs in order to run is a function's numerical output, no formula required. The way gradient descent manages to find the minima of functions is easiest to imagine in three dimensions.
-Think of a function \[f(x, y)\]  that defines some hilly terrain when graphed as a height map. We learned that the gradient evaluated at any point represents the direction of steepest ascent up this hilly terrain. That might spark an idea for how we could maximize the function: start at a random input, and as many times as we can, take a small step in the direction of the gradient to move uphill. In other words, walk up the hill.
-To minimize the function, we can instead follow the negative of the gradient, and thus go in the direction of steepest descent. This is gradient descent. Formally, if we start at a point \[x_0\]  and move a positive distance \[\alpha\] in the direction of the negative gradient, then our new and improved  \[x_1\]  will look like this: \[x_1 = x_0 - \alpha \nabla f(x_0)\] More generally, we can write a formula for turning  \[x_n\] into \[x_{n + 1}\]:\[x_{n + 1} = x_n - \alpha \nabla f(x_n)\]
-"""
-def general_description_prompt(data):
+
+def simple_query_agent(data):
         system_prompt = (
             f"You are an expert in Gradient Descent and creating ideas and descriptions for educational visualizations."
             f"Your task is to create a structured description for a visualization that will explain {data}"
@@ -151,12 +167,14 @@ def general_description_prompt(data):
             user_prompt
         ]
 
-
-
+data= """Gradient descent is an algorithm that numerically estimates where a function outputs its lowest values. That means it finds local minima, but not by setting \[\nabla f = 0\] like we've seen before. Instead of finding minima by manipulating symbols, gradient descent approximates the solution with numbers. Furthermore, all it needs in order to run is a function's numerical output, no formula required. The way gradient descent manages to find the minima of functions is easiest to imagine in three dimensions.
+Think of a function \[f(x, y)\]  that defines some hilly terrain when graphed as a height map. We learned that the gradient evaluated at any point represents the direction of steepest ascent up this hilly terrain. That might spark an idea for how we could maximize the function: start at a random input, and as many times as we can, take a small step in the direction of the gradient to move uphill. In other words, walk up the hill.
+To minimize the function, we can instead follow the negative of the gradient, and thus go in the direction of steepest descent. This is gradient descent. Formally, if we start at a point \[x_0\]  and move a positive distance \[\alpha\] in the direction of the negative gradient, then our new and improved  \[x_1\]  will look like this: \[x_1 = x_0 - \alpha \nabla f(x_0)\] More generally, we can write a formula for turning  \[x_n\] into \[x_{n + 1}\]:\[x_{n + 1} = x_n - \alpha \nabla f(x_n)\]
+"""
 client = OpenAI(
-    api_key=os.environ.get("VISARD_OPENAI_KEY"),
+    api_key=os.environ.get("OPENAI_API_KEY"),
 )
-response_visual_instructions = client.responses.create(
+response_simple_query = client.responses.create(
     model="gpt-4o",
     instructions = general_description_prompt(data)[0],
     input=general_description_prompt(data)[1], 
@@ -164,9 +182,8 @@ response_visual_instructions = client.responses.create(
 
 response_code = client.responses.create(
     model="gpt-4o",
-    instructions = visualization_code_prompt(response_visual_instructions.output_text)[0],
-    input=visualization_code_prompt(response_visual_instructions.output_text)[1], 
-)
+    instructions = response_simple_query.output_text[0],
+    input=response_simple_query.output_text[1])
 
 
 
