@@ -12,3 +12,9 @@
     - 5-10 visulizations per prompt
     - have a judge to evaluate the best one based on features
     - 
+
+Andrew 
+
+- Make seqeunce of judges so it returns true or false
+- Create populate pipeline
+

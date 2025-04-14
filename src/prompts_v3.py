@@ -28,7 +28,7 @@ class Prompts:
 
         return system_prompt, user_prompt
         
-    def visualization_code_generator_prompt(self, goal):
+    def visualization_code_generator_prompt(self, goal, output_dir):
         system_prompt = (
             "You are a senior visualization developer specializing in educational graphics with Python."
             "You are an expert in transforming abstract concepts into amazing visualizations that make the concepts clear, accessible and appealing to understand."
@@ -45,8 +45,10 @@ class Prompts:
             f"Your task is: {goal}"
             "Create executable Python code using the Matplotlib package"
             "Implement best practices in Matplotlib, ensuring that each plot is comprehensive, the visual hierarchy is maintained, and key information is presented prominently."
-            "Structure the code so that it can be easily customized or extended for future enhancements, keeping it flexible for integrating additional data or visualization elements if needed."
-            "Include plt.show() at the end"
+            "Do not create any functions within the code."
+            "Write the code so i can pass it through python exec() with no erros"
+            "DO NOT include plt.show() at the end"
+            # f"Come up with a title and save the figure you generated using plt.savefig({output_dir} + str(TITLE)) at the end"
             "ONLY PROVIDE THE PYTHON CODE - NO EXPLANATIONS OR COMMENTARY."
         )
 
@@ -95,63 +97,64 @@ class Prompts:
 
             f"Here is a guide on how to fix it: {explanation}"
             "Your output must be ONLY the fixed code with no explanations, comments about changes, or markdown formatting."
+            "DO NOT INCLUDE plt.show() at the end"
         )
 
         return system_prompt, user_prompt
 
-
-    def first_judge_prompt(self, goal, corrected_code):
-
+    
+    def goal_alignment_judge_prompt(self, goal, corrected_code): 
         system_prompt = (
-            "You are tasked to score an instructional visualization having its goal and the code for the visual."
-            f"GOAL: {goal}"
-            f"CODE: {corrected_code}"
+            "You are an expert evaluator reviewing a data visualization based on a stated learning goal.\n"
+            "Assess how well the provided Python code achieves this goal in terms of clarity, alignment, and insight delivery.\n\n"
+            f"GOAL:\n{goal}\n\nCODE:\n{corrected_code}\n"
         )
 
         user_prompt = (
-            "The instructions for scoring each criteria are as follows:"
-            "1.Assign a score from **1 to 5** for each dimension:"
-            "- **1**: Very poor quality, completely fails to meet the criteria."
-            "- **2**: Below average, significant issues present."
-            "- **3**: Acceptable, meets the basic criteria with minor issues."
-            "- **4**: Good, performs well with no major issues."
-            "- **5**: Excellent, fully meets or exceeds expectations."
-            #adapted form TheoremExplainerAgent
-            
-            "Rank the visual based on the following criteria"
-            "You MUST assign a score for each rubric item and return the SUM of the scores "
-            f"1. GOAL ALIGNMENT (0-5 points)\n"
-            "   - How well does the visualization align with the stated learning goal: {goal}?\n"
-            "   - Does it accurately represent the core concepts described in the general description?{general_description}\n"
-            "   - Does it emphasize the key points mentioned in the 'Emphasis' section?\n\n"
-            "   - Does it have a clear topic that it's trying to explain?\n\n"
-            "   - Are key insights provided clearly, with appropriate context and conclusions??\n\n"
-
-            
-            "2. TECHNICAL CORRECTNESS (0-5 points)\n"
-            "   - Is the visualization mathematically/scientifically accurate?\n"
-            "   - Are axes, labels, scales, and units appropriate and accurate?\n"
-            "   - Are relationships between elements correctly depicted?\n\n"
-            "   - Does it apply 'appropriate'graphic' variable'types'for'the'data' type'and'scale?\n\n"
-            
-            
-            "3. VISUAL CLARITY (0-5 points)\n"
-            "   - Is the visualization immediately interpretable without excessive cognitive load?\n"
-            "   - Are colors, contrasts, and visual hierarchies effectively used?\n"
-            "   - Are annotations clear, well-placed, and helpful?\n\n"
-            "   -    Do the visuals communicate the data effectively??\n\n"
-            
-            "4. PEDAGOGICAL EFFECTIVENESS (0-5 points)\n"
-            "   - Does the visualization facilitate understanding of the concept?\n"
-            "   - Are complexity and detail appropriate for the stated student background?\n"
-            "   - Does it provide insight beyond what text alone could convey?\n\n"
-            "   - Does everything in'the' visualization'conveys some' information'to'the'viewer.'\n\n"
-            "   - Is the visualization to the intended audience. Is the audience properly considered in terms of visual design, conveyed?"
-            "   - Do the Legends should describe and explain every graphic variable type employed."
-            
-            "IMPORTANT: Return ONLY a single numerical score between 0-20. Do not include any explanation, "
-            
-            "ONLY RETURN A SINGLE INTEGER WITH NO EXPLANATIONS OR COMMENTS "
+            "Evaluate the visualization using these criteria:\n"
+            "1. Does the visualization effectively align with the learning goal?\n"
+            "2. Is the topic clear and understandable?\n"
+            "3. Are key insights presented clearly with proper context and conclusions?\n\n"
+            "YOUR RESPONSE MUST FOLLOW THIS EXACT FORMAT (no deviations):\n"
+            "[true|false]\n\n"
+            "Your feedback here, written as a paragraph.\n\n"
+            "**DO NOT** list bullets. **DO NOT** restate the evaluation criteria.\n"
+            "**ONLY** return a single word on the first line ('true' or 'false'), followed by improvement feedback in paragraph form."
+        )
+        return system_prompt, user_prompt
+    
+    def visual_clarity_judge_prompt(self, corrected_code): 
+        system_prompt = (
+            "You are an expert in data visualization reviewing the visual output generated from the following Python code.\n"
+            "Your task is to assess how clear, interpretable, and visually effective the resulting chart would be.\n\n"
+            f"CODE:\n{corrected_code}\n"
         )
 
+        user_prompt = (
+            "Evaluate the visualization using these criteria:\n"
+            "1. Is the visualization easy to interpret at a glance?\n"
+            "2. Are colors, contrast, and visual hierarchy used effectively?\n"
+            "3. Are labels, titles, and annotations clear and helpful?\n"
+            "4. Does the design effectively communicate the intended data insights?\n\n"
+            "YOUR RESPONSE MUST FOLLOW THIS EXACT FORMAT (no deviations):\n"
+            "[true|false]\n\n"
+            "Your feedback here, written as a paragraph.\n\n"
+            "**DO NOT** use bullet points.\n"
+            "**DO NOT** repeat the evaluation questions.\n"
+            "**ONLY** return a single word on the first line ('true' or 'false'), followed by a paragraph of actionable feedback."
+        )
+        return system_prompt, user_prompt
+
+    def code_generator_from_judge_feedback_prompt(self, code, feedback): 
+        system_prompt = (
+            "You are a skilled developer tasked with improving a data visualization script based on expert feedback.\n"
+            "Below is the original code and the feedback that highlights what needs to be improved."
+            f"\n\nCODE:\n{code}\n\n"
+            f"FEEDBACK:\n{feedback}\n"
+        )
+        user_prompt = (
+            "Revise the code to address the feedback.\n"
+            "Your output must be ONLY the updated code — no explanations, comments, or markdown formatting."
+            "DO NOT INCLUDE plt.show() at the end"
+        )
         return system_prompt, user_prompt
