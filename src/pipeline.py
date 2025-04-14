@@ -37,6 +37,8 @@ class Pipeline():
             self.logger.info(f"Visualization code generated: {code}")
             corrected_code = self.run_code(code)
             self.logger.info(f"Code after execution: {corrected_code}")
+            judge_score = self.first_judge(simple_goal, corrected_code)
+            self.logger.info(f"First Judge Score: {judge_score}")
             score = 0
             while score < 70: 
                 break
@@ -138,6 +140,8 @@ class Pipeline():
         self.logger.info("Executing Code Error Correction Agent")
         return self.execute_agent('code_generation_model', 2048, self.prompts.code_error_correction_prompt, original_code, error_message, explanation)
 
-    def visual_jude_agent(self):
-        self.logger.info("Executing Visual Judge Agent (not yet implemented)")
-        pass
+    def first_judge(self, goal, corrected_code):
+        self.logger.info("Executing Visual Judge Agent")
+        return self.execute_agent('base_model', 2048, self.prompts.first_judge_prompt, goal, corrected_code)
+
+        

@@ -98,3 +98,60 @@ class Prompts:
         )
 
         return system_prompt, user_prompt
+
+
+    def first_judge_prompt(self, goal, corrected_code):
+
+        system_prompt = (
+            "You are tasked to score an instructional visualization having its goal and the code for the visual."
+            f"GOAL: {goal}"
+            f"CODE: {corrected_code}"
+        )
+
+        user_prompt = (
+            "The instructions for scoring each criteria are as follows:"
+            "1.Assign a score from **1 to 5** for each dimension:"
+            "- **1**: Very poor quality, completely fails to meet the criteria."
+            "- **2**: Below average, significant issues present."
+            "- **3**: Acceptable, meets the basic criteria with minor issues."
+            "- **4**: Good, performs well with no major issues."
+            "- **5**: Excellent, fully meets or exceeds expectations."
+            #adapted form TheoremExplainerAgent
+            
+            "Rank the visual based on the following criteria"
+            "You MUST assign a score for each rubric item and return the SUM of the scores "
+            f"1. GOAL ALIGNMENT (0-5 points)\n"
+            "   - How well does the visualization align with the stated learning goal: {goal}?\n"
+            "   - Does it accurately represent the core concepts described in the general description?{general_description}\n"
+            "   - Does it emphasize the key points mentioned in the 'Emphasis' section?\n\n"
+            "   - Does it have a clear topic that it's trying to explain?\n\n"
+            "   - Are key insights provided clearly, with appropriate context and conclusions??\n\n"
+
+            
+            "2. TECHNICAL CORRECTNESS (0-5 points)\n"
+            "   - Is the visualization mathematically/scientifically accurate?\n"
+            "   - Are axes, labels, scales, and units appropriate and accurate?\n"
+            "   - Are relationships between elements correctly depicted?\n\n"
+            "   - Does it apply 'appropriate'graphic' variable'types'for'the'data' type'and'scale?\n\n"
+            
+            
+            "3. VISUAL CLARITY (0-5 points)\n"
+            "   - Is the visualization immediately interpretable without excessive cognitive load?\n"
+            "   - Are colors, contrasts, and visual hierarchies effectively used?\n"
+            "   - Are annotations clear, well-placed, and helpful?\n\n"
+            "   -    Do the visuals communicate the data effectively??\n\n"
+            
+            "4. PEDAGOGICAL EFFECTIVENESS (0-5 points)\n"
+            "   - Does the visualization facilitate understanding of the concept?\n"
+            "   - Are complexity and detail appropriate for the stated student background?\n"
+            "   - Does it provide insight beyond what text alone could convey?\n\n"
+            "   - Does everything in'the' visualization'conveys some' information'to'the'viewer.'\n\n"
+            "   - Is the visualization to the intended audience. Is the audience properly considered in terms of visual design, conveyed?"
+            "   - Do the Legends should describe and explain every graphic variable type employed."
+            
+            "IMPORTANT: Return ONLY a single numerical score between 0-20. Do not include any explanation, "
+            
+            "ONLY RETURN A SINGLE INTEGER WITH NO EXPLANATIONS OR COMMENTS "
+        )
+
+        return system_prompt, user_prompt
