@@ -319,7 +319,6 @@ class Prompts:
             "   - Are annotations clear, well-placed, and helpful?\n\n"
             "   -    Do the visuals communicate the data effectively??\n\n"
             
-<<<<<<< Updated upstream
             "4. PEDAGOGICAL EFFECTIVENESS (0-5 points)\n"
             "   - Does the visualization facilitate understanding of the concept?\n"
             "   - Are complexity and detail appropriate for the stated student background?\n"
@@ -330,14 +329,6 @@ class Prompts:
             
             "IMPORTANT: Return ONLY a single numerical score between 0-100. Do not include any explanation, "
             "comments, or other text. Just the final score as a single number."
-=======
-            "5. TECHNICAL IMPLEMENTATION (0-10 points)\n"
-            "   - Appropriate use of visualization libraries\n"
-            "   - Code is executable\n"
-
-            "RETURN ONLY A SINGLE INTEGER SCORE BETWEEN 0-100."
-            "Do not return any extreneous text, only return a number. There shouls be no text in your response."
->>>>>>> Stashed changes
         )
         
         return [
