@@ -107,6 +107,26 @@ class Prompts:
         return system_prompt, user_prompt
 
     
+    # def goal_alignment_judge_prompt(self, goal, corrected_code): 
+    #     system_prompt = (
+    #         "You are an expert evaluator reviewing a data visualization based on a stated learning goal.\n"
+    #         "Assess how well the provided Python code achieves this goal in terms of clarity, alignment, and insight delivery.\n\n"
+    #         f"GOAL:\n{goal}\n\nCODE:\n{corrected_code}\n"
+    #     )
+
+    #     user_prompt = (
+    #         "Evaluate the visualization using these criteria:\n"
+    #         "1. Does the visualization effectively align with the learning goal?\n"
+    #         "2. Is the topic clear and understandable?\n"
+    #         "3. Are key insights presented clearly with proper context and conclusions?\n\n"
+    #         "YOUR RESPONSE MUST FOLLOW THIS EXACT FORMAT (no deviations):\n"
+    #         "[true|false]\n\n"
+    #         "Your feedback here, written as a paragraph.\n\n"
+    #         "**DO NOT** list bullets. **DO NOT** restate the evaluation criteria.\n"
+    #         "**ONLY** return a single word on the first line ('true' or 'false'), followed by improvement feedback in paragraph form."
+    #     )
+    #     return system_prompt, user_prompt
+
     def goal_alignment_judge_prompt(self, goal, corrected_code): 
         system_prompt = (
             "You are an expert evaluator reviewing a data visualization based on a stated learning goal.\n"
@@ -115,18 +135,24 @@ class Prompts:
         )
 
         user_prompt = (
-            "Evaluate the visualization using these criteria:\n"
+            "Evaluate the visualization using the following criteria and provide a score on a scale of 1 to 5 for each:\n"
             "1. Does the visualization effectively align with the learning goal?\n"
             "2. Is the topic clear and understandable?\n"
             "3. Are key insights presented clearly with proper context and conclusions?\n\n"
+            "Use the following rubric to score each aspect on a scale of 1 to 5:\n"
+            "5 - Excellent: The visualization excels in this criterion.\n"
+            "4 - Good: The visualization is strong in this criterion, with minor improvements needed.\n"
+            "3 - Fair: The visualization meets basic requirements but lacks depth or clarity.\n"
+            "2 - Poor: The visualization doesn't meet the criterion adequately.\n"
+            "1 - Very Poor: The visualization fails to meet this criterion.\n\n"
             "YOUR RESPONSE MUST FOLLOW THIS EXACT FORMAT (no deviations):\n"
-            "[true|false]\n\n"
-            "Your feedback here, written as a paragraph.\n\n"
+            "[1-5]\n"
+            "Feedback: Your evaluation here, written as a paragraph, including suggestions for improvement.\n\n"
             "**DO NOT** list bullets. **DO NOT** restate the evaluation criteria.\n"
-            "**ONLY** return a single word on the first line ('true' or 'false'), followed by improvement feedback in paragraph form."
+            "**ONLY** return the overall score followed by actionable feedback."
         )
         return system_prompt, user_prompt
-    
+
     def visual_clarity_judge_prompt(self, corrected_code): 
         system_prompt = (
             "You are an expert in data visualization reviewing the visual output generated from the following Python code.\n"
@@ -135,20 +161,26 @@ class Prompts:
         )
 
         user_prompt = (
-            "Evaluate the visualization using these criteria:\n"
+            "Evaluate the visualization using the following criteria and provide a score on a scale of 1 to 5 for each:\n"
             "1. Is the visualization easy to interpret at a glance?\n"
             "2. Are colors, contrast, and visual hierarchy used effectively?\n"
             "3. Are labels, titles, and annotations clear and helpful?\n"
             "4. Does the design effectively communicate the intended data insights?\n\n"
+            "Use the following rubric to score each aspect on a scale of 1 to 5:\n"
+            "5 - Excellent: The visualization excels in this criterion.\n"
+            "4 - Good: The visualization is strong in this criterion, with minor improvements needed.\n"
+            "3 - Fair: The visualization meets basic requirements but lacks depth or clarity.\n"
+            "2 - Poor: The visualization doesn't meet the criterion adequately.\n"
+            "1 - Very Poor: The visualization fails to meet this criterion.\n\n"
             "YOUR RESPONSE MUST FOLLOW THIS EXACT FORMAT (no deviations):\n"
-            "[true|false]\n\n"
-            "Your feedback here, written as a paragraph.\n\n"
+            "[1-5]\n"
+            "Feedback: Your evaluation here, written as a paragraph, including suggestions for improvement.\n\n"
             "**DO NOT** use bullet points.\n"
             "**DO NOT** repeat the evaluation questions.\n"
-            "**ONLY** return a single word on the first line ('true' or 'false'), followed by a paragraph of actionable feedback."
+            "**ONLY** return the overall score followed by actionable feedback."
         )
         return system_prompt, user_prompt
-
+    
     def code_generator_from_judge_feedback_prompt(self, code, feedback): 
         system_prompt = (
             "You are a skilled developer tasked with improving a data visualization script based on expert feedback.\n"

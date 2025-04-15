@@ -124,7 +124,7 @@ class Pipeline():
         lines = response.strip().split('\n', 1)
         result = lines[0].strip().lower()
         feedback = lines[1].strip() if len(lines) > 1 else "No feeback provided!"
-        
+        print(f"This is the result: {result}")
         return result, feedback
             
     def run_sequence_of_judges(self, goal, code):
@@ -132,7 +132,7 @@ class Pipeline():
         response = self.goal_alignment_judge_agent(goal, code) 
         self.logger.info(f"Goal Alignment Judge response: {response}")
         result, feedback = self.parse_judge_response(response)
-        if not result:
+        if int(result) < 3:
             self.logger.info("Goal Alignment Judge failed. Regenerating code from feedback...")
             generated_code_from_feedback = self.code_generator_from_judge_feedback_agent(code, feedback)
             self.logger.info(f"Generated code from feedback: {generated_code_from_feedback}")
@@ -143,7 +143,7 @@ class Pipeline():
         response = self.visual_clarity_judge_agent(code) 
         self.logger.info(f"Visual Clarity Judge response: {response}")
         result, feedback = self.parse_judge_response(response)
-        if not result:
+        if int(result) < 3:
             self.logger.info("Visual Clarity Judge failed. Regenerating code from feedback...")
             generated_code_from_feedback = self.code_generator_from_judge_feedback_agent(code, feedback)
             self.logger.info(f"Generated code from feedback: {generated_code_from_feedback}")
