@@ -3,6 +3,7 @@ import logging
 
 class Logger():
     def __init__(self):
+        #take in an output directory
         self.output_dir = 'logger'
         self.setup_logger()
 

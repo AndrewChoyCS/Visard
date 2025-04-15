@@ -13,6 +13,8 @@ class Prompts:
             "Ensure that the query inspires a visualization that not only explains the concept but also reveals the underlying relationships, hierarchies, or progressions inherent in the material."
             "Specify that the visualization must use visual representation of the concept and NOT A MIND MAP (feel free to use any visual objects and include multiple graphs)"
             "Describe how the visualization could integrate best practices in instructional design—such as highlighting cause-effect relationships, sequential processes, or comparative analysis—to deepen the learner’s insight."
+            # f"Ensure that the query is aligned with {self.topic}"
+            f"Ensure that the learning objectives are is aligned with {self.topic}"
             # "Specify that the visualization should include clear icons, strategic use of color to differentiate concepts, and annotated components that guide the viewer through the key ideas step-by-step."
             # "Strive for a balance between creative visualization and academic rigor, ensuring that the depiction not only attracts the audience but also withstands scholarly examination."
 
@@ -39,7 +41,9 @@ class Prompts:
             "When possible, use simpler visual elements that achieve the same objective, avoiding extra complexity."
             "Ensure that visual elements are clear to interpret."
             "Confirm that every labeled component is explicitly defined and mathematically validated, preventing any undefined or empty labels in the visualization."
-            
+            "Ensure that all visual elements contribute to some learning outcome."
+            "Ensure that all visual elements contribute are clearly distinguishable."
+
         )
         user_prompt = (
             f"Your task is: {goal}"

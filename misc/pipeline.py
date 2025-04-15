@@ -272,4 +272,3 @@ class Pipeline():
         outputs = self.base_model_pipeline(messages, max_new_tokens=256)
         response = outputs[0]["generated_text"][-1]['content']
         return response
-w

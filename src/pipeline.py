@@ -15,7 +15,6 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from logger import Logger
 from openai import OpenAI
 
-
 OPENAI = True
 ANTHROPIC = False
 OPEN_SOURCE = False
@@ -28,9 +27,8 @@ class Pipeline():
         self.logger.info(f"Initial Data: {data}")
         self.load_models()
         self.prompts = Prompts(topic)
-        self.run(data, topic)
 
-    def run(self, data, topic):
+    def run(self, data, topic, img_filename=None):
         try:
             self.logger.info(f"Starting pipeline run for topic: {topic}")
             simple_goal = self.simple_query_agent(data)
@@ -41,11 +39,12 @@ class Pipeline():
             self.logger.info(f"Code after execution: {corrected_code}")
             final_code = self.run_sequence_of_judges(simple_goal, code)
             self.logger.info(f"Final code after all judges: {final_code}")
-            self.run_final_code(final_code)
+            self.run_final_code(final_code, img_filename)
             self.logger.info("Completed Pipeline ✅")
         except Exception as e:
             self.logger.error(f"Pipeline execution failed: {str(e)}")
             traceback.print_exc()
+        return simple_goal, final_code
 
     def load_models(self):
         self.logger.info("Loading models...")
@@ -103,12 +102,18 @@ class Pipeline():
         self.logger.error("Failed to execute code after maximum attempts")
         return "NO CODE GENERATED"
     
-    def run_final_code(self, code): 
+    def run_final_code(self, code, img_filename): 
         self.logger.info("Running final code and saving visualization.")
         cleaned_code = code.strip().replace('```python', '').replace('```', '').strip()
-        os.makedirs(self.output_dir, exist_ok=True)
+        if img_filename is None:
+            img_filename = os.path.join(self.output_dir, "bello.png")
+        else:
+            img_dir = os.path.dirname(img_filename)
+            os.makedirs(img_dir, exist_ok=True)
+        # os.makedirs(self.output_dir, exist_ok=True)
         cleaned_code += "\n\n"
-        cleaned_code += f"plt.savefig(\"{self.output_dir}/bello.png\")"
+        cleaned_code += f"plt.savefig(\"{img_filename}\")"
+        # cleaned_code += f"plt.savefig(\"{self.output_dir}/bello.png\")"
         
         local_vars = {}
         exec(cleaned_code, globals(), local_vars)
