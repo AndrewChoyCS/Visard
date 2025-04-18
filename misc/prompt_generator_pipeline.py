@@ -14,7 +14,7 @@ class PromptGenerator:
                             model_kwargs={"torch_dtype": torch.bfloat16},
                         )
         # self.run()
-        topic = 'Gardient Descent in regards to Machine Learning'
+        topic = 'Gradient Descent in regards to Machine Learning'
         student_level = 'Univertity Undergraduate'
         subcategories, subcategory_to_questions = self.create_questions_by_maturity_level(topic, student_level)
         self.save_data(subcategories, subcategory_to_questions)
