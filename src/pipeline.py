@@ -27,7 +27,7 @@ class Pipeline():
         self.logger.info(f"Initial Data: {data}")
         self.load_models()
         self.prompts = Prompts(topic)
-
+        self.run(data, topic)
     def run(self, data, topic, img_filename=None):
         try:
             self.logger.info(f"Starting pipeline run for topic: {topic}")
