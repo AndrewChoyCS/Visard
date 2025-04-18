@@ -37,7 +37,7 @@ class PopulatePipeline(Pipeline):
             self.logger.output_dir=sample_dir
             self.logger.info(f"Data sample directory created: {sample_dir}")
             self.data_index = i + 1
-            for j in range(1):
+            for j in range(10):
                 file_name = os.path.join(sample_dir, f"try{j+1}.json")
                 img_filename  = os.path.join(sample_dir, f"try{j+1}.png")
                 log_filename = os.path.join(sample_dir, f"try{j+1}.txt")
