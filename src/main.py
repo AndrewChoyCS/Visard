@@ -59,4 +59,7 @@ data = ["Gradient descent is a method for unconstrained mathematical optimizatio
 
 
 # pipe = Pipeline(data, "Gradient Descent")
-pipe = PopulatePipeline(data, "Gradient Descent")
+# pipe = PopulatePipeline(data, "Gradient Descent")
+
+
+

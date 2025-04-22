@@ -53618,3 +53618,135 @@ plt.ylim(-5, 5)
 2025-04-18 13:21:23,363 - INFO - Completed Pipeline ✅
 2025-04-18 13:21:23,363 - INFO - Finished try #1
 2025-04-18 13:21:23,364 - INFO - Data entry saved successfully to data/Max/Mins/data_sample1/try1.json
+2025-04-22 12:50:54,529 - INFO - Attempting to load models...
+2025-04-22 12:50:54,559 - INFO - OpenAI client loaded successfully for model: gpt-4o-mini
+2025-04-22 12:51:47,845 - INFO - Attempting to load models...
+2025-04-22 12:51:47,857 - INFO - OpenAI client loaded successfully for model: gpt-4o-mini
+2025-04-22 12:51:50,280 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text includes numerical data on sales figures and growth percentages, which would be greatly clarified and enhanced by a bar chart or line graph to visually represent the revenue trends and product contributions."
+}
+2025-04-22 12:51:50,281 - INFO - Recommendation received: Score=0.90, Reasoning='The text includes numerical data on sales figures and growth percentages, which would be greatly clarified and enhanced by a bar chart or line graph to visually represent the revenue trends and product contributions.'
+2025-04-22 12:54:42,248 - INFO - Attempting to load models...
+2025-04-22 12:54:42,260 - INFO - OpenAI client loaded successfully for model: gpt-4o-mini
+2025-04-22 12:54:49,084 - INFO - Attempting to load models...
+2025-04-22 12:54:49,097 - INFO - OpenAI client loaded successfully for model: gpt-4o-mini
+2025-04-22 12:54:50,834 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses multi-dimensional models and the concept of a loss surface, which can be effectively illustrated with a contour plot. A visualization would greatly enhance understanding of how gradient descent operates in a multi-parameter space." 
+}
+2025-04-22 12:54:50,835 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses multi-dimensional models and the concept of a loss surface, which can be effectively illustrated with a contour plot. A visualization would greatly enhance understanding of how gradient descent operates in a multi-parameter space.'
+2025-04-22 13:04:00,128 - INFO - Attempting to load models...
+2025-04-22 13:04:00,141 - INFO - OpenAI client loaded successfully for model: gpt-4o-mini
+2025-04-22 13:04:02,131 - INFO - Raw OpenAI response: {
+  "score": 0.6,
+  "reasoning": "The text discusses concepts related to model fitting and gradient descent, which could benefit from visualizations such as flowcharts or diagrams illustrating the modeling process and the relationship between model complexity and performance."
+}
+2025-04-22 13:04:02,131 - INFO - Recommendation received: Score=0.60, Reasoning='The text discusses concepts related to model fitting and gradient descent, which could benefit from visualizations such as flowcharts or diagrams illustrating the modeling process and the relationship between model complexity and performance.'
+2025-04-22 13:04:03,396 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses multi-dimensional models and their loss surfaces, which would greatly benefit from visualizations like contour plots to illustrate the concept of parameter optimization and the shape of the loss surface."
+}
+2025-04-22 13:04:03,397 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses multi-dimensional models and their loss surfaces, which would greatly benefit from visualizations like contour plots to illustrate the concept of parameter optimization and the shape of the loss surface.'
+2025-04-22 13:04:05,171 - INFO - Raw OpenAI response: {
+  "score": 0.7,
+  "reasoning": "The text discusses the concept of a gradient vector in relation to a loss function and includes a visual representation of a loss surface, which enhances understanding. However, additional visualizations, such as arrows indicating the direction of the gradient, could further clarify the concept."
+}
+2025-04-22 13:04:05,171 - INFO - Recommendation received: Score=0.70, Reasoning='The text discusses the concept of a gradient vector in relation to a loss function and includes a visual representation of a loss surface, which enhances understanding. However, additional visualizations, such as arrows indicating the direction of the gradient, could further clarify the concept.'
+2025-04-22 13:04:06,536 - INFO - Raw OpenAI response: {
+  "score": 0.9,
+  "reasoning": "The text involves complex mathematical concepts, including partial derivatives and gradient vectors, which could greatly benefit from visualizations such as graphs or diagrams to illustrate the relationships between variables and the direction of gradients in a multi-dimensional space."
+}
+2025-04-22 13:04:06,536 - INFO - Recommendation received: Score=0.90, Reasoning='The text involves complex mathematical concepts, including partial derivatives and gradient vectors, which could greatly benefit from visualizations such as graphs or diagrams to illustrate the relationships between variables and the direction of gradients in a multi-dimensional space.'
+2025-04-22 13:04:07,864 - INFO - Raw OpenAI response: {
+  "score": 0.9,
+  "reasoning": "The text describes complex concepts related to gradient descent and includes comparisons between batch and stochastic methods, making it highly suitable for visualizations like flowcharts or diagrams to illustrate the differences in their paths on a loss surface."
+}
+2025-04-22 13:04:07,865 - INFO - Recommendation received: Score=0.90, Reasoning='The text describes complex concepts related to gradient descent and includes comparisons between batch and stochastic methods, making it highly suitable for visualizations like flowcharts or diagrams to illustrate the differences in their paths on a loss surface.'
+2025-04-22 13:04:09,517 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses complex concepts related to gradient descent algorithms and their time complexities, which could be greatly clarified with visualizations like flowcharts or comparison tables. The inclusion of diagrams illustrating the differences between batch and stochastic gradient descent would enhance reader understanding significantly."
+}
+2025-04-22 13:04:09,518 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses complex concepts related to gradient descent algorithms and their time complexities, which could be greatly clarified with visualizations like flowcharts or comparison tables. The inclusion of diagrams illustrating the differences between batch and stochastic gradient descent would enhance reader understanding significantly.'
+2025-04-22 13:04:11,353 - INFO - Raw OpenAI response: {
+  "score": 0.7,
+  "reasoning": "The text discusses complex concepts like feature engineering and its benefits, which could be clarified with a flowchart or diagram illustrating the transformation of raw features into informative features, as well as examples of linear vs. non-linear relationships."
+}
+2025-04-22 13:04:11,354 - INFO - Recommendation received: Score=0.70, Reasoning='The text discusses complex concepts like feature engineering and its benefits, which could be clarified with a flowchart or diagram illustrating the transformation of raw features into informative features, as well as examples of linear vs. non-linear relationships.'
+2025-04-22 13:04:12,875 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses transformations of feature matrices and includes mathematical representations that could greatly benefit from visualizations, such as diagrams illustrating the transformation process and the increase in dimensions, making the concepts clearer for the reader."
+}
+2025-04-22 13:04:12,876 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses transformations of feature matrices and includes mathematical representations that could greatly benefit from visualizations, such as diagrams illustrating the transformation process and the increase in dimensions, making the concepts clearer for the reader.'
+2025-04-22 13:04:14,480 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses a complex concept involving one-hot encoding and its implications in regression modeling, which could greatly benefit from visualizations like flowcharts or diagrams to illustrate the transformation process and the design matrix. The existing images enhance understanding, but additional visual aids could further clarify the relationships and processes described."
+}
+2025-04-22 13:04:14,480 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses a complex concept involving one-hot encoding and its implications in regression modeling, which could greatly benefit from visualizations like flowcharts or diagrams to illustrate the transformation process and the design matrix. The existing images enhance understanding, but additional visual aids could further clarify the relationships and processes described.'
+2025-04-22 13:04:15,853 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses the relationship between horsepower and gas mileage, highlighting the non-linear nature of the data. A visualization, such as a scatter plot with a fitted curve, would significantly enhance understanding of the non-linear relationship and the impact of adding polynomial features."
+}
+2025-04-22 13:04:15,854 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses the relationship between horsepower and gas mileage, highlighting the non-linear nature of the data. A visualization, such as a scatter plot with a fitted curve, would significantly enhance understanding of the non-linear relationship and the impact of adding polynomial features.'
+2025-04-22 13:04:17,477 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses complex concepts like model complexity, overfitting, and variance, which could greatly benefit from visualizations that clearly illustrate these relationships and trade-offs, enhancing reader understanding."
+}
+2025-04-22 13:04:17,477 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses complex concepts like model complexity, overfitting, and variance, which could greatly benefit from visualizations that clearly illustrate these relationships and trade-offs, enhancing reader understanding.'
+2025-04-22 13:08:44,750 - INFO - Attempting to load models...
+2025-04-22 13:08:44,762 - INFO - OpenAI client loaded successfully for model: gpt-4o-mini
+2025-04-22 13:08:46,923 - INFO - Raw OpenAI response: {
+  "score": 0.6,
+  "reasoning": "The text discusses concepts related to model fitting and gradient descent, which could benefit from visualizations such as flowcharts or diagrams to illustrate the relationships between model complexity, variance, and training error, as well as the gradient descent process itself."
+}
+2025-04-22 13:08:46,924 - INFO - Recommendation received: Score=0.60, Reasoning='The text discusses concepts related to model fitting and gradient descent, which could benefit from visualizations such as flowcharts or diagrams to illustrate the relationships between model complexity, variance, and training error, as well as the gradient descent process itself.'
+2025-04-22 13:08:48,478 - INFO - Raw OpenAI response: {
+  "score": 0.9,
+  "reasoning": "The text discusses multi-dimensional models and the concept of a loss surface, which would greatly benefit from a contour plot visualization to illustrate the relationships between parameters and the loss function, enhancing reader understanding of the optimization process."
+}
+2025-04-22 13:08:48,479 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses multi-dimensional models and the concept of a loss surface, which would greatly benefit from a contour plot visualization to illustrate the relationships between parameters and the loss function, enhancing reader understanding of the optimization process.'
+2025-04-22 13:08:49,761 - INFO - Raw OpenAI response: {
+  "score": 0.7,
+  "reasoning": "The text discusses the concept of a gradient vector in relation to a loss function, which could be enhanced by a visualization of the gradient vector on a loss surface, helping readers better understand the directional aspect of optimization."
+}
+2025-04-22 13:08:49,761 - INFO - Recommendation received: Score=0.70, Reasoning='The text discusses the concept of a gradient vector in relation to a loss function, which could be enhanced by a visualization of the gradient vector on a loss surface, helping readers better understand the directional aspect of optimization.'
+2025-04-22 13:08:51,708 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text involves complex mathematical concepts, including partial derivatives and gradient vectors, which could greatly benefit from visualizations such as graphs or diagrams to illustrate the relationships between variables and the direction of gradients in a multi-dimensional space."
+}
+2025-04-22 13:08:51,708 - INFO - Recommendation received: Score=0.90, Reasoning='The text involves complex mathematical concepts, including partial derivatives and gradient vectors, which could greatly benefit from visualizations such as graphs or diagrams to illustrate the relationships between variables and the direction of gradients in a multi-dimensional space.'
+2025-04-22 13:08:53,674 - INFO - Raw OpenAI response: {
+  "score": 0.9,
+  "reasoning": "The text discusses complex concepts related to gradient descent, including batch and stochastic methods, and their implications on convergence. A visualization of the loss surface and the paths taken by both methods would greatly enhance understanding of these differences and the randomness involved in stochastic gradient descent."
+}
+2025-04-22 13:08:53,675 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses complex concepts related to gradient descent, including batch and stochastic methods, and their implications on convergence. A visualization of the loss surface and the paths taken by both methods would greatly enhance understanding of these differences and the randomness involved in stochastic gradient descent.'
+2025-04-22 13:08:55,696 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses complex concepts related to gradient descent algorithms, including their time complexities and trade-offs, which would benefit greatly from visualizations such as flowcharts or comparison tables to enhance understanding and retention of the information presented."
+}
+2025-04-22 13:08:55,696 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses complex concepts related to gradient descent algorithms, including their time complexities and trade-offs, which would benefit greatly from visualizations such as flowcharts or comparison tables to enhance understanding and retention of the information presented.'
+2025-04-22 13:08:57,389 - INFO - Raw OpenAI response: {
+    "score": 0.7,
+    "reasoning": "The text discusses complex concepts like feature engineering and its benefits, which could be clarified with a flowchart or infographic illustrating the transformation process and its impact on model performance."
+}
+2025-04-22 13:08:57,389 - INFO - Recommendation received: Score=0.70, Reasoning='The text discusses complex concepts like feature engineering and its benefits, which could be clarified with a flowchart or infographic illustrating the transformation process and its impact on model performance.'
+2025-04-22 13:09:00,432 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses transformations of datasets and includes mathematical representations that could greatly benefit from visual aids, such as diagrams or flowcharts illustrating the transformation process and the increase in dimensions, enhancing reader comprehension."
+}
+2025-04-22 13:09:00,432 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses transformations of datasets and includes mathematical representations that could greatly benefit from visual aids, such as diagrams or flowcharts illustrating the transformation process and the increase in dimensions, enhancing reader comprehension.'
+2025-04-22 13:09:02,615 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text explains a complex concept involving one-hot encoding and its implications in regression analysis, which could greatly benefit from visualizations that illustrate the transformation process and the design matrix. The existing images support understanding, but additional diagrams could clarify the relationships and dependencies further."
+}
+2025-04-22 13:09:02,616 - INFO - Recommendation received: Score=0.90, Reasoning='The text explains a complex concept involving one-hot encoding and its implications in regression analysis, which could greatly benefit from visualizations that illustrate the transformation process and the design matrix. The existing images support understanding, but additional diagrams could clarify the relationships and dependencies further.'
+2025-04-22 13:09:04,327 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses the transformation of a linear model to include polynomial features, which could greatly benefit from visualizations such as scatter plots with fitted curves to illustrate the non-linear relationship and the improvement in model performance."
+}
+2025-04-22 13:09:04,328 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses the transformation of a linear model to include polynomial features, which could greatly benefit from visualizations such as scatter plots with fitted curves to illustrate the non-linear relationship and the improvement in model performance.'
+2025-04-22 13:09:06,349 - INFO - Raw OpenAI response: {
+    "score": 0.9,
+    "reasoning": "The text discusses complex concepts such as model complexity, overfitting, and variance, which are supported by multiple visualizations. The inclusion of graphs and plots significantly enhances understanding of these relationships, making the text highly visualizable."
+}
+2025-04-22 13:09:06,349 - INFO - Recommendation received: Score=0.90, Reasoning='The text discusses complex concepts such as model complexity, overfitting, and variance, which are supported by multiple visualizations. The inclusion of graphs and plots significantly enhances understanding of these relationships, making the text highly visualizable.'

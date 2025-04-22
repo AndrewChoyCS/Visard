@@ -7,7 +7,7 @@ import pandas as pd
 def smart_split(document):
     # Split by headers, callouts, code blocks, or LaTeX markers
     document = str(document)
-    chunks = re.split(r'(?=^##|\n:::)', document)
+    chunks = re.split(r'(?=^###|\n:::)', document)
     print(len(chunks))
     # Clean up
     return [chunk.strip() for chunk in chunks if chunk.strip()]
