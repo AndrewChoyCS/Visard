@@ -1,0 +1,5 @@
+2025-04-22 14:50:18,555 - INFO - Starting try #2
+2025-04-22 14:50:18,556 - INFO - Starting pipeline run for topic: Gradient Descent
+2025-04-22 14:50:18,557 - INFO - Executing Simple Query Agent
+2025-04-22 14:50:18,558 - INFO - Executing agent with pipeline: base_model
+2025-04-22 14:50:18,560 - INFO - Running inference with model: gpt-4o-mini
