@@ -95,7 +95,7 @@ class Prompts:
             "INSTRUCTIONS:\n"
             "1. Analyze the error message to identify the precise issue\n"
             "2. Review the surrounding context to understand dependent code\n"
-            "3. Fix ALL potential issues, not just the immediate error\n"
+            "3. ONLY fix immediate error\n"
             "4. Maintain the original visualization's appearance and functionality\n"
             "5. Return ONLY the complete, corrected code ready for execution\n\n"
 

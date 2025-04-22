@@ -1,6 +1,9 @@
 from pipeline import Pipeline
 from populate_pipeline import PopulatePipeline
 from generate_synthetic_data import SyntheticDataGenerator
+from chunking.simple_chunker import QmdSplitter
+from visual_recommendation import RecommendationClient
+import json
 # Your input data
 # data = """
 # Gradient descent is an algorithm that numerically estimates where a function outputs its lowest values. That means it finds local minima, but not by setting \[\nabla f = 0\] like we've seen before. Instead of finding minima by manipulating symbols, gradient descent approximates the solution with numbers. Furthermore, all it needs in order to run is a function's numerical output, no formula required. The way gradient descent manages to find the minima of functions is easiest to imagine in three dimensions.
@@ -60,6 +63,15 @@ data = ["Gradient descent is a method for unconstrained mathematical optimizatio
 
 # pipe = Pipeline(data, "Gradient Descent")
 # pipe = PopulatePipeline(data, "Gradient Descent")
+splitter = QmdSplitter()
+splitter.split_qmd_to_json(
+    "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/feature_engineering.qmd",
+    "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/chunked_feature_engineering.json"
+)
 
-
-
+INPUT_JSON_PATH = "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/chunked_feature_engineering.json"
+OUTPUT_JSON_PATH = "recommendations_output_poc.json"
+print("Initializing Recommendation Client...")
+client = RecommendationClient()
+client.run(INPUT_JSON_PATH, OUTPUT_JSON_PATH)
+print("\nRecommendation process completed.")

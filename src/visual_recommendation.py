@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
-from openai import OpenAI, APIError, AuthenticationError 
+from openai import OpenAI, APIError, AuthenticationError
 import os
-import json 
-import logger
+import json
+import logging
 from logger import Logger
 
 OPENAI_ENABLED = True
 DEFAULT_OPENAI_MODEL = "gpt-4o-mini" #
-DEFAULT_TEMPERATURE = 0.2 
+DEFAULT_TEMPERATURE = 0.2
 
 class RecommendationClient():
     """
@@ -26,7 +26,6 @@ class RecommendationClient():
         self.model_name = model_name
         self.temperature = temperature
 
-        # Attempt to load models immediately upon initialization
         self.load_models()
 
     def load_models(self):
@@ -54,7 +53,7 @@ class RecommendationClient():
         Constructs the prompt for the OpenAI API call.
         """
         system_prompt = """
-            You are an expert analyst evaluating text to determine if adding a visualization would significantly improve its clarity, impact, or reader understanding. Your goal is to assess the 'visualizability' of the text. My goal is to build mathematical visualizations. 
+            You are an expert analyst evaluating text to determine if adding a visualization would significantly improve its clarity, impact, or reader understanding. Your goal is to assess the 'visualizability' of the text. My goal is to build mathematical visualizations.
 
             Provide a score from 0.0 to 1.0 indicating how much the text would benefit from a visualization (0.0 = no benefit, 1.0 = high benefit). Also provide a brief justification for your score based on the criteria.
 
@@ -81,6 +80,10 @@ class RecommendationClient():
         return system_prompt, user_prompt
 
     def get_recommendation(self, text_chunk):
+        if not self.openai_enabled or not self.openai_client:
+            self.logger.warning("OpenAI is not enabled or client not initialized. Skipping recommendation.")
+            return None
+
         system_prompt, user_prompt = self._build_prompt(text_chunk)
 
         try:
@@ -92,7 +95,7 @@ class RecommendationClient():
                 ],
                 temperature=self.temperature,
                 max_tokens=200,
-                response_format={"type": "json_object"} 
+                response_format={"type": "json_object"}
             )
 
             raw_response_content = response.choices[0].message.content
@@ -116,42 +119,64 @@ class RecommendationClient():
                 self.logger.error(f"Error processing LLM response content: {parse_err}")
                 return None
 
+        except APIError as e:
+            self.logger.error(f"OpenAI API error: {e}")
+            return None
+        except AuthenticationError as e:
+            self.logger.error(f"OpenAI Authentication error: {e}")
+            return None
         except Exception as e:
             self.logger.error(f"An unexpected error occurred during recommendation: {e}")
             return None
 
-if __name__ == "__main__":
+    def run(self, input_json_path, output_json_path):
+        """
+        Runs the recommendation process on the input JSON file and saves the results.
+        """
+        self.logger.info("Starting Recommendation Client run...")
+        results = {}
 
+        self.logger.info(f"Loading input data from: {input_json_path}")
+        try:
+            with open(input_json_path, 'r', encoding='utf-8') as f:
+                content = json.load(f)
+            self.logger.info(f"Successfully loaded {len(content)} text chunks.")
+        except FileNotFoundError:
+            self.logger.error(f"Error: Input file not found at {input_json_path}")
+            return
+        except json.JSONDecodeError:
+            self.logger.error(f"Error: Could not decode JSON from {input_json_path}")
+            return
+        except Exception as e:
+            self.logger.error(f"An error occurred while reading the input file: {e}")
+            return
+
+        self.logger.info("Starting recommendation process for each chunk...")
+        for i, (key, value) in enumerate(content.items()):
+            self.logger.info(f"--- Processing item {i+1}/{len(content)}: Key='{key}' ---")
+            if isinstance(value, str) and value.strip():
+                recommendation = self.get_recommendation(value)
+                if recommendation:
+                    results[key] = {"original_text": value, "score": recommendation['score'], "reasoning": recommendation['reasoning']}
+                else:
+                    results[key] = {"original_text": value, "score": None, "reasoning": "Failed to get recommendation."}
+            else:
+                self.logger.warning(f"Skipping Key='{key}': Value is not valid text.")
+                results[key] = {"score": 0.0, "reasoning": "Input was not valid text."}
+
+        self.logger.info("Recommendation process finished.")
+        self.logger.info(f"Writing results to: {output_json_path}")
+        try:
+            with open(output_json_path, 'w', encoding='utf-8') as outfile:
+                json.dump(results, outfile, indent=4, ensure_ascii=False)
+            self.logger.info(f"Successfully wrote {len(results)} recommendations to {output_json_path}")
+        except Exception as e:
+            self.logger.error(f"An error occurred while writing the output file: {e}")
+
+if __name__ == "__main__":
     INPUT_JSON_PATH = "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/chunked_feature_engineering.json"
     OUTPUT_JSON_PATH = "recommendations_output_poc.json"
-    print("Initializing Recommendation Client (Simplified PoC)...")
+    print("Initializing Recommendation Client...")
     client = RecommendationClient()
-
-    results = {}
-
-    print(f"\nLoading input data from: {INPUT_JSON_PATH}")
-    with open(INPUT_JSON_PATH, 'r', encoding='utf-8') as f:
-        content = json.load(f)
-    print(f"Successfully loaded {len(content)} text chunks.")
-    print("\nStarting recommendation process...")
-    for i, (key, value) in enumerate(content.items()):
-        print(f"--- Processing item {i+1}/{len(content)}: Key='{key}' ---")
-        if isinstance(value, str) and value.strip():
-            recommendation = client.get_recommendation(value)
-            score = recommendation['score']
-            justification = recommendation['reasoning']
-            
-            results[key] = {"original_text": value, "score": score, "reasoning":justification}
-        else:
-            print(f"Skipping Key='{key}': Value is not valid text.")
-            results[key] = {"score": 0.0, "reasoning": "Input was not valid text."} 
-
-    print("\nRecommendation process finished.")
-    print(f"Writing results to: {OUTPUT_JSON_PATH}")
-    with open(OUTPUT_JSON_PATH, 'w', encoding='utf-8') as outfile:
-        json.dump(results, outfile, indent=4, ensure_ascii=False)
-    print(f"\nSuccessfully wrote {len(results)} recommendations to {OUTPUT_JSON_PATH}")
-
-
-
-
+    client.run(INPUT_JSON_PATH, OUTPUT_JSON_PATH)
+    print("\nRecommendation process completed.")
