@@ -28,6 +28,8 @@ class Pipeline():
         self.load_models()
         self.prompts = Prompts(topic)
         self.run(data, topic)
+        self.juge_frequency = 0 
+
     def run(self, data, topic, img_filename=None):
         try:
             self.logger.info(f"Starting pipeline run for topic: {topic}")
