@@ -62,16 +62,20 @@ data = ["Gradient descent is a method for unconstrained mathematical optimizatio
 
 
 # pipe = Pipeline(data, "Gradient Descent")
-# pipe = PopulatePipeline(data, "Gradient Descent")
-splitter = QmdSplitter()
-splitter.split_qmd_to_json(
-    "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/feature_engineering.qmd",
-    "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/chunked_feature_engineering.json"
-)
+pipe = PopulatePipeline(data, "Gradient Descent")
 
-INPUT_JSON_PATH = "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/chunked_feature_engineering.json"
-OUTPUT_JSON_PATH = "recommendations_output_poc.json"
-print("Initializing Recommendation Client...")
-client = RecommendationClient()
-client.run(INPUT_JSON_PATH, OUTPUT_JSON_PATH)
-print("\nRecommendation process completed.")
+
+
+# Chunking
+# splitter = QmdSplitter()
+# splitter.split_qmd_to_json(
+#     "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/feature_engineering.qmd",
+#     "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/chunked_feature_engineering.json"
+# )
+
+# INPUT_JSON_PATH = "/Users/andrewchoy/Desktop/CS Projects/Visard/data/data100/chunked_feature_engineering.json"
+# OUTPUT_JSON_PATH = "recommendations_output_poc.json"
+# print("Initializing Recommendation Client...")
+# client = RecommendationClient()
+# client.run(INPUT_JSON_PATH, OUTPUT_JSON_PATH)
+# print("\nRecommendation process completed.")

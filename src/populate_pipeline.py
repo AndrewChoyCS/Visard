@@ -15,13 +15,14 @@ from reportlab.platypus import Image, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from prompts_v3 import Prompts  
-from pipeline import Pipeline
+# from pipeline import Pipeline
+from new_pipeline import Pipeline
 import logging
 
 class PopulatePipeline(Pipeline): 
     #try1.txt logger
     def __init__(self, data, topic, output_dir='logger'):
-        super().__init__(data, output_dir) 
+        super().__init__(topic) 
         self.topic=topic
         self.directory = f"data/{self.topic}"
         if not os.path.exists(self.directory):
@@ -55,10 +56,11 @@ class PopulatePipeline(Pipeline):
                 self.logger.addHandler(console_handler)
                 self.logger.addHandler(file_handler)                    
                 self.logger.info(f"Starting try #{j+1}")
-                goal, code = self.run(data[i], self.topic,img_filename)
+                # goal, code = self.run(data[i], self.topic, img_filename)
+                goal, code, metrics = self.run(data[i], self.topic, img_filename)
                 self.logger.info(f"Finished try #{j+1}")
                 if not self.check_file_exists(file_name):
-                    self.save_data_entry(data[i], goal, code, file_name)
+                    self.save_data_entry(data[i], goal, code, metrics, file_name)
 
 
     def check_file_exists(self, file_name):
@@ -66,11 +68,13 @@ class PopulatePipeline(Pipeline):
             self.logger.warning(f"Attempting to duplicate datapoint: {file_name} --> Terminating process")
             return True
         return False
-    def save_data_entry(self, data, goal, code, fileName):
+    
+    def save_data_entry(self, data, goal, code, metrics, fileName):
         entry = {
             "data": data,
             "goal": goal,
-            "code": code
+            "code": code,
+            "metrics": metrics
         }
         
         try:

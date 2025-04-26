@@ -110,12 +110,16 @@ class Pipeline():
             self.metrics['error_message'] = traceback.format_exc() # Store stack trace
             traceback.print_exc()
             self.metrics['pipeline_success'] = False # Mark as failed
-
+        
         finally:
             end_time = time.time()
             self.metrics['run_end_time_iso'] = datetime.now().isoformat()
             self.metrics['end_to_end_latency_seconds'] = round(end_time - start_time, 2)
             # Return results along with the collected metrics
+            # result_path = 'pipline_results.json'
+            # with open(result_path, "w") as f: 
+            #     json.dump(self.metrics, f, indent=4)
+
             return simple_goal, final_code, self.metrics
 
     def load_models(self):
