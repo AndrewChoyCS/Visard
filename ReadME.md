@@ -1,7 +1,4 @@
 # Visard - Visualization Generator using LLMs
 
-## Pipeline
-Pipeline.py 
-- Takes a single
-
+Sequence of agents to create pedigogically aligned mathimatical visualizations
 
