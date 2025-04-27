@@ -88,7 +88,7 @@ class Pipeline():
             if debug_fail:
                 raise RuntimeError("Code execution failed after maximum debug attempts.")
             if executed_code == "NO CODE GENERATED": 
-                 raise RuntimeError("run_code returned NO CODE GENERATED")
+                raise RuntimeError("run_code returned NO CODE GENERATED")
 
 
             # 4. Run Sequence of Judges (includes feedback loop)
@@ -131,7 +131,7 @@ class Pipeline():
                     self.logger.warning("OPENAI_API_KEY environment variable not set.")
                 self.logger.info("OpenAI client potentially loaded (API key check at runtime).")
             except Exception as e:
-                 self.logger.error(f"Failed to initialize OpenAI client: {e}")
+                self.logger.error(f"Failed to initialize OpenAI client: {e}")
         else:
             self.logger.warning("OPENAI is not enabled in configuration.")
 
@@ -191,7 +191,7 @@ class Pipeline():
                 if attempts == 1:
                     initial_success = True
                 else:
-                     if initial_success is None: initial_success = False # Mark initial as failed if success is on later attempt
+                    if initial_success is None: initial_success = False # Mark initial as failed if success is on later attempt
                 return cleaned_code, attempts, initial_success, debug_failed 
 
             except Exception as e:
@@ -316,7 +316,7 @@ class Pipeline():
             goal_score, goal_feedback = self.parse_judge_response(goal_response)
             judge_metrics['goal_alignment_scores'].append(goal_score)
             if judge_metrics['initial_goal_alignment_score'] is None:
-                 judge_metrics['initial_goal_alignment_score'] = goal_score
+                judge_metrics['initial_goal_alignment_score'] = goal_score
 
             if goal_score < 3:
                 self.logger.info(f"Goal Alignment Judge failed (Score: {goal_score}). Regenerating code from feedback...")
@@ -331,8 +331,8 @@ class Pipeline():
                 self.metrics['code_execution_attempts'] += attempts 
 
                 if debug_fail or new_code == "NO CODE GENERATED":
-                     self.logger.error("Regenerated code (from goal feedback) failed execution checks.")
-                     raise RuntimeError("Regenerated code (from goal feedback) failed execution.")
+                    self.logger.error("Regenerated code (from goal feedback) failed execution checks.")
+                    raise RuntimeError("Regenerated code (from goal feedback) failed execution.")
                 current_code = new_code 
                 continue
 
@@ -365,8 +365,8 @@ class Pipeline():
                 self.metrics['code_execution_attempts'] += attempts # Add attempts to overall count
 
                 if debug_fail or new_code == "NO CODE GENERATED":
-                     self.logger.error("Regenerated code (from clarity feedback) failed execution checks.")
-                     raise RuntimeError("Regenerated code (from clarity feedback) failed execution.")
+                    self.logger.error("Regenerated code (from clarity feedback) failed execution checks.")
+                    raise RuntimeError("Regenerated code (from clarity feedback) failed execution.")
 
                 current_code = new_code
                 continue 
@@ -393,8 +393,8 @@ class Pipeline():
             return None
         
         if not response.strip():
-             self.logger.warning(f"Agent {agent_name} returned an empty response.")
-             return None 
+            self.logger.warning(f"Agent {agent_name} returned an empty response.")
+            return None 
         
         self.logger.info(f"Agent {agent_name} response received.")
         return response
@@ -406,11 +406,11 @@ class Pipeline():
         return self.execute_agent('visualization_code_generator_agent', 'code_generation_model', 1024, self.prompts.visualization_code_generator_prompt, [simple_goal, output_dir])
 
     def code_error_identifier_agent(self, code, error_message):
-         # Increase token limit for potentially long tracebacks
+        # Increase token limit for potentially long tracebacks
         return self.execute_agent('code_error_identifier_agent', 'base_model', 768, self.prompts.code_error_identifier_prompt, [code, error_message])
 
     def code_error_correction_agent(self, original_code, error_message, explanation):
-         # Increase token limit to allow generating full corrected code
+        # Increase token limit to allow generating full corrected code
         return self.execute_agent('code_error_correction_agent', 'code_generation_model', 1536, self.prompts.code_error_correction_prompt, [original_code, error_message, explanation])
 
     def goal_alignment_judge_agent(self, goal, code):
