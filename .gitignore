@@ -1,2 +1,2 @@
-data/
-logger/
+data/** 
+logger/**
