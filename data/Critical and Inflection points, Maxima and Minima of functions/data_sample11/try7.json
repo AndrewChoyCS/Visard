@@ -1,0 +1,34 @@
+{
+    "data": "A function f(x) is said to achieve a global maximum at x = c if for every x within its domain, the inequality f(x) is less than or equal to f(c) holds. Similarly, f(x) exhibits a local maximum at x = c if f(x) is less than or equal to f(c) for every x within some vicinity around c. Conversely, f(x) is considered to attain a global minimum at x = c if, for all x in the domain, it satisfies f(x) being greater than or equal to f(c). On the other hand, f(x) has a local minimum at x = c when f(x) is greater than or equal to f(c) for every x within a certain open neighborhood surrounding c.",
+    "goal": "**Core Principle:** The distinction between global and local maxima and minima in functions.\n\n**Query:**\nCreate a visualization to explain the concepts of global and local maxima and minima of a function \\( f(x) \\). The goal is to illustrate how a function achieves these extrema, highlighting the differences between global and local behaviors. The visualization should depict a graph of a function with clearly marked points representing global and local maxima and minima. It should also include labeled regions showing the relationships among the function's values within its domain for better understanding. \n\nUtilizing an infographic style will effectively clarify the concept by emphasizing key areas and relationships, such as how local extrema occur within neighborhoods and how global extrema apply throughout the entire domain. This visual representation will enable learners to grasp the critical distinctions and effects within the continuous nature of functions, reinforcing their understanding of critical points and how they can be identified.\n\n**Learning Objectives:**\n- Analyze and differentiate between local and global maxima and minima using visual cues. \n- Deepen understanding of the behavior of functions around critical points, fostering recognition of these concepts in various mathematical contexts.\n- Cultivate the ability to apply this understanding to real-world scenarios involving optimization and decision-making based on function behavior.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(-10, 10, 400)\nf = -0.1 * (x**3) + 2 * (x**2) + 3 * x\n\nfig, ax = plt.subplots(figsize=(10, 6))\nax.plot(x, f, label=r'$f(x) = -0.1x^3 + 2x^2 + 3x$', color='blue')\n\nlocal_max = (2, f[200])\nlocal_min = (-5, f[100])\nglobal_max = (3, f[250])\nglobal_min = (-10, f[0])\n\nax.plot(*local_max, 'ro')  # local maximum\nax.plot(*local_min, 'go')   # local minimum\nax.plot(*global_max, 'bo')  # global maximum\nax.plot(*global_min, 'yo')  # global minimum\n\nax.annotate('Local Maxima', xy=local_max, xytext=(local_max[0]+1, local_max[1]+10),\n             arrowprops=dict(facecolor='black', shrink=0.05), fontsize=10)\nax.annotate('Local Minima', xy=local_min, xytext=(local_min[0]-5, local_min[1]-20),\n             arrowprops=dict(facecolor='black', shrink=0.05), fontsize=10)\nax.annotate('Global Maxima', xy=global_max, xytext=(global_max[0]+1, global_max[1]+30),\n             arrowprops=dict(facecolor='black', shrink=0.05), fontsize=10)\nax.annotate('Global Minima', xy=global_min, xytext=(global_min[0]+3, global_min[1]+10),\n             arrowprops=dict(facecolor='black', shrink=0.05), fontsize=10)\n\nax.fill_between(x, f, where=(x < -5), color='gray', alpha=0.3, label='\\n\\n\\nDomain Region')\nax.fill_between(x, f, where=(x > 3), color='gray', alpha=0.3)\n\nax.axhline(0, color='black', linewidth=0.5, ls='--')\nax.axvline(0, color='black', linewidth=0.5, ls='--')\n\nax.set_title(\"Global and Local Maxima and Minima\", fontsize=14)\nax.set_xlabel(\"x-axis\", fontsize=12)\nax.set_ylabel(\"f(x)\", fontsize=12)\nax.set_ylim(-30, 40)\nax.legend()\nplt.grid()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-28T03:18:24.174921",
+        "run_end_time_iso": "2025-04-28T03:18:48.317816",
+        "topic": "Critical and Inflection points, Maxima and Minima of functions",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 24.14,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "A function f(x) is said to achieve a global maximum at x = c if for every x within its domain, the inequality f(x) is less than or equal to f(c) holds. Similarly, f(x) exhibits a local maximum at x = c if f(x) is less than or equal to f(c) for every x within some vicinity around c. Conversely, f(x) is considered to attain a global minimum at x = c if, for all x in the domain, it satisfies f(x) being greater than or equal to f(c). On the other hand, f(x) has a local minimum at x = c when f(x) is greater than or equal to f(c) for every x within a certain open neighborhood surrounding c."
+    }
+}

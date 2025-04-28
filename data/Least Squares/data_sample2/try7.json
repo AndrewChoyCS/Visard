@@ -1,0 +1,34 @@
+{
+    "data": "So the situation we\u2019re in is that \u00afb is not in Col(A) and we wish to find \u02c6x so that Ax\u02c6, which is in Col(A), is as close as possible to \u00afb.This picture suggests that we can obtain a solution by projecting \u00afb onto Col(A) to get PrCol(A) \u00afb and then finding \u02c6x to solve the equation: Ax\u02c6 = PrCol(A) \u00afb Assuming this is correct, the problem with this approach, practically, is that calculating PrCol(A) \u00afb requires having an orthogonal basis for Col(A) and this is procedurally intense especially when A is large. So what we\u2019ll do is find a sneaky way to find \u02c6x a different way. Just to be clear, we will solve this equation, but we won\u2019t solve it by finding PrCol(A) \u00afb.",
+    "goal": "**Core Principle:** The concept of projecting a vector onto a subspace (Column Space of A) and finding a solution to minimize the distance from \u00afb to that subspace, while also addressing the practical challenges of computational intensity in large matrices.\n\n**Query:** Create a visualization to explain the process of projecting a vector \u00afb onto a subspace represented by Col(A) and finding an approximate solution \u02c6x that minimizes the distance to this projection. The visualization should clearly represent the vector \u00afb, the column space Col(A), and the projected vector PrCol(A) \u00afb, along with the resulting vector Ax\u02c6. Use a diagram that illustrates these relationships both geometrically (e.g., showing the vectors and their distances) and algebraically (e.g., indicating the equations involved). \n\nThe goal is to highlight the cause-and-effect relationship between \u00afb not belonging to Col(A), the resulting projection, and the steps required to find \u02c6x without direct computation of PrCol(A) \u00afb. By visually depicting this process, learners will better understand how the least squares solution works and the implications of the geometrical interpretation in high-dimensional spaces.\n\n**Objective:** Facilitate a deep understanding of the geometric principles of least squares optimization, specifically how projections function in vector spaces and the trade-offs involved in computational approaches, ensuring students grasp not only the mathematical concepts but also their practical application in scenarios with large data sets.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Define the column space vectors (A)\nA1 = np.array([1, 1])\nA2 = np.array([1, -1])\norigin = np.array([0, 0])\n\n# Define the vector b\nb = np.array([2, 3])\n\n# Compute the projection of b onto the column space\nA = np.column_stack((A1, A2))\nx_hat = np.linalg.lstsq(A, b, rcond=None)[0]  # least squares solution\nproj_b = A @ x_hat  # projection of b onto Col(A)\n\n# Set up the plot\nplt.figure(figsize=(10, 8))\nplt.axhline(0, color='gray', lw=0.5, ls='--')\nplt.axvline(0, color='gray', lw=0.5, ls='--')\n\n# Plot column space vectors\nplt.quiver(*origin, *A1, color='blue', angles='xy', scale_units='xy', scale=1, label='Col(A) Vector 1', alpha=0.8)\nplt.quiver(*origin, *A2, color='green', angles='xy', scale_units='xy', scale=1, label='Col(A) Vector 2', alpha=0.8)\n\n# Plot vector b\nplt.quiver(*origin, *b, color='red', angles='xy', scale_units='xy', scale=1, label='Vector b', alpha=0.8)\n\n# Plot the projection of b onto Col(A)\nplt.quiver(*origin, *proj_b, color='purple', angles='xy', scale_units='xy', scale=1, label='proj_Col(A)(b)', alpha=0.8)\n\n# Plot resulting vector Ax_hat\nplt.quiver(*origin, *A @ x_hat, color='orange', angles='xy', scale_units='xy', scale=1, label='Resulting Vector Ax_hat', alpha=0.8)\n\n# Annotations\nplt.text(b[0]/2, b[1]/2, 'b', fontsize=12, color='red', ha='center')\nplt.text(proj_b[0]/2, proj_b[1]/2, 'proj_Col(A)(b)', fontsize=12, color='purple', ha='center')\nplt.text((A @ x_hat)[0]/2, (A @ x_hat)[1]/2, 'Ax_hat', fontsize=12, color='orange', ha='center')\n\n# Set limits and aspect\nplt.xlim(-1, 4)\nplt.ylim(-1, 4)\nplt.gca().set_aspect('equal', adjustable='box')\n\n# Labels and title\nplt.title('Projection of Vector b onto Column Space Col(A)', fontsize=14)\nplt.xlabel('X-axis', fontsize=12)\nplt.ylabel('Y-axis', fontsize=12)\nplt.legend()\nplt.grid()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-27T20:07:22.555739",
+        "run_end_time_iso": "2025-04-27T20:07:49.484296",
+        "topic": "Least Squares",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 26.93,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "So the situation we\u2019re in is that \u00afb is not in Col(A) and we wish to find \u02c6x so that Ax\u02c6, which is in Col(A), is as close as possible to \u00afb.This picture suggests that we can obtain a solution by projecting \u00afb onto Col(A) to get PrCol(A) \u00afb and then finding \u02c6x to solve the equation: Ax\u02c6 = PrCol(A) \u00afb Assuming this is correct, the problem with this approach, practically, is that calculating PrCol(A) \u00afb requires having an orthogonal basis for Col(A) and this is procedurally intense especially when A is large. So what we\u2019ll do is find a sneaky way to find \u02c6x a different way. Just to be clear, we will solve this equation, but we won\u2019t solve it by finding PrCol(A) \u00afb."
+    }
+}

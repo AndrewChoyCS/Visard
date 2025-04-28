@@ -1,0 +1,34 @@
+{
+    "data": "We say that f ( x ) has an absolute (or global) maximum at x = c if f ( x ) \u2264 f ( c ) for every x in the domain we are working on. We say that f ( x ) has a relative (or local) maximum at x = c if f ( x ) \u2264 f ( c ) for every x in some open interval around x = c . We say that f ( x ) has an absolute (or global) minimum at x = c if f ( x ) \u2265 f ( c ) for every x in the domain we are working on. We say that f ( x ) has a relative (or local) minimum at x = c if f ( x ) \u2265 f ( c ) for every x in some open interval around x = c .",
+    "goal": "**Core Principle:** The distinction between absolute (global) and relative (local) maxima and minima of a function and their definitions based on intervals.\n\n**Query:** Create a visualization to explain the differences between absolute (global) and relative (local) maxima and minima of a function. The goal is to illustrate how absolute extremes apply to the entire domain of the function while relative extremes only pertain to local intervals around specific points. This visualization should include separate graphs for absolute and relative maxima and minima to highlight the defining properties of each. Utilize style elements such as color coding and annotated arrows to show how function values compare and where maxima and minima occur in relation to the domain. By clearly depicting these relationships, we can deepen learners' understanding of concepts like Critical and Inflection points, and Maxima and Minima of functions.\n\n**Objective:** Students will be able to distinguish between absolute and relative extrema in a function by interpreting visual representations, identifying their characteristics, and understanding their significance within the broader context of function analysis.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Define the function\nx = np.linspace(-10, 10, 400)\ny = -0.1*(x**3) + x**2 + 1\n\n# Calculate absolute and relative maxima/minima\nabsolute_max = np.max(y)\nabsolute_min = np.min(y)\nrelative_max = y[np.argmax(y[80:320]) + 80]\nrelative_min = y[np.argmin(y[80:320]) + 80]\n\n# Create subplots\nfig, axs = plt.subplots(1, 2, figsize=(12, 6))\n\n# Absolute Extrema Plot\naxs[0].plot(x, y, label='f(x)', color='b')\naxs[0].scatter([x[np.argmax(y)]], [absolute_max], color='red', zorder=5, label='Absolute Max', s=100)\naxs[0].scatter([x[np.argmin(y)]], [absolute_min], color='green', zorder=5, label='Absolute Min', s=100)\naxs[0].axhline(y=absolute_max, color='red', linestyle='--', linewidth=0.8)\naxs[0].axhline(y=absolute_min, color='green', linestyle='--', linewidth=0.8)\naxs[0].set_title('Absolute Maxima and Minima')\naxs[0].set_xlabel('x-axis')\naxs[0].set_ylabel('f(x)')\naxs[0].legend()\naxs[0].grid()\n\n# Relative Extrema Plot\naxs[1].plot(x, y, label='f(x)', color='b')\naxs[1].scatter([x[np.argmax(y[80:320]) + 80]], [relative_max], color='orange', zorder=5, label='Relative Max', s=100)\naxs[1].scatter([x[np.argmin(y[80:320]) + 80]], [relative_min], color='purple', zorder=5, label='Relative Min', s=100)\naxs[1].axhline(y=relative_max, color='orange', linestyle='--', linewidth=0.8)\naxs[1].axhline(y=relative_min, color='purple', linestyle='--', linewidth=0.8)\naxs[1].set_title('Relative Maxima and Minima')\naxs[1].set_xlabel('x-axis')\naxs[1].set_ylabel('f(x)')\naxs[1].legend()\naxs[1].grid()\n\n# Adjust layout\nplt.tight_layout()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-28T02:16:28.835347",
+        "run_end_time_iso": "2025-04-28T02:17:31.706798",
+        "topic": "Critical and Inflection points, Maxima and Minima of functions",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 62.87,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "We say that f ( x ) has an absolute (or global) maximum at x = c if f ( x ) \u2264 f ( c ) for every x in the domain we are working on. We say that f ( x ) has a relative (or local) maximum at x = c if f ( x ) \u2264 f ( c ) for every x in some open interval around x = c . We say that f ( x ) has an absolute (or global) minimum at x = c if f ( x ) \u2265 f ( c ) for every x in the domain we are working on. We say that f ( x ) has a relative (or local) minimum at x = c if f ( x ) \u2265 f ( c ) for every x in some open interval around x = c ."
+    }
+}

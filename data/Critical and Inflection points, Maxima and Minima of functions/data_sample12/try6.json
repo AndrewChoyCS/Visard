@@ -1,0 +1,34 @@
+{
+    "data": "A function f(x) attains an absolute (or global) maximum at x = c if its values are always less than or equal to f(c) across the entire domain. In contrast, a function f(x) has a relative (or local) maximum at x = c if there is a surrounding open interval around c where f(x) is less than or equal to f(c). On a similar note, a function f(x) has an absolute (or global) minimum at x = c if its values are always greater than or equal to f(c) throughout the subject domain. Meanwhile, f(x) experiences a relative (or local) minimum at x = c if it holds true that f(x) is greater than or equal to f(c) within an open interval situated around c.",
+    "goal": "### Core Principle Extracted:\nThe difference between absolute (global) and relative (local) maxima and minima in a function.\n\n### Query:\nCreate a visualization to explain the distinctions between absolute and relative maxima and minima for a function \\( f(x) \\). The goal is to illustrate how absolute maxima and minima represent the highest and lowest values over the entire domain of the function, while local maxima and minima reflect values within smaller surrounding intervals. This visualization should clearly depict the relationships between these concepts by using contrasting line graphs that demonstrate both absolute and relative maxima and minima. Ideal styles might include a layered graph displaying several functions together, annotated with clear labels highlighting each critical point, or an infographic comparing features of both types of extrema. This approach will enable learners to visualize key differences, enhancing their understanding of how these concepts connect to critical and inflection points in functions.\n\n### Educational Objective:\nStudents will be able to identify and differentiate between absolute and relative maxima and minima in a function using graphical representations, leading to a deeper comprehension of their implications within the context of function analysis, including finding critical and inflection points.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(-3, 3, 400)\nf = x**3 - 3*x**2 + 2\nf_prime = np.gradient(f, x)\n\n# Identify critical points\ncritical_indices = np.where(np.diff(np.sign(f_prime)))[0]\ncritical_points_x = x[critical_indices]\ncritical_points_y = f[critical_indices]\n\n# Absolute maxima and minima\nabsolute_max = np.max(f)\nabsolute_min = np.min(f)\nabsolute_max_x = x[np.argmax(f)]\nabsolute_min_x = x[np.argmin(f)]\n\nplt.figure(figsize=(12, 6))\nplt.plot(x, f, label='f(x) = x^3 - 3x^2 + 2', color='blue')\nplt.axhline(absolute_max, color='red', linestyle='--', label='Absolute Maxima')\nplt.axhline(absolute_min, color='orange', linestyle='--', label='Absolute Minima')\n\n# Highlighting relative maxima and minima\nfor i in range(len(critical_points_x)):\n    plt.plot(critical_points_x[i], critical_points_y[i], 'ro')\n    plt.text(critical_points_x[i], critical_points_y[i], f'({critical_points_x[i]:.2f}, {critical_points_y[i]:.2f})', fontsize=9, verticalalignment='bottom')\n\nplt.plot(absolute_max_x, absolute_max, 'go', label='Absolute Max')\nplt.plot(absolute_min_x, absolute_min, 'mo', label='Absolute Min')\n\nplt.title('Absolute vs Relative Maxima and Minima')\nplt.xlabel('x-axis')\nplt.ylabel('f(x)')\nplt.axhline(0, color='black', lw=0.5, ls='--')\nplt.axvline(0, color='black', lw=0.5, ls='--')\nplt.grid()\nplt.legend()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-28T03:26:17.329472",
+        "run_end_time_iso": "2025-04-28T03:27:25.887307",
+        "topic": "Critical and Inflection points, Maxima and Minima of functions",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 68.56,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "A function f(x) attains an absolute (or global) maximum at x = c if its values are always less than or equal to f(c) across the entire domain. In contrast, a function f(x) has a relative (or local) maximum at x = c if there is a surrounding open interval around c where f(x) is less than or equal to f(c). On a similar note, a function f(x) has an absolute (or global) minimum at x = c if its values are always greater than or equal to f(c) throughout the subject domain. Meanwhile, f(x) experiences a relative (or local) minimum at x = c if it holds true that f(x) is greater than or equal to f(c) within an open interval situated around c."
+    }
+}

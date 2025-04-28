@@ -1,0 +1,34 @@
+{
+    "data": "A function f : R n \u2192 R is said to be convex if it has a domain that is a convex set. For every pair of points x and y within its domain, and for any value of \u03bb in the interval [0, 1], the condition f(\u03bbx + (1 \u2212 \u03bb)y) \u2264 \u03bbf(x) + (1 \u2212 \u03bb)f(y) must hold. This means that when we select any two points x and y, the function value at any convex combination of these points is not greater than the convex combination of their function values, f(x) and f(y). In geometric terms, the straight line connecting the points (x, f(x)) and (y, f(y)) must lie above the curve described by f. If f is continuous, it suffices to verify convexity using a fixed value of \u03bb, such as 1/2 (or any \u03bb within (0, 1)). This resembles checks related to midpoint convex sets previously discussed. Additionally, we consider a function concave if the function -f is convex.",
+    "goal": "**Core Principle:** The condition for a function \\( f \\) to be convex, specifically the relationship between points in its domain, their corresponding function values, and how these are visualized geometrically.\n\n---\n\n**Query:**\n\nCreate a visualization to explain the convexity condition of the function \\( f : R^n \\rightarrow R \\). The goal is to illustrate how, for any selected pairs of points \\( x \\) and \\( y \\) within the domain of \\( f \\), the convex combination of these points\u2014represented as \\( \\lambda x + (1 - \\lambda)y \\) for \\( \\lambda \\) in the interval [0, 1]\u2014results in function values that are not greater than the convex combination of \\( f(x) \\) and \\( f(y) \\). \n\nThe visualization should feature a graph showing the curve of the function \\( f \\) along with a straight line connecting the points \\( (x, f(x)) \\) and \\( (y, f(y)) \\), highlighting the area where the straight line lies above the curve. Use a clear labeling system to indicate points \\( x \\), \\( y \\), and the point on the curve at \\( \\lambda = 1/2 \\). Integrating arrows or shaded areas can help emphasize the relationships and inequalities inherent in the convexity condition. \n\nThis visual aids in understanding by providing a geometric representation of abstract mathematical concepts, allowing learners to see the relationships between the function values and how convexity manifests graphically. \n\n**Learning Objective:** Achieve a deep understanding of the definition of a convex function and the significance of the convexity condition \\( f(\\lambda x + (1 - \\lambda) y) \\leq \\lambda f(x) + (1 - \\lambda) f(y) \\), empowering students to recognize and analyze convexity in various mathematical contexts.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Define the function f(x)\ndef f(x):\n    return (x - 1)**2\n\n# Define points x and y\nx = 0\ny = 2\n\n# Define the lambda value for the convex combination\nlambda_value = 0.5\n\n# Generate x values for the plot\nx_vals = np.linspace(-1, 3, 100)\ny_vals = f(x_vals)\n\n# Calculate function values at x, y and the midpoint\nf_x = f(x)\nf_y = f(y)\nmidpoint_x = lambda_value * x + (1 - lambda_value) * y\nmidpoint_y = f(midpoint_x)\n\n# Create the plot\nplt.figure(figsize=(10, 6))\nplt.plot(x_vals, y_vals, label='f(x) = (x - 1)\u00b2', color='blue')\nplt.plot([x, y], [f_x, f_y], color='orange', linestyle='--', label='Secant Line')\nplt.scatter([x, y], [f_x, f_y], color='red')\nplt.scatter(midpoint_x, midpoint_y, color='green', label='Midpoint', zorder=5)\n\n# Draw arrows indicating the convexity condition\nplt.annotate('', xy=(midpoint_x, midpoint_y), xytext=(midpoint_x, f_x),\n             arrowprops=dict(facecolor='black', shrink=0.05))\nplt.annotate('', xy=(midpoint_x, midpoint_y), xytext=(midpoint_x, f_y),\n             arrowprops=dict(facecolor='black', shrink=0.05))\n\n# Adding labels\nplt.text(x, f_x, '$(x, f(x))$', fontsize=10, horizontalalignment='right', color='red')\nplt.text(y, f_y, '$(y, f(y))$', fontsize=10, horizontalalignment='left', color='red')\nplt.text(midpoint_x, midpoint_y, f'$(\\\\lambda x + (1 - \\\\lambda)y, f(\\\\lambda x + (1 - \\\\lambda)y))$', \n         fontsize=10, horizontalalignment='center', color='green', verticalalignment='bottom')\n\n# Set titles and labels\nplt.title('Visualization of Convexity Condition')\nplt.xlabel('x')\nplt.ylabel('f(x)')\nplt.axhline(0, color='black',linewidth=0.5, ls='--')\nplt.axvline(0, color='black',linewidth=0.5, ls='--')\nplt.grid(color = 'gray', linestyle = '--', linewidth = 0.5)\nplt.ylim(-1, 5)\nplt.xlim(-1, 3)\nplt.legend()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-27T18:17:43.248528",
+        "run_end_time_iso": "2025-04-27T18:18:06.640803",
+        "topic": "Convexity",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 23.39,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "A function f : R n \u2192 R is said to be convex if it has a domain that is a convex set. For every pair of points x and y within its domain, and for any value of \u03bb in the interval [0, 1], the condition f(\u03bbx + (1 \u2212 \u03bb)y) \u2264 \u03bbf(x) + (1 \u2212 \u03bb)f(y) must hold. This means that when we select any two points x and y, the function value at any convex combination of these points is not greater than the convex combination of their function values, f(x) and f(y). In geometric terms, the straight line connecting the points (x, f(x)) and (y, f(y)) must lie above the curve described by f. If f is continuous, it suffices to verify convexity using a fixed value of \u03bb, such as 1/2 (or any \u03bb within (0, 1)). This resembles checks related to midpoint convex sets previously discussed. Additionally, we consider a function concave if the function -f is convex."
+    }
+}

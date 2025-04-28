@@ -1,0 +1,34 @@
+{
+    "data": "Example: A ball is thrown in the air. Its height at any time t is given by: h = 3 + 14t \u2212 5t2 What is its maximum height? Using derivatives we can find the slope of that function: h' = 0 + 14 \u2212 5(2t) = 14 \u2212 10t (See below this example for how we found that derivative.) quadratic graph Now find when the slope is zero: 14 \u2212 10t = 0 10t = 14 t = 14 / 10 = 1.4 The slope is zero at t = 1.4 seconds And the height at that time is: h = 3 + 14\u00d71.4 \u2212 5\u00d71.42 h = 3 + 19.6 \u2212 9.8 = 12.8 And so: The maximum height is 12.8 m (at t = 1.4 s)",
+    "goal": "**Core Principle: Finding Maximum Height Using Derivatives**\n\n**Query:**\nCreate a visualization to explain how to find the maximum height of a parabolic function using derivatives. The goal is to illustrate the relationship between the height of the ball, its time in the air, and how the derivative indicates changes in slope. The visualization should depict a graph of the quadratic function \\( h = 3 + 14t - 5t^2 \\) alongside a plot of its derivative \\( h' = 14 - 10t \\). \n\nIncorporate an annotated section that clearly shows where the derivative equals zero, highlighting the critical point at \\( t = 1.4 \\) seconds. This dual representation will help students visualize not just the function and its maximum height (12.8 m), but also how the derivative informs us about increasing and decreasing intervals, thereby deepening their understanding of critical and inflection points in calculus.\n\n**Educational Outcomes:**\nStudents will be able to:\n1. Identify and interpret critical points and their significance in determining maxima and minima of functions.\n2. Understand the relationship between a function and its derivative, as well as how this relationship reflects the behavior of the original function.\n3. Develop comprehension of parabolic functions and their graphical representations by manipulating and analyzing the equation visually.\n\nThis visualization will enhance learning by clearly delineating cause-effect relationships\u2014specifically, how the slope of the tangent line (derivative) changes and signals the maximum height of the function.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Define the quadratic function and its derivative\ndef h(t):\n    return 3 + 14 * t - 5 * t**2\n\ndef h_derivative(t):\n    return 14 - 10 * t\n\n# Create time values\nt_values = np.linspace(0, 3, 400)\nh_values = h(t_values)\nh_derivative_values = h_derivative(t_values)\n\n# Find the critical point\nt_critical = 14 / 10  # derivative = 0\nh_critical = h(t_critical)\n\n# Create the plots\nplt.figure(figsize=(12, 6))\n\n# Plot of the function h(t)\nplt.subplot(1, 2, 1)\nplt.plot(t_values, h_values, label='Height h(t)', color='blue')\nplt.axhline(h_critical, color='gray', linestyle='--', label='Max Height (12.8 m)')\nplt.scatter(t_critical, h_critical, color='red')\nplt.annotate(f'Critical Point at t={t_critical:.1f}s\\nHeight={h_critical:.1f}m',\n             xy=(t_critical, h_critical), xytext=(t_critical + 0.2, h_critical - 2),\n             arrowprops=dict(facecolor='black', shrink=0.05))\nplt.title('Height vs. Time')\nplt.xlabel('Time (s)')\nplt.ylabel('Height (m)')\nplt.xlim(0, 3)\nplt.ylim(0, 15)\nplt.grid()\nplt.legend()\n\n# Plot of the derivative h'(t)\nplt.subplot(1, 2, 2)\nplt.plot(t_values, h_derivative_values, label=\"Derivative h'(t)\", color='orange')\nplt.axvline(t_critical, color='gray', linestyle='--')\nplt.scatter(t_critical, 0, color='red')\nplt.annotate('h\\'(t) = 0', xy=(t_critical, 0), xytext=(t_critical + 0.2, 5),\n             arrowprops=dict(facecolor='black', shrink=0.05))\nplt.title('Derivative vs. Time')\nplt.xlabel('Time (s)')\nplt.ylabel('Derivative (m/s)')\nplt.xlim(0, 3)\nplt.ylim(-10, 5)\nplt.grid()\nplt.legend()\n\nplt.tight_layout()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-28T02:26:53.650874",
+        "run_end_time_iso": "2025-04-28T02:27:16.309760",
+        "topic": "Critical and Inflection points, Maxima and Minima of functions",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 22.66,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "Example: A ball is thrown in the air. Its height at any time t is given by: h = 3 + 14t \u2212 5t2 What is its maximum height? Using derivatives we can find the slope of that function: h' = 0 + 14 \u2212 5(2t) = 14 \u2212 10t (See below this example for how we found that derivative.) quadratic graph Now find when the slope is zero: 14 \u2212 10t = 0 10t = 14 t = 14 / 10 = 1.4 The slope is zero at t = 1.4 seconds And the height at that time is: h = 3 + 14\u00d71.4 \u2212 5\u00d71.42 h = 3 + 19.6 \u2212 9.8 = 12.8 And so: The maximum height is 12.8 m (at t = 1.4 s)"
+    }
+}

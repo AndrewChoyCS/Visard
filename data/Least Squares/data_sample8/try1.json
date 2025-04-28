@@ -1,0 +1,34 @@
+{
+    "data": "Let \\( A \\) be a matrix of size \\( m \\times n \\) and \\( b \\) be a vector belonging to \\( \\mathbb{R}^m \\). A least-squares solution corresponds to a vector \\( \\hat{x} \\) in \\( \\mathbb{R}^n \\) which minimizes the distance defined by \\( dist(b, A \\hat{x}) \\leq dist(b, A x) \\) for each vector \\( x \\) in \\( \\mathbb{R}^n \\). The column space we refer to as \\( Col(A) \\) consists of all vectors expressible in the form \\( A x \\). The distance between vectors \\( v \\) and \\( w \\) is given by \\( dist(v, w) = \\| v - w \\| \\); this refers to the concept detailed in Definition 6.1.2 of Section 6.1 and implies that \\( dist(b, A \\hat{x}) = \\| b - A \\hat{x} \\| \\), revealing that the \u201cleast squares\u201d terminology stems from the squared summation of the entries within the vector \\( b - A \\hat{x} \\) ( ). Thus, a least-squares solution aims to minimize the accumulated squares of the disparities between the entries of \\( A \\hat{x} \\) and \\( b \\), meaning it achieves the closest possible representation of \\( b \\) in relation to \\( A x \\). Consequently, the nearest vector formed by \\( A x \\) to \\( b \\) signifies the orthogonal projection of \\( b \\) onto \\( Col(A) \\), usually denoted as \\( b_{Col(A)} \\).",
+    "goal": "**Create a visualization to explain the principle of the least-squares solution as the orthogonal projection of a vector \\( b \\) onto the column space \\( Col(A) \\).** The visualization should illustrate how the vector \\( b \\) relates to the matrix \\( A \\) and its column space, demonstrating the process of minimizing the distance \\( dist(b, A \\hat{x}) \\) through geometric representation. The goal is to clarify how \\( \\hat{x} \\) provides the best approximation of \\( b \\) when looking for a least-squares solution, highlighting the orthogonal relationship between the residual vector \\( b - A \\hat{x} \\) and the subspace \\( Col(A) \\).\n\nTo achieve this, consider using a diagram that shows the vector \\( b \\), the column space \\( Col(A) \\) represented by vectors formed from \\( A x \\), and the orthogonal projection \\( b_{Col(A)} \\). Arrows can indicate the distances and the relationship between \\( b \\) and the projection, while dimensions of the vectors can emphasize the geometric nature of the least-squares problem. This visual will help learners grasp the critical concepts of minimizing distances, understanding projections, and recognizing how \\( \\hat{x} \\) achieves the best fit through geometric interpretation.\n\n**Educational objectives:** Students will gain a deep understanding of how least-squares solutions work in relation to orthogonal projections. They will be able to visually identify key components such as the residual error and the significance of the column space, which reinforces analytical thinking in mathematical optimization.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Create the matrix A (2D for visualization purposes)\nA = np.array([[1, 2], [1, 0]])\nb = np.array([3, 2])\n\n# Compute the least-squares solution\nA_T_A_inv = np.linalg.inv(A.T @ A)\nA_T_b = A.T @ b\nx_hat = A_T_A_inv @ A_T_b\n\n# Projection of b onto Col(A)\nb_col_A = A @ x_hat\n\n# Residual vector\nresidual = b - b_col_A\n\n# Set up the plot\nplt.figure(figsize=(8, 6))\nplt.quiver(0, 0, b[0], b[1], angles='xy', scale_units='xy', scale=1, color='blue', label='Vector b', linewidth=2)\nplt.quiver(0, 0, b_col_A[0], b_col_A[1], angles='xy', scale_units='xy', scale=1, color='green', label='Projection (b$_{Col(A)}$)', linewidth=2)\nplt.quiver(b_col_A[0], b_col_A[1], residual[0], residual[1], angles='xy', scale_units='xy', scale=1, color='red', label='Residual (b - b$_{Col(A)}$)', linewidth=2)\n\n# Draw the column space (spanning vectors of A)\nplt.quiver(0, 0, 1, 2, angles='xy', scale_units='xy', scale=1, color='orange', alpha=0.5, label='Column space vector')\nplt.quiver(0, 0, 1, 0, angles='xy', scale_units='xy', scale=1, color='orange', alpha=0.5)\n\n# Setting limits and grid\nplt.xlim(-1, 4)\nplt.ylim(-1, 4)\nplt.axhline(0, color='grey', lw=0.5)\nplt.axvline(0, color='grey', lw=0.5)\nplt.grid()\n\n# Adding labels\nplt.text(b[0], b[1]+0.2, 'b', fontsize=12, ha='center', color='blue')\nplt.text(b_col_A[0], b_col_A[1]-0.2, 'b$_{Col(A)}$', fontsize=12, ha='center', color='green')\nplt.text(b_col_A[0] + residual[0]/2, b_col_A[1] + residual[1]/2, 'Residual', fontsize=12, ha='center', color='red')\n\n# Legends & title\nplt.legend()\nplt.title('Least-Squares Solution as Orthogonal Projection')\nplt.xlabel('X-axis')\nplt.ylabel('Y-axis')",
+    "metrics": {
+        "run_start_time_iso": "2025-04-27T21:26:58.726537",
+        "run_end_time_iso": "2025-04-27T21:28:19.922647",
+        "topic": "Least Squares",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 81.2,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "Let \\( A \\) be a matrix of size \\( m \\times n \\) and \\( b \\) be a vector belonging to \\( \\mathbb{R}^m \\). A least-squares solution corresponds to a vector \\( \\hat{x} \\) in \\( \\mathbb{R}^n \\) which minimizes the distance defined by \\( dist(b, A \\hat{x}) \\leq dist(b, A x) \\) for each vector \\( x \\) in \\( \\mathbb{R}^n \\). The column space we refer to as \\( Col(A) \\) consists of all vectors expressible in the form \\( A x \\). The distance between vectors \\( v \\) and \\( w \\) is given by \\( dist(v, w) = \\| v - w \\| \\); this refers to the concept detailed in Definition 6.1.2 of Section 6.1 and implies that \\( dist(b, A \\hat{x}) = \\| b - A \\hat{x} \\| \\), revealing that the \u201cleast squares\u201d terminology stems from the squared summation of the entries within the vector \\( b - A \\hat{x} \\) ( ). Thus, a least-squares solution aims to minimize the accumulated squares of the disparities between the entries of \\( A \\hat{x} \\) and \\( b \\), meaning it achieves the closest possible representation of \\( b \\) in relation to \\( A x \\). Consequently, the nearest vector formed by \\( A x \\) to \\( b \\) signifies the orthogonal projection of \\( b \\) onto \\( Col(A) \\), usually denoted as \\( b_{Col(A)} \\)."
+    }
+}

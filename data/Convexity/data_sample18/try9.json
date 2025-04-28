@@ -1,0 +1,34 @@
+{
+    "data": "To simplify the concept, convex sets can be visualized as shapes in which any straight line connected between two points within the set remains entirely contained in that set. This characteristic defines a convex set. In relation to a function f, an epigraph consists of all points that lie on or are above the function's graph. A function f is classified as convex if its epigraph also forms a convex set, signifying that every line segment that is drawn across its graph stays on or above the curve of the function.",
+    "goal": "**Core Principle:** A convex set is characterized by the property that any straight line segment connecting two points within the set remains entirely contained within the set.\n\n**Query:** Create a visualization to explain the concept of convex sets and their relationship to functions and their epigraphs. The goal of this visualization is to clarify how the shape of a convex set can be established through a graphical representation of the defining properties of convexity, alongside illustrating the epigraph of a convex function. This visualization should include comparative graphs showing both convex and non-convex sets, alongside their respective epigraphs, to highlight the differences between them visually. An effective style could be a combination of labeled diagrams and color-coded graphs that emphasize the location of line segments and epigraphs in relation to the convex shape. This visual will aid in understanding the core idea that a function is convex if its epigraph forms a convex set, facilitating a deeper comprehension of the relationships between geometrical shapes and their mathematical properties.\n\n**Objective:** Students will gain a clear understanding of the defining characteristics of convex sets and their significance in the context of functions, enabling them to identify and differentiate between convex and non-convex sets effectively.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Create figure and subplots\nfig, axs = plt.subplots(2, 2, figsize=(12, 10))\nfig.suptitle('Convex Sets and Their Epigraphs', fontsize=16)\n\n# Convex Set and its Epigraph\nx_convex = np.linspace(-2, 2, 100)\ny_convex = x_convex**2  # Convex function: f(x) = x^2\nepigraph_convex = np.array([[x, y] for x, y in zip(x_convex, y_convex) if y >= 0])\n\n# Plot Convex Set\naxs[0, 0].fill_between(x_convex, y_convex, color='lightblue', alpha=0.5)\naxs[0, 0].plot(x_convex, y_convex, color='blue')\naxs[0, 0].set_title('Convex Set', fontsize=14)\naxs[0, 0].set_xlabel('x')\naxs[0, 0].set_ylabel('y')\naxs[0, 0].grid(True)\n\n# Plot Epigraph of Convex Function\naxs[0, 1].fill_between(x_convex, y_convex, 1, color='lightcoral', alpha=0.5, label='Epigraph')\naxs[0, 1].plot(x_convex, y_convex, color='red')\naxs[0, 1].set_title('Epigraph of Convex Function', fontsize=14)\naxs[0, 1].set_xlabel('x')\naxs[0, 1].set_ylabel('y')\naxs[0, 1].grid(True)\naxs[0, 1].legend()\n\n# Non-Convex Set and its Epigraph\nx_non_convex = np.linspace(-2, 2, 100)\ny_non_convex = np.abs(x_non_convex) + np.sin(4 * x_non_convex)  # Non-Convex function\n\n# Plot Non-Convex Set\naxs[1, 0].fill_between(x_non_convex, y_non_convex, color='lightgreen', alpha=0.5)\naxs[1, 0].plot(x_non_convex, y_non_convex, color='green')\naxs[1, 0].set_title('Non-Convex Set', fontsize=14)\naxs[1, 0].set_xlabel('x')\naxs[1, 0].set_ylabel('y')\naxs[1, 0].grid(True)\n\n# Plot Epigraph of Non-Convex Function\naxs[1, 1].fill_between(x_non_convex, y_non_convex, 1, color='lightyellow', alpha=0.5, label='Epigraph')\naxs[1, 1].plot(x_non_convex, y_non_convex, color='orange')\naxs[1, 1].set_title('Epigraph of Non-Convex Function', fontsize=14)\naxs[1, 1].set_xlabel('x')\naxs[1, 1].set_ylabel('y')\naxs[1, 1].grid(True)\naxs[1, 1].legend()\n\n# Add line segments for convexity demonstration\nfor (x1, y1), (x2, y2) in zip(zip([-1, 1], [1, 1]), zip([-0.5, 0.5], [0.5, 1.5])):\n    axs[0, 0].plot([x1, x2], [y1, y2], 'r--', lw=2)\n    axs[1, 0].plot([x1, x2], [y1, y2], 'r--', lw=2)\n\nplt.tight_layout(rect=[0, 0, 1, 0.96])",
+    "metrics": {
+        "run_start_time_iso": "2025-04-27T19:35:34.821941",
+        "run_end_time_iso": "2025-04-27T19:36:08.897375",
+        "topic": "Convexity",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 34.08,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "To simplify the concept, convex sets can be visualized as shapes in which any straight line connected between two points within the set remains entirely contained in that set. This characteristic defines a convex set. In relation to a function f, an epigraph consists of all points that lie on or are above the function's graph. A function f is classified as convex if its epigraph also forms a convex set, signifying that every line segment that is drawn across its graph stays on or above the curve of the function."
+    }
+}

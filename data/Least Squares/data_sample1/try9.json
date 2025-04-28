@@ -1,0 +1,36 @@
+{
+    "data": "Let  \ud835\udc34 be an  \ud835\udc5a\u00d7\ud835\udc5b matrix and let  \ud835\udc4f be a vector in  \u211d\ud835\udc5a. A least-squares solution of the matrix equation  \ud835\udc34\ud835\udc65=\ud835\udc4f is a vector  \ud835\udc65\u0302  in  \u211d\ud835\udc5b such that dist(\ud835\udc4f,\ud835\udc34\ud835\udc65\u0302 )\u2264dist(\ud835\udc4f,\ud835\udc34\ud835\udc65) for all other vectors  \ud835\udc65 in  \u211d\ud835\udc5b.Col(\ud835\udc34) is the set of all vectors of the form \ud835\udc34\ud835\udc65. Recall that  dist(\ud835\udc63,\ud835\udc64)=\u2016\ud835\udc63\u2212\ud835\udc64\u2016 is the distance, Definition 6.1.2 in Section 6.1, between the vectors  \ud835\udc63 and  \ud835\udc64. The term \u201cleast squares\u201d comes from the fact that  dist(\ud835\udc4f,\ud835\udc34\ud835\udc65)=\u2016\ud835\udc4f\u2212\ud835\udc34\ud835\udc65\u0302 \u2016 is the square root of the sum of the squares of the entries of the vector  \ud835\udc4f\u2212\ud835\udc34\ud835\udc65\u0302  . So a least-squares solution minimizes the sum of the squares of the differences between the entries of  \ud835\udc34\ud835\udc65\u0302  and  \ud835\udc4f . In other words, a least-squares solution solves the equation  \ud835\udc34\ud835\udc65=\ud835\udc4f as closely as possible, in the sense that the sum of the squares of the difference  \ud835\udc4f\u2212\ud835\udc34\ud835\udc65 is minimized.Hence, the closest vector, Note 6.3.1 in Section 6.3, of the form \ud835\udc34\ud835\udc65 to \ud835\udc4f is the orthogonal projection of \ud835\udc4f onto Col(\ud835\udc34). This is denoted \ud835\udc4fCol(\ud835\udc34)",
+    "goal": "**Core Principle to Visualize:**\nThe least-squares solution minimizes the distance between the vector \\( b \\) and the range of the matrix \\( A \\) (Col(A)), represented as the orthogonal projection of \\( b \\) onto Col(A).\n\n**Query:**\nCreate a visualization to explain the concept of least-squares solutions as the orthogonal projection of a vector onto a subspace. The goal of this visualization is to clarify the relationship between the vector \\( b \\), the matrix \\( A \\), and the geometric interpretation of the least-squares solution as the closest point in Col(A) to \\( b \\). This could include a diagram showing the vector \\( b \\), the subspace formed by Col(A), and the orthogonal projection \\( \\hat{x} \\) where \\( b \\) \"drops down\" to meet Col(A). \n\nFor this visualization, consider using a combination of 3D plot and 2D diagrams to demonstrate both the distances involved and how the projection works in geometric space. Include labels and arrows to indicate the directions of distance and projection, thereby enhancing the clarity and intuitive grasp of how this process works mathematically. \n\n**Educational Objective:**\nBy engaging with this visualization, learners will develop a deep understanding of how the least-squares solution operates geometrically, specifically how the orthogonal projection minimizes the distance, and why this concept is vital in applications such as data fitting and regression analysis in linear algebra.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom mpl_toolkits.mplot3d import Axes3D\n\n# Define vectors\nb = np.array([1, 2, 3])\nA = np.array([[1, 0, 0], [0, 1, 0]])\n# Orthogonal projection of b onto Col(A)\nb_proj = A.T @ np.linalg.inv(A @ A.T) @ (A @ b)\n\n# Create the figure and axis\nfig = plt.figure(figsize=(12, 8))\nax = fig.add_subplot(111, projection='3d')\n\n# Create arrow for vector b\nax.quiver(0, 0, 0, b[0], b[1], b[2], color='r', arrow_length_ratio=0.1, label='Vector b')\n\n# Create the subspace Col(A)\nx = np.linspace(-1, 2, 10)\ny = np.linspace(-1, 2, 10)\nX, Y = np.meshgrid(x, y)\nZ = np.zeros_like(X)\n\n# Plotting the plane defined by Col(A)\nax.plot_surface(X, Y, Z, alpha=0.5, color='blue', label='Col(A)')\n\n# Create arrow for projection of b\nax.quiver(b[0], b[1], b[2], b_proj[0] - b[0], b_proj[1] - b[1], b_proj[2] - b[2], color='g', arrow_length_ratio=0.1, label='Projection of b onto Col(A)')\n\n# Set labels\nax.text(b[0] / 2, b[1] / 2, b[2] / 2, 'b', color='red', fontsize=14)\nax.text(b_proj[0], b_proj[1], b_proj[2], 'b_proj', color='green', fontsize=14)\nax.text(0, 0, 0, 'Col(A)', color='blue', fontsize=14)\n\n# Set limits and labels\nax.set_xlim([0, 2])\nax.set_ylim([0, 2])\nax.set_zlim([0, 3])\nax.set_xlabel('X-axis')\nax.set_ylabel('Y-axis')\nax.set_zlabel('Z-axis')\nax.set_title('Least Squares Solution: Orthogonal Projection')\n\n# Legend\nax.legend(loc='upper left')\n\nplt.tight_layout()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-27T20:02:17.626742",
+        "run_end_time_iso": "2025-04-27T20:03:10.544471",
+        "topic": "Least Squares",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 52.92,
+        "total_api_calls": 6,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "code_error_identifier_agent": 1,
+            "code_error_correction_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": false,
+        "code_execution_attempts": 2,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "Let  \ud835\udc34 be an  \ud835\udc5a\u00d7\ud835\udc5b matrix and let  \ud835\udc4f be a vector in  \u211d\ud835\udc5a. A least-squares solution of the matrix equation  \ud835\udc34\ud835\udc65=\ud835\udc4f is a vector  \ud835\udc65\u0302  in  \u211d\ud835\udc5b such that dist(\ud835\udc4f,\ud835\udc34\ud835\udc65\u0302 )\u2264dist(\ud835\udc4f,\ud835\udc34\ud835\udc65) for all other vectors  \ud835\udc65 in  \u211d\ud835\udc5b.Col(\ud835\udc34) is the set of all vectors of the form \ud835\udc34\ud835\udc65. Recall that  dist(\ud835\udc63,\ud835\udc64)=\u2016\ud835\udc63\u2212\ud835\udc64\u2016 is the distance, Definition 6.1.2 in Section 6.1, between the vectors  \ud835\udc63 and  \ud835\udc64. The term \u201cleast squares\u201d comes from the fact that  dist(\ud835\udc4f,\ud835\udc34\ud835\udc65)=\u2016\ud835\udc4f\u2212\ud835\udc34\ud835\udc65\u0302 \u2016 is the square root of the sum of the squares of the entries of the vector  \ud835\udc4f\u2212\ud835\udc34\ud835\udc65\u0302  . So a least-squares solution minimizes the sum of the squares of the differences between the entries of  \ud835\udc34\ud835\udc65\u0302  and  \ud835\udc4f . In other words, a least-squares solution solves the equation  \ud835\udc34\ud835\udc65=\ud835\udc4f as closely as possible, in the sense that the sum of the squares of the difference  \ud835\udc4f\u2212\ud835\udc34\ud835\udc65 is minimized.Hence, the closest vector, Note 6.3.1 in Section 6.3, of the form \ud835\udc34\ud835\udc65 to \ud835\udc4f is the orthogonal projection of \ud835\udc4f onto Col(\ud835\udc34). This is denoted \ud835\udc4fCol(\ud835\udc34)"
+    }
+}

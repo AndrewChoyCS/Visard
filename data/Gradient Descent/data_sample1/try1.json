@@ -1,0 +1,44 @@
+{
+    "data": "Gradient descent is a method for unconstrained mathematical optimization. It is a first-order iterative algorithm for minimizing a differentiable multivariate function. The idea is to take repeated steps in the opposite direction of the gradient (or approximate gradient) of the function at the current point, because this is the direction of steepest descent. Conversely, stepping in the direction of the gradient will lead to a trajectory that maximizes that function; the procedure is then known as gradient ascent. It is particularly useful in machine learning for minimizing the cost or loss function.",
+    "goal": "**Core Principle:** The iterative process of taking steps in the direction of the gradient for gradient ascent and the opposite direction for gradient descent as methods for optimization.\n\n**Query:** Create a visualization to explain the iterative nature of gradient descent and gradient ascent in optimizing functions. The goal of this visualization is to clarify the difference between the two methods by illustrating how movement along the gradient leads to either minimization (gradient descent) or maximization (gradient ascent) of a multivariate function. The design should include a 3D surface plot representing the function, overlaid with arrows indicating the direction of movement (both upward for ascent and downward for descent) at key points, highlighting the steepest paths. This diagram should effectively depict relationships between the function's gradient, the steps taken, and the outcomes achieved, aiding learners in comprehending the cause-and-effect relationships inherent in optimization. \n\n**Educational Outcomes:** Students will gain a deep understanding of how gradient descent and ascent work in optimization, visualize the impact of moving in different directions, and better appreciate the iterative nature of these algorithms. The visualization should employ clear labels and color coding to distinguish between ascent and descent paths, thereby reinforcing the sequential processes involved in both methodologies.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom mpl_toolkits.mplot3d import Axes3D\n\n# Create a grid of points\nX = np.linspace(-3, 3, 100)\nY = np.linspace(-3, 3, 100)\nX, Y = np.meshgrid(X, Y)\n\n# Define the multivariate function (a simple paraboloid)\nZ = -X**2 - Y**2 + 9\n\n# Calculate the gradient\ndef compute_gradient(x, y):\n    dz_dx = -2*x\n    dz_dy = -2*y\n    return np.array([dz_dx, dz_dy])\n\n# Initialize starting points for ascent and descent\nstart_ascent = np.array([1.5, 1.5])\nstart_descent = np.array([-1.5, -1.5])\nsteps = 5\nstep_size = 0.5\n\n# Store positions for plotting\nascent_path = [start_ascent]\ndescent_path = [start_descent]\n\n# Compute ascent path\nfor _ in range(steps):\n    grad = compute_gradient(ascent_path[-1][0], ascent_path[-1][1])\n    ascent_path.append(ascent_path[-1] + step_size * grad)\n\n# Compute descent path\nfor _ in range(steps):\n    grad = compute_gradient(descent_path[-1][0], descent_path[-1][1])\n    descent_path.append(descent_path[-1] - step_size * grad)\n\nascent_path = np.array(ascent_path)\ndescent_path = np.array(descent_path)\n\n# Plotting the surface and paths\nfig = plt.figure(figsize=(12, 8))\nax = fig.add_subplot(111, projection='3d')\nax.plot_surface(X, Y, Z, alpha=0.7, cmap='viridis')\n\n# Plot ascent path\nax.plot(ascent_path[:, 0], ascent_path[:, 1], \n        [compute_gradient(x, y)[0] for x, y in zip(ascent_path[:, 0], ascent_path[:, 1])], \n        color='r', marker='o', label='Gradient Ascent Path')\nfor i in range(len(ascent_path)-1):\n    ax.quiver(ascent_path[i, 0], ascent_path[i, 1], Z[int(ascent_path[i, 0]+3), int(ascent_path[i, 1]+3)], \n             ascent_path[i+1, 0] - ascent_path[i, 0], ascent_path[i+1, 1] - ascent_path[i, 1], \n             compute_gradient(ascent_path[i, 0], ascent_path[i, 1])[0], color='r', arrow_length_ratio=0.1)\n\n# Plot descent path\nax.plot(descent_path[:, 0], descent_path[:, 1], \n        [compute_gradient(x, y)[0] for x, y in zip(descent_path[:, 0], descent_path[:, 1])], \n        color='b', marker='o', label='Gradient Descent Path')\nfor i in range(len(descent_path)-1):\n    ax.quiver(descent_path[i, 0], descent_path[i, 1], Z[int(descent_path[i, 0]+3), int(descent_path[i, 1]+3)], \n             descent_path[i+1, 0] - descent_path[i, 0], descent_path[i+1, 1] - descent_path[i, 1], \n             -compute_gradient(descent_path[i, 0], descent_path[i, 1])[0], color='b', arrow_length_ratio=0.1)\n\n# Annotations and labels\nax.set_xlabel('X Axis')\nax.set_ylabel('Y Axis')\nax.set_zlabel('Function Value')\nax.set_title('Gradient Descent vs Gradient Ascent')\nax.legend()\nax.view_init(30, 240)",
+    "metrics": {
+        "run_start_time_iso": "2025-04-27T02:59:53.441929",
+        "run_end_time_iso": "2025-04-27T03:01:00.452707",
+        "topic": "Gradient Descent",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 67.01,
+        "total_api_calls": 6,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "code_error_identifier_agent": 1,
+            "code_error_correction_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": false,
+        "code_execution_attempts": 2,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "Gradient descent is a method for unconstrained mathematical optimization. It is a first-order iterative algorithm for minimizing a differentiable multivariate function. The idea is to take repeated steps in the opposite direction of the gradient (or approximate gradient) of the function at the current point, because this is the direction of steepest descent. Conversely, stepping in the direction of the gradient will lead to a trajectory that maximizes that function; the procedure is then known as gradient ascent. It is particularly useful in machine learning for minimizing the cost or loss function."
+    },
+    "human_scores": {
+        "human_overall_goal_score": 4,
+        "human_goal_alignment_score": 3,
+        "human_visual_clarity_score": 1,
+        "human_accuracy_score": 1,
+        "human_labels_score": 3,
+        "human_visual_type_selection": 4
+    }   
+}

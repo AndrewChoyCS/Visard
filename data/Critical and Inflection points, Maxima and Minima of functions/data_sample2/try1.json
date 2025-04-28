@@ -1,0 +1,34 @@
+{
+    "data": "We say that f ( x ) has an absolute (or global) maximum at x = c if f ( x ) \u2264 f ( c ) for every x in the domain we are working on. We say that f ( x ) has a relative (or local) maximum at x = c if f ( x ) \u2264 f ( c ) for every x in some open interval around x = c . We say that f ( x ) has an absolute (or global) minimum at x = c if f ( x ) \u2265 f ( c ) for every x in the domain we are working on. We say that f ( x ) has a relative (or local) minimum at x = c if f ( x ) \u2265 f ( c ) for every x in some open interval around x = c .",
+    "goal": "### Core Principle Extraction\nThe core principle to be visualized is the distinction between absolute (global) and relative (local) maxima and minima of a function. This principle encompasses both definitions and the contextual differences regarding the domain and open intervals around specific points.\n\n### Visualization Query\nCreate a visualization to explain the concepts of absolute and relative maxima and minima in functions. The goal is to illustrate the differences between these key types of extrema by using clear graphical representations of functions with labeled critical points. Specifically, the visualization should highlight how absolute maxima and minima are determined over the entire domain of the function, while relative maxima and minima are identified within local intervals. \n\nUse a combination of graphs depicting different scenarios, such as:\n1. A function with distinct absolute and relative maxima and minima.\n2. Graphs that show regions around critical points to illustrate local behavior.\n3. Comparative graphs of multiple functions to highlight variations in extrema.\n\nBy employing a clear graphical style, like an infographic or overlaying multiple function graphs with annotations, learners can visually grasp the relationships between these concepts effectively. This visual representation will foster deeper understanding by clearly delineating where a function achieves its maximum or minimum values in both global and local contexts.\n\n### Educational Objective\nStudents should be able to distinguish between absolute and relative extrema, articulating the significance of these concepts in analyzing functions. By interpreting the visual representation, learners will achieve a comprehensive understanding of how maxima and minima behave in different contexts, preparing them for advanced applications in mathematical analysis and calculus.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Create a function to visualize\nx = np.linspace(-10, 10, 400)\ny1 = -0.1 * (x**3) + 3 * x**2 - 2 * x + 1\ny2 = 0.1 * np.sin(x) + 2\ny3 = -0.2 * (x**2) + 4\n\n# Set up the figure and axes\nfig, axs = plt.subplots(2, 2, figsize=(12, 10))\nfig.suptitle('Absolute and Relative Maxima and Minima', fontsize=16)\n\n# Plot 1: Function with distinct absolute and relative extrema\naxs[0, 0].plot(x, y1, label='y = -0.1x\u00b3 + 3x\u00b2 - 2x + 1', color='blue')\naxs[0, 0].scatter([-1, 3], [5, 7], color='red')  # Absolute\naxs[0, 0].scatter([1], [2], color='green')       # Relative\naxs[0, 0].text(-1, 5.2, 'Absolute Maximum', fontsize=10, color='red')\naxs[0, 0].text(3, 7.2, 'Absolute Maximum', fontsize=10, color='red')\naxs[0, 0].text(1, 2.2, 'Relative Maximum', fontsize=10, color='green')\naxs[0, 0].set_title('Function with Absolute and Relative Maxima', fontsize=14)\naxs[0, 0].set_xlabel('x')\naxs[0, 0].set_ylabel('f(x)')\n\n# Plot 2: Local behavior examination\naxs[0, 1].plot(x, y1, label='Local Behavior', color='blue')\naxs[0, 1].fill_between(x, y1, where=(x > -1) & (x < 1), color='lightgray', alpha=0.5)\naxs[0, 1].set_title('Local Behavior Around Critical Point', fontsize=14)\naxs[0, 1].set_xlabel('x')\naxs[0, 1].set_ylabel('f(x)')\n\n# Plot 3: Comparison of functions\naxs[1, 0].plot(x, y1, label='y1 = -0.1x\u00b3 + 3x\u00b2 - 2x + 1', color='blue')\naxs[1, 0].plot(x, y2, label='y2 = 0.1sin(x) + 2', color='orange')\naxs[1, 0].plot(x, y3, label='y3 = -0.2x\u00b2 + 4', color='green')\naxs[1, 0].set_title('Comparative Graph of Functions', fontsize=14)\naxs[1, 0].set_xlabel('x')\naxs[1, 0].set_ylabel('f(x)')\naxs[1, 0].legend()\n\n# Plot 4: Highlight extrema with annotations\naxs[1, 1].plot(x, y1, color='blue')\naxs[1, 1].scatter([-1, 3, 1], [5, 7, 2], color='red')  \naxs[1, 1].text(-1, 5.2, 'Abs Max', fontsize=10, color='red')\naxs[1, 1].text(3, 7.2, 'Abs Max', fontsize=10, color='red')\naxs[1, 1].text(1, 2.2, 'Rel Max', fontsize=10, color='green')\n\n# Adjust layout\nplt.tight_layout(rect=[0, 0.03, 1, 0.95])",
+    "metrics": {
+        "run_start_time_iso": "2025-04-28T02:15:19.662883",
+        "run_end_time_iso": "2025-04-28T02:16:28.795859",
+        "topic": "Critical and Inflection points, Maxima and Minima of functions",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 69.13,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "We say that f ( x ) has an absolute (or global) maximum at x = c if f ( x ) \u2264 f ( c ) for every x in the domain we are working on. We say that f ( x ) has a relative (or local) maximum at x = c if f ( x ) \u2264 f ( c ) for every x in some open interval around x = c . We say that f ( x ) has an absolute (or global) minimum at x = c if f ( x ) \u2265 f ( c ) for every x in the domain we are working on. We say that f ( x ) has a relative (or local) minimum at x = c if f ( x ) \u2265 f ( c ) for every x in some open interval around x = c ."
+    }
+}

@@ -1,0 +1,426 @@
+2025-04-28 04:38:38,671 - INFO - Starting try #9
+2025-04-28 04:38:38,704 - INFO - Starting pipeline run for topic: Critical and Inflection points, Maxima and Minima of functions
+2025-04-28 04:38:38,719 - INFO - Executing Agent: simple_query_agent
+2025-04-28 04:38:38,731 - INFO - Running inference via agent 'simple_query_agent' with model: gpt-4o-mini
+2025-04-28 04:38:44,948 - INFO - Inference successful for agent simple_query_agent.
+2025-04-28 04:38:44,980 - INFO - Agent simple_query_agent response received.
+2025-04-28 04:38:45,005 - INFO - Simple goal generated: **Core Principle:** The relationship between the height of a projectile, its time of ascent, and the calculation of its maximum height using derivatives to find critical points.
+
+---
+
+**Query:** Create a visualization to explain the process of calculating the peak height of a projectile thrown upward, illustrated through the equation h = 2 + 10t − 4t². The goal is to clarify how derivatives are used to identify the point where the slope of the height function equals zero, ultimately indicating the maximum height of the projectile. This visualization should show the relationship between time (t), height (h), and the derivative of the height function (h'), emphasizing the identification of the inflection point at t = 1.25 seconds and the maximum height of 7 meters. 
+
+Consider using a combination of a 2D graph depicting the height as a parabolic curve with labeled axes, an overlay indicating the derivative function as a line graph, and a highlighted point marking the critical point. This dual visualization approach helps in understanding the sequential progression from the projectile's motion to the calculations involved in determining its maximum height. 
+
+**Objective:** By engaging with this visual representation, learners will grasp the interconnectedness of the concepts of maxima, minima, and critical points in functions, enhancing their ability to analyze projectile motion and apply similar principles in various contexts.
+2025-04-28 04:38:45,197 - INFO - Executing Agent: visualization_code_generator_agent
+2025-04-28 04:38:45,210 - INFO - Running inference via agent 'visualization_code_generator_agent' with model: gpt-4o-mini
+2025-04-28 04:38:54,167 - INFO - Inference successful for agent visualization_code_generator_agent.
+2025-04-28 04:38:54,381 - INFO - Agent visualization_code_generator_agent response received.
+2025-04-28 04:38:54,396 - INFO - Initial visualization code generated: ```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Time values from 0 to 3 seconds
+t = np.linspace(0, 3, 300)
+# Height function h = 2 + 10t - 4t^2
+h = 2 + 10*t - 4*t**2
+# Derivative of the height function h' = 10 - 8t
+h_prime = 10 - 8*t
+
+# Create the figure and axis
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Plotting the height function
+ax1.plot(t, h, label='Height (h)', color='blue')
+ax1.axhline(0, color='black', lw=0.5, ls='--')
+ax1.axvline(0, color='black', lw=0.5, ls='--')
+ax1.set_title('Projectile Motion: Height vs. Time')
+ax1.set_xlabel('Time (t) [seconds]')
+ax1.set_ylabel('Height (h) [meters]', color='blue')
+ax1.tick_params(axis='y', labelcolor='blue')
+ax1.set_ylim(0, 8)
+
+# Plotting the derivative function
+ax2 = ax1.twinx()
+ax2.plot(t, h_prime, label="Derivative (h')", color='orange', ls='--')
+ax2.axhline(0, color='black', lw=1, ls='--')
+ax2.set_ylabel("Slope (h')", color='orange')
+ax2.tick_params(axis='y', labelcolor='orange')
+ax2.set_ylim(-10, 10)
+
+# Marking the critical point
+critical_t = 1.25
+max_height = 7
+ax1.plot(critical_t, max_height, 'ro')  # Critical point
+ax1.annotate('Critical Point\n(t = 1.25s, h = 7m)', 
+             xy=(critical_t, max_height), 
+             xytext=(critical_t+0.5, max_height-1),
+             arrowprops=dict(facecolor='black', arrowstyle='->'),
+             fontsize=10)
+
+# Adding grid, legends
+ax1.grid()
+ax1.legend(loc='upper left')
+ax2.legend(loc='upper right')
+plt.title('Height & Derivative of a Projectile Over Time')
+```
+2025-04-28 04:38:54,585 - INFO - Executing Code with Debug Loop
+2025-04-28 04:38:54,598 - INFO - Execution Attempt: 1
+2025-04-28 04:38:54,620 - INFO - Attempting to execute cleaned code (attempt 1):
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Time values from 0 to 3 seconds
+t = np.linspace(0, 3, 300)
+# Height function h = 2 + 10t - 4t^2
+h = 2 + 10*t - 4*t**2
+# Derivative of the height function h' = 10 - 8t
+h_prime = 10 - 8*t
+
+# Create the figure and axis
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Plotting the height function
+ax1.plot(t, h, label='Height (h)', color='blue')
+ax1.axhline(0, color='black', lw=0.5, ls='--')
+ax1.axvline(0, color='black', lw=0.5, ls='--')
+ax1.set_title('Projectile Motion: Height vs. Time')
+ax1.set_xlabel('Time (t) [seconds]')
+ax1.set_ylabel('Height (h) [meters]', color='blue')
+ax1.tick_params(axis='y', labelcolor='blue')
+ax1.set_ylim(0, 8)
+
+# Plotting the derivative function
+ax2 = ax1.twinx()
+ax2.plot(t, h_prime, label="Derivative (h')", color='orange', ls='--')
+ax2.axhline(0, color='black', lw=1, ls='--')
+ax2.set_ylabel("Slope (h')", color='orange')
+ax2.tick_params(axis='y', labelcolor='orange')
+ax2.set_ylim(-10, 10)
+
+# Marking the critical point
+critical_t = 1.25
+max_height = 7
+ax1.plot(critical_t, max_height, 'ro')  # Critical point
+ax1.annotate('Critical Point\n(t = 1.25s, h = 7m)', 
+             xy=(critical_t, max_height), 
+             xytext=(critical_t+0.5, max_height-1),
+             arrowprops=dict(facecolor='black', arrowstyle='->'),
+             fontsize=10)
+
+# Adding grid, legends
+ax1.grid()
+ax1.legend(loc='upper left')
+ax2.legend(loc='upper right')
+plt.title('Height & Derivative of a Projectile Over Time')
+2025-04-28 04:38:54,901 - INFO - Code executed successfully on attempt 1
+2025-04-28 04:38:54,915 - INFO - Code after execution attempts: import numpy as np
+import matplotlib.pyplot as plt
+
+# Time values from 0 to 3 seconds
+t = np.linspace(0, 3, 300)
+# Height function h = 2 + 10t - 4t^2
+h = 2 + 10*t - 4*t**2
+# Derivative of the height function h' = 10 - 8t
+h_prime = 10 - 8*t
+
+# Create the figure and axis
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Plotting the height function
+ax1.plot(t, h, label='Height (h)', color='blue')
+ax1.axhline(0, color='black', lw=0.5, ls='--')
+ax1.axvline(0, color='black', lw=0.5, ls='--')
+ax1.set_title('Projectile Motion: Height vs. Time')
+ax1.set_xlabel('Time (t) [seconds]')
+ax1.set_ylabel('Height (h) [meters]', color='blue')
+ax1.tick_params(axis='y', labelcolor='blue')
+ax1.set_ylim(0, 8)
+
+# Plotting the derivative function
+ax2 = ax1.twinx()
+ax2.plot(t, h_prime, label="Derivative (h')", color='orange', ls='--')
+ax2.axhline(0, color='black', lw=1, ls='--')
+ax2.set_ylabel("Slope (h')", color='orange')
+ax2.tick_params(axis='y', labelcolor='orange')
+ax2.set_ylim(-10, 10)
+
+# Marking the critical point
+critical_t = 1.25
+max_height = 7
+ax1.plot(critical_t, max_height, 'ro')  # Critical point
+ax1.annotate('Critical Point\n(t = 1.25s, h = 7m)', 
+             xy=(critical_t, max_height), 
+             xytext=(critical_t+0.5, max_height-1),
+             arrowprops=dict(facecolor='black', arrowstyle='->'),
+             fontsize=10)
+
+# Adding grid, legends
+ax1.grid()
+ax1.legend(loc='upper left')
+ax2.legend(loc='upper right')
+plt.title('Height & Derivative of a Projectile Over Time')
+2025-04-28 04:38:55,105 - INFO - Executing Sequence of Judges
+2025-04-28 04:38:55,158 - INFO - Judge Sequence Loop: 1
+2025-04-28 04:38:55,175 - INFO - Running Goal Alignment Judge...
+2025-04-28 04:38:55,215 - INFO - Executing Agent: goal_alignment_judge_agent
+2025-04-28 04:38:55,242 - INFO - Running inference via agent 'goal_alignment_judge_agent' with model: gpt-4o-mini
+2025-04-28 04:38:58,081 - INFO - Inference successful for agent goal_alignment_judge_agent.
+2025-04-28 04:38:58,108 - INFO - Agent goal_alignment_judge_agent response received.
+2025-04-28 04:38:58,129 - INFO - Parsed Judge Score: 4, Feedback: Feedback: The visualization effectively aligns with the learning goal by clearly depicting both the ...
+2025-04-28 04:38:58,179 - INFO - Passed Goal Alignment Judge ✅
+2025-04-28 04:38:58,229 - INFO - Running Visual Clarity Judge...
+2025-04-28 04:38:58,247 - INFO - Executing Agent: visual_clarity_judge_agent
+2025-04-28 04:38:58,287 - INFO - Running inference via agent 'visual_clarity_judge_agent' with model: gpt-4o-mini
+2025-04-28 04:39:01,841 - INFO - Inference successful for agent visual_clarity_judge_agent.
+2025-04-28 04:39:01,891 - INFO - Agent visual_clarity_judge_agent response received.
+2025-04-28 04:39:01,905 - INFO - Parsed Judge Score: 4, Feedback: Feedback: The visualization is generally easy to interpret at a glance, with a logical layout that d...
+2025-04-28 04:39:01,960 - INFO - Passed Visual Clarity Judge ✅
+2025-04-28 04:39:01,973 - INFO - All judges passed. Finalizing code.
+2025-04-28 04:39:01,985 - INFO - Final code after all judges: import numpy as np
+import matplotlib.pyplot as plt
+
+# Time values from 0 to 3 seconds
+t = np.linspace(0, 3, 300)
+# Height function h = 2 + 10t - 4t^2
+h = 2 + 10*t - 4*t**2
+# Derivative of the height function h' = 10 - 8t
+h_prime = 10 - 8*t
+
+# Create the figure and axis
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Plotting the height function
+ax1.plot(t, h, label='Height (h)', color='blue')
+ax1.axhline(0, color='black', lw=0.5, ls='--')
+ax1.axvline(0, color='black', lw=0.5, ls='--')
+ax1.set_title('Projectile Motion: Height vs. Time')
+ax1.set_xlabel('Time (t) [seconds]')
+ax1.set_ylabel('Height (h) [meters]', color='blue')
+ax1.tick_params(axis='y', labelcolor='blue')
+ax1.set_ylim(0, 8)
+
+# Plotting the derivative function
+ax2 = ax1.twinx()
+ax2.plot(t, h_prime, label="Derivative (h')", color='orange', ls='--')
+ax2.axhline(0, color='black', lw=1, ls='--')
+ax2.set_ylabel("Slope (h')", color='orange')
+ax2.tick_params(axis='y', labelcolor='orange')
+ax2.set_ylim(-10, 10)
+
+# Marking the critical point
+critical_t = 1.25
+max_height = 7
+ax1.plot(critical_t, max_height, 'ro')  # Critical point
+ax1.annotate('Critical Point\n(t = 1.25s, h = 7m)', 
+             xy=(critical_t, max_height), 
+             xytext=(critical_t+0.5, max_height-1),
+             arrowprops=dict(facecolor='black', arrowstyle='->'),
+             fontsize=10)
+
+# Adding grid, legends
+ax1.grid()
+ax1.legend(loc='upper left')
+ax2.legend(loc='upper right')
+plt.title('Height & Derivative of a Projectile Over Time')
+2025-04-28 04:39:02,231 - INFO - Running final code and saving visualization.
+2025-04-28 04:39:02,245 - INFO - Executing final script to save to: /Users/susannaatanessian/Desktop/Visard/data/Critical and Inflection points, Maxima and Minima of functions/data_sample20/try9.png
+2025-04-28 04:39:02,370 - INFO - Final visualization saved successfully to /Users/susannaatanessian/Desktop/Visard/data/Critical and Inflection points, Maxima and Minima of functions/data_sample20/try9.png
+2025-04-28 04:39:02,407 - INFO - Completed Pipeline ✅
+2025-04-28 04:39:02,424 - INFO - Finished try #9
+2025-04-28 04:39:02,436 - INFO - Data entry saved successfully to data/Critical and Inflection points, Maxima and Minima of functions/data_sample20/try9.json
+2025-04-28 04:39:02,484 - INFO - Starting try #10
+2025-04-28 04:39:02,499 - INFO - Starting pipeline run for topic: Critical and Inflection points, Maxima and Minima of functions
+2025-04-28 04:39:02,512 - INFO - Executing Agent: simple_query_agent
+2025-04-28 04:39:02,553 - INFO - Running inference via agent 'simple_query_agent' with model: gpt-4o-mini
+2025-04-28 04:39:07,576 - INFO - Inference successful for agent simple_query_agent.
+2025-04-28 04:39:07,619 - INFO - Agent simple_query_agent response received.
+2025-04-28 04:39:07,630 - INFO - Simple goal generated: **Core Principle**: The relationship between the time variable and the height of a projectile, particularly identifying the maximum height through the use of derivatives and critical points.
+
+**Query**: Create a visualization to explain how the height of a projectile changes over time and the significance of finding the maximum height using derivatives. The visualization should illustrate the parabolic trajectory of the projectile and highlight the critical point where the slope (rate of change) is zero, indicating the peak height. It should include a graph showing the height as a function of time, with clearly marked axes, the equation of the function, and annotations highlighting the point (1.25 seconds, 7 m) where the maximum height occurs. 
+
+This visualization should incorporate a line graph style, integrating elements such as color coding or highlighting to differentiate the sections of the graph and the critical point. The goal is to clarify the cause-effect relationship between time and height, emphasizing how derivatives help locate the maximum point in a parabolic graph. 
+
+**Educational Outcome**: Students should understand how to analyze polynomial functions using derivatives, recognize critical points, and visualize the concepts of maxima and minima in real-world scenarios, deepening their comprehension of motion under gravity.
+2025-04-28 04:39:07,791 - INFO - Executing Agent: visualization_code_generator_agent
+2025-04-28 04:39:07,804 - INFO - Running inference via agent 'visualization_code_generator_agent' with model: gpt-4o-mini
+2025-04-28 04:39:15,562 - INFO - Inference successful for agent visualization_code_generator_agent.
+2025-04-28 04:39:15,615 - INFO - Agent visualization_code_generator_agent response received.
+2025-04-28 04:39:15,628 - INFO - Initial visualization code generated: ```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Time values from 0 to 2.5 seconds
+t = np.linspace(0, 2.5, 100)
+# Height function: h(t) = -4.9t^2 + 12.25t
+h = -4.9 * t**2 + 12.25 * t
+
+# Finding the maximum height and its corresponding time
+max_time = 1.25
+max_height = -4.9 * max_time**2 + 12.25 * max_time
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+plt.plot(t, h, color='skyblue', label='Height of Projectile', linewidth=2)
+plt.axhline(0, color='black',linewidth=0.5, ls='--')
+plt.axvline(0, color='black',linewidth=0.5, ls='--')
+
+# Highlight the maximum height point
+plt.scatter([max_time], [max_height], color='red', zorder=5)
+plt.text(max_time + 0.05, max_height + 0.5, f'Max Height\n({max_time}s, {max_height}m)', fontsize=10, color='red', bbox=dict(facecolor='white', alpha=0.8))
+
+# Labeling axes
+plt.title('Height of a Projectile Over Time', fontsize=14)
+plt.xlabel('Time (seconds)', fontsize=12)
+plt.ylabel('Height (meters)', fontsize=12)
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+plt.xlim(0, 2.5)
+plt.ylim(0, 8)
+
+# Adding the function equation
+plt.text(0.1, 7, r'$h(t) = -4.9t^2 + 12.25t$', fontsize=12, bbox=dict(facecolor='lightyellow', alpha=0.5))
+
+# Creating legend
+plt.legend(fontsize=12)
+plt.grid()
+```
+2025-04-28 04:39:15,789 - INFO - Executing Code with Debug Loop
+2025-04-28 04:39:15,802 - INFO - Execution Attempt: 1
+2025-04-28 04:39:15,813 - INFO - Attempting to execute cleaned code (attempt 1):
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Time values from 0 to 2.5 seconds
+t = np.linspace(0, 2.5, 100)
+# Height function: h(t) = -4.9t^2 + 12.25t
+h = -4.9 * t**2 + 12.25 * t
+
+# Finding the maximum height and its corresponding time
+max_time = 1.25
+max_height = -4.9 * max_time**2 + 12.25 * max_time
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+plt.plot(t, h, color='skyblue', label='Height of Projectile', linewidth=2)
+plt.axhline(0, color='black',linewidth=0.5, ls='--')
+plt.axvline(0, color='black',linewidth=0.5, ls='--')
+
+# Highlight the maximum height point
+plt.scatter([max_time], [max_height], color='red', zorder=5)
+plt.text(max_time + 0.05, max_height + 0.5, f'Max Height\n({max_time}s, {max_height}m)', fontsize=10, color='red', bbox=dict(facecolor='white', alpha=0.8))
+
+# Labeling axes
+plt.title('Height of a Projectile Over Time', fontsize=14)
+plt.xlabel('Time (seconds)', fontsize=12)
+plt.ylabel('Height (meters)', fontsize=12)
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+plt.xlim(0, 2.5)
+plt.ylim(0, 8)
+
+# Adding the function equation
+plt.text(0.1, 7, r'$h(t) = -4.9t^2 + 12.25t$', fontsize=12, bbox=dict(facecolor='lightyellow', alpha=0.5))
+
+# Creating legend
+plt.legend(fontsize=12)
+plt.grid()
+2025-04-28 04:39:16,064 - INFO - Code executed successfully on attempt 1
+2025-04-28 04:39:16,086 - INFO - Code after execution attempts: import numpy as np
+import matplotlib.pyplot as plt
+
+# Time values from 0 to 2.5 seconds
+t = np.linspace(0, 2.5, 100)
+# Height function: h(t) = -4.9t^2 + 12.25t
+h = -4.9 * t**2 + 12.25 * t
+
+# Finding the maximum height and its corresponding time
+max_time = 1.25
+max_height = -4.9 * max_time**2 + 12.25 * max_time
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+plt.plot(t, h, color='skyblue', label='Height of Projectile', linewidth=2)
+plt.axhline(0, color='black',linewidth=0.5, ls='--')
+plt.axvline(0, color='black',linewidth=0.5, ls='--')
+
+# Highlight the maximum height point
+plt.scatter([max_time], [max_height], color='red', zorder=5)
+plt.text(max_time + 0.05, max_height + 0.5, f'Max Height\n({max_time}s, {max_height}m)', fontsize=10, color='red', bbox=dict(facecolor='white', alpha=0.8))
+
+# Labeling axes
+plt.title('Height of a Projectile Over Time', fontsize=14)
+plt.xlabel('Time (seconds)', fontsize=12)
+plt.ylabel('Height (meters)', fontsize=12)
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+plt.xlim(0, 2.5)
+plt.ylim(0, 8)
+
+# Adding the function equation
+plt.text(0.1, 7, r'$h(t) = -4.9t^2 + 12.25t$', fontsize=12, bbox=dict(facecolor='lightyellow', alpha=0.5))
+
+# Creating legend
+plt.legend(fontsize=12)
+plt.grid()
+2025-04-28 04:39:16,232 - INFO - Executing Sequence of Judges
+2025-04-28 04:39:16,256 - INFO - Judge Sequence Loop: 1
+2025-04-28 04:39:16,277 - INFO - Running Goal Alignment Judge...
+2025-04-28 04:39:16,294 - INFO - Executing Agent: goal_alignment_judge_agent
+2025-04-28 04:39:16,314 - INFO - Running inference via agent 'goal_alignment_judge_agent' with model: gpt-4o-mini
+2025-04-28 04:39:19,761 - INFO - Inference successful for agent goal_alignment_judge_agent.
+2025-04-28 04:39:19,787 - INFO - Agent goal_alignment_judge_agent response received.
+2025-04-28 04:39:19,806 - INFO - Parsed Judge Score: 4, Feedback: Feedback: The visualization effectively aligns with the learning goal by illustrating the relationsh...
+2025-04-28 04:39:19,856 - INFO - Passed Goal Alignment Judge ✅
+2025-04-28 04:39:19,870 - INFO - Running Visual Clarity Judge...
+2025-04-28 04:39:19,883 - INFO - Executing Agent: visual_clarity_judge_agent
+2025-04-28 04:39:19,938 - INFO - Running inference via agent 'visual_clarity_judge_agent' with model: gpt-4o-mini
+2025-04-28 04:39:23,143 - INFO - Inference successful for agent visual_clarity_judge_agent.
+2025-04-28 04:39:23,167 - INFO - Agent visual_clarity_judge_agent response received.
+2025-04-28 04:39:23,182 - INFO - Parsed Judge Score: 4, Feedback: Feedback: The visualization is mostly easy to interpret at a glance, particularly due to the clear c...
+2025-04-28 04:39:23,253 - INFO - Passed Visual Clarity Judge ✅
+2025-04-28 04:39:23,266 - INFO - All judges passed. Finalizing code.
+2025-04-28 04:39:23,285 - INFO - Final code after all judges: import numpy as np
+import matplotlib.pyplot as plt
+
+# Time values from 0 to 2.5 seconds
+t = np.linspace(0, 2.5, 100)
+# Height function: h(t) = -4.9t^2 + 12.25t
+h = -4.9 * t**2 + 12.25 * t
+
+# Finding the maximum height and its corresponding time
+max_time = 1.25
+max_height = -4.9 * max_time**2 + 12.25 * max_time
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+plt.plot(t, h, color='skyblue', label='Height of Projectile', linewidth=2)
+plt.axhline(0, color='black',linewidth=0.5, ls='--')
+plt.axvline(0, color='black',linewidth=0.5, ls='--')
+
+# Highlight the maximum height point
+plt.scatter([max_time], [max_height], color='red', zorder=5)
+plt.text(max_time + 0.05, max_height + 0.5, f'Max Height\n({max_time}s, {max_height}m)', fontsize=10, color='red', bbox=dict(facecolor='white', alpha=0.8))
+
+# Labeling axes
+plt.title('Height of a Projectile Over Time', fontsize=14)
+plt.xlabel('Time (seconds)', fontsize=12)
+plt.ylabel('Height (meters)', fontsize=12)
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+plt.xlim(0, 2.5)
+plt.ylim(0, 8)
+
+# Adding the function equation
+plt.text(0.1, 7, r'$h(t) = -4.9t^2 + 12.25t$', fontsize=12, bbox=dict(facecolor='lightyellow', alpha=0.5))
+
+# Creating legend
+plt.legend(fontsize=12)
+plt.grid()
+2025-04-28 04:39:23,446 - INFO - Running final code and saving visualization.
+2025-04-28 04:39:23,479 - INFO - Executing final script to save to: /Users/susannaatanessian/Desktop/Visard/data/Critical and Inflection points, Maxima and Minima of functions/data_sample20/try10.png
+2025-04-28 04:39:23,579 - INFO - Final visualization saved successfully to /Users/susannaatanessian/Desktop/Visard/data/Critical and Inflection points, Maxima and Minima of functions/data_sample20/try10.png
+2025-04-28 04:39:23,599 - INFO - Completed Pipeline ✅
+2025-04-28 04:39:23,643 - INFO - Finished try #10
+2025-04-28 04:39:23,656 - INFO - Data entry saved successfully to data/Critical and Inflection points, Maxima and Minima of functions/data_sample20/try10.json

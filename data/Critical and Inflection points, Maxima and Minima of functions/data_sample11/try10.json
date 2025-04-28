@@ -1,0 +1,34 @@
+{
+    "data": "A function f(x) is said to achieve a global maximum at x = c if for every x within its domain, the inequality f(x) is less than or equal to f(c) holds. Similarly, f(x) exhibits a local maximum at x = c if f(x) is less than or equal to f(c) for every x within some vicinity around c. Conversely, f(x) is considered to attain a global minimum at x = c if, for all x in the domain, it satisfies f(x) being greater than or equal to f(c). On the other hand, f(x) has a local minimum at x = c when f(x) is greater than or equal to f(c) for every x within a certain open neighborhood surrounding c.",
+    "goal": "**Core Principle:** The definitions and distinctions between global and local maxima and minima of a function.\n\n**Visualization Query:**\nCreate a visualization to explain the concepts of global and local maxima and minima in functions. The goal of this visualization is to clarify the different conditions under which a function achieves its maximum or minimum values, demonstrating both global and local behavior. It should include multiple graphs to illustrate these concepts clearly, showing graphical representations where peaks (for maxima) and troughs (for minima) occur, along with shaded areas that indicate the vicinity for local extrema versus the entire function for global extrema. This visual should employ a combination of infographics and diagrams to depict not only the relationships but also the distinctions between global and local extremes, aiding in a deeper understanding of how these concepts interact within the larger realm of calculus.\n\n**Key Educational Outcomes:**\n1. Learners will develop a clear understanding of the differences between global and local maxima and minima.\n2. Learners will be able to identify and visualize where these points occur on a graph, enhancing their ability to analyze functions.\n3. The visualization will highlight the significance of the surrounding neighborhood in determining local extremes versus the entire domain for global extremes, supporting critical thinking about functional behavior.\n\n**Objective:** Facilitate a comprehensive understanding of how maxima and minima can be identified and differentiated on a graph, enabling students to apply this knowledge to analyze functions in depth.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(-10, 10, 400)\ny1 = -0.1 * (x**4) + 5 * (x**2)  # Polynomial function for global and local extrema\ny2 = np.sin(x)  # Sine function for illustrating local maximum and minimum\n\nfig, axs = plt.subplots(2, 1, figsize=(10, 12))\n\n# First graph for global and local maximum/minimum\naxs[0].plot(x, y1, label='f(x) = -0.1x^4 + 5x^2', color='blue')\naxs[0].scatter([0], [0], color='red', label='Local Maxima (0, 0)', zorder=5)\naxs[0].scatter([-5, 5], [25, 25], color='green', label='Local Minima (-5, 25) and (5, 25)', zorder=5)\naxs[0].fill_betweenx(y1, x, -10, where=(x < -5) | (x > 5), alpha=0.1, color='yellow', label='Global Maxima Area')\naxs[0].set_title('Global and Local Extrema')\naxs[0].set_xlabel('x')\naxs[0].set_ylabel('f(x)')\naxs[0].legend()\naxs[0].grid()\n\n# Second graph for local maximum and minimum of sine function\naxs[1].plot(x, y2, label='f(x) = sin(x)', color='purple')\naxs[1].scatter([np.pi/2, -np.pi/2], [1, -1], color='orange', label='Local Maxima and Minima', zorder=5)\naxs[1].fill_betweenx(y2, x, -10, alpha=0.1, color='cyan', label='Local Extrema Area')\naxs[1].set_title('Local Extrema in Sine Function')\naxs[1].set_xlabel('x')\naxs[1].set_ylabel('f(x)')\naxs[1].legend()\naxs[1].grid()\n\nplt.tight_layout()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-28T03:20:03.311985",
+        "run_end_time_iso": "2025-04-28T03:20:24.457206",
+        "topic": "Critical and Inflection points, Maxima and Minima of functions",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 21.15,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "A function f(x) is said to achieve a global maximum at x = c if for every x within its domain, the inequality f(x) is less than or equal to f(c) holds. Similarly, f(x) exhibits a local maximum at x = c if f(x) is less than or equal to f(c) for every x within some vicinity around c. Conversely, f(x) is considered to attain a global minimum at x = c if, for all x in the domain, it satisfies f(x) being greater than or equal to f(c). On the other hand, f(x) has a local minimum at x = c when f(x) is greater than or equal to f(c) for every x within a certain open neighborhood surrounding c."
+    }
+}

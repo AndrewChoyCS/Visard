@@ -1,0 +1,34 @@
+{
+    "data": "So the situation we\u2019re in is that \u00afb is not in Col(A) and we wish to find \u02c6x so that Ax\u02c6, which is in Col(A), is as close as possible to \u00afb.This picture suggests that we can obtain a solution by projecting \u00afb onto Col(A) to get PrCol(A) \u00afb and then finding \u02c6x to solve the equation: Ax\u02c6 = PrCol(A) \u00afb Assuming this is correct, the problem with this approach, practically, is that calculating PrCol(A) \u00afb requires having an orthogonal basis for Col(A) and this is procedurally intense especially when A is large. So what we\u2019ll do is find a sneaky way to find \u02c6x a different way. Just to be clear, we will solve this equation, but we won\u2019t solve it by finding PrCol(A) \u00afb.",
+    "goal": "**Core Principle:** The process of projecting a vector \\(\\bar{b}\\) onto the column space of a matrix \\(A\\) to find the closest point \\(\\hat{x}\\) in terms of least squares, alongside the challenge of computational intensity when calculating this projection.\n\n**Query:** Create a visualization to explain the concept of projecting a vector \\(\\bar{b}\\) onto the column space of a matrix \\(A\\) to find the least squares solution \\(\\hat{x}\\). The visualization should illustrate the geometric relationship between the vector \\(\\bar{b}\\) and its projection onto Col(A) (represented as \\(Pr_{Col(A)} \\bar{b}\\)) and highlight the proximity of \\(\\hat{x}\\) to \\(\\bar{b}\\). Use a clear diagram that includes a 2D representation of both vectors, the column space, and the projected point, with arrows and labels indicating distances and relationships to deepen understanding. \n\nThis visual should clarify the sequential process of finding \\(\\hat{x}\\), the role of projection, and the computational concerns regarding its calculation, thereby facilitating better comprehension of the least squares principle and its application. \n\n**Learning Objective:** Learners should be able to articulate how projection techniques in least squares enable the identification of approximate solutions when the desired vector is not within the column space, and they should understand both the significance of this geometrical representation and the implications of computational challenges in determining the projection.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\n# Define the vectors\nb = np.array([3, 2])  # Vector b\nA = np.array([[1, 2], [2, 1]])  # Columns of matrix A\nprojection = np.dot(b, A.T) / np.dot(A, A.T).sum(axis=1)  # Projection onto Col(A)\nhat_x = np.dot(np.clip(projection, 0, np.inf), A)  # Calculate the least squares solution\n\n# Create a grid for the plot\nplt.figure(figsize=(10, 6))\nplt.xlim(-1, 5)\nplt.ylim(-1, 5)\n\n# Plot Col(A) as a shaded area (approximation)\nx = np.linspace(-1, 5, 100)\ny = 0.5 * (2 * x + 1)  # Larided slope to represent Col(A)\nplt.fill_between(x, 0, y, color='lightblue', alpha=0.5, label='Column Space of A')\n\n# Plot vector b\nplt.quiver(0, 0, b[0], b[1], angles='xy', scale_units='xy', scale=1, color='r', label='Vector b', lw=2)\n# Plot point of projection\nplt.quiver(0, 0, hat_x[0], hat_x[1], angles='xy', scale_units='xy', scale=1, color='g', label='Projection Pr_Col(A) b', lw=2)\n\n# Arrows for visualization\nplt.annotate('', xy=hat_x, xytext=b,\n             arrowprops=dict(arrowstyle='->', color='blue', lw=2))\nplt.text(1.5, 0.5, 'Distance to Projection', color='blue', fontsize=12, ha='center')\nplt.scatter(hat_x[0], hat_x[1], color='green', s=100)\n\n# Labels\nplt.text(b[0] + 0.1, b[1], r'$\\bar{b}$', fontsize=12, color='r')\nplt.text(hat_x[0] + 0.1, hat_x[1], r'$\\hat{x}$', fontsize=12, color='g')\n\n# Axes and grid\nplt.axhline(0, color='black',linewidth=0.5, ls='--')\nplt.axvline(0, color='black',linewidth=0.5, ls='--')\nplt.grid(alpha=0.5)\nplt.title('Projection of Vector b onto Column Space of Matrix A')\nplt.xlabel('X-axis')\nplt.ylabel('Y-axis')\nplt.legend()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-27T20:07:49.492692",
+        "run_end_time_iso": "2025-04-27T20:08:21.609672",
+        "topic": "Least Squares",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 32.12,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "So the situation we\u2019re in is that \u00afb is not in Col(A) and we wish to find \u02c6x so that Ax\u02c6, which is in Col(A), is as close as possible to \u00afb.This picture suggests that we can obtain a solution by projecting \u00afb onto Col(A) to get PrCol(A) \u00afb and then finding \u02c6x to solve the equation: Ax\u02c6 = PrCol(A) \u00afb Assuming this is correct, the problem with this approach, practically, is that calculating PrCol(A) \u00afb requires having an orthogonal basis for Col(A) and this is procedurally intense especially when A is large. So what we\u2019ll do is find a sneaky way to find \u02c6x a different way. Just to be clear, we will solve this equation, but we won\u2019t solve it by finding PrCol(A) \u00afb."
+    }
+}

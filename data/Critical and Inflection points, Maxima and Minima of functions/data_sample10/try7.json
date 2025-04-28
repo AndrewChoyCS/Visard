@@ -1,0 +1,34 @@
+{
+    "data": "A function f(x) is said to achieve an absolute (or global) maximum at a point x = c if the value of f(x) does not exceed f(c) for all x in its domain. Conversely, we call a point x = c a relative (or local) maximum if, in some open interval around x = c, f(x) is less than or equal to f(c). Similarly, a function f(x) has an absolute (or global) minimum at x = c when f(x) is equal to or greater than f(c) across its entire domain. Additionally, a point x = c is identified as a relative (or local) minimum if, within some open interval surrounding x = c, f(x) maintains a value equal to or exceeding f(c).",
+    "goal": "**Extracted Core Principle:** The distinction between absolute and relative maxima and minima in a function, and how these points are defined within their respective domains.\n\n**Query:** Create a visualization to explain the concepts of absolute and relative maxima and minima in functions. The goal is to illustrate the differences between these two types of extremum points by depicting a function graphically, highlighting where absolute and relative maxima and minima occur. The visualization should clearly show the entire domain of the function, using annotations to mark specific points of interest, including absolute maxima, relative maxima, absolute minima, and relative minima.\n\nThe specific concept intended to be clarified is the relationship between the values of the function at various points and how they classify as absolute or relative extrema. A line graph style would be appropriate for illustrating these points, complemented by color-coded regions to indicate areas containing maxima and minima. This visual aid will enhance understanding by presenting the information in a clear, sequential manner, allowing learners to directly see the impact of the function's behavior around these critical points.\n\n**Educational Outcome Objective:** Students will be able to identify and differentiate between absolute and relative maxima and minima within functions and understand how these points influence the overall shape and behavior of a function. This deep understanding will reinforce their ability to apply these concepts in problem-solving contexts involving critical points and inflection points, providing a foundation for further studies in calculus and analysis.",
+    "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(-5, 5, 100)\ny = -0.1*(x**4) + x**3 + 5  # Example function\n\n# Calculate critical points\ndy = np.gradient(y, x)\ncritical_points = np.where((np.roll(dy, 1) * dy) < 0)[0]\n\n# Identify absolute and relative maxima/minima\n# Using simple heuristic: compare values around critical points\nabs_max_index = np.argmax(y)\nabs_min_index = np.argmin(y)\nrel_max_indices = [i for i in critical_points if y[i] > y[i-1] and y[i] > y[i+1]]\nrel_min_indices = [i for i in critical_points if y[i] < y[i-1] and y[i] < y[i+1]]\n\nplt.figure(figsize=(10, 6))\nplt.plot(x, y, label='Function: $y = -0.1x^4 + x^3 + 5$', color='blue')\n\n# Mark absolute maxima and minima\nplt.scatter(x[abs_max_index], y[abs_max_index], color='red', zorder=5, label='Absolute Maxima')\nplt.scatter(x[abs_min_index], y[abs_min_index], color='green', zorder=5, label='Absolute Minima')\n\n# Mark relative maxima and minima\nfor index in rel_max_indices:\n    plt.scatter(x[index], y[index], color='orange', zorder=5, label='Relative Maxima' if index == rel_max_indices[0] else \"\")\n    \nfor index in rel_min_indices:\n    plt.scatter(x[index], y[index], color='purple', zorder=5, label='Relative Minima' if index == rel_min_indices[0] else \"\")\n\n# Annotations\nplt.annotate('Absolute Maxima', xy=(x[abs_max_index], y[abs_max_index]), xytext=(x[abs_max_index]+1, y[abs_max_index]-5),\n             arrowprops=dict(facecolor='black', arrowstyle='->'))\nplt.annotate('Absolute Minima', xy=(x[abs_min_index], y[abs_min_index]), xytext=(x[abs_min_index]+1, y[abs_min_index]+5),\n             arrowprops=dict(facecolor='black', arrowstyle='->'))\n\nfor index in rel_max_indices:\n    plt.annotate('Relative Maxima', xy=(x[index], y[index]), xytext=(x[index]+1, y[index]+3),\n                 arrowprops=dict(facecolor='black', arrowstyle='->'))\n\nfor index in rel_min_indices:\n    plt.annotate('Relative Minima', xy=(x[index], y[index]), xytext=(x[index]+1, y[index]-3),\n                 arrowprops=dict(facecolor='black', arrowstyle='->'))\n\nplt.title('Graph of the Function with Extremum Points')\nplt.xlabel('x')\nplt.ylabel('y')\nplt.axhline(0, color='black', lw=0.5, ls='--')\nplt.axvline(0, color='black', lw=0.5, ls='--')\nplt.grid()\nplt.legend()",
+    "metrics": {
+        "run_start_time_iso": "2025-04-28T03:07:45.776404",
+        "run_end_time_iso": "2025-04-28T03:08:26.096047",
+        "topic": "Critical and Inflection points, Maxima and Minima of functions",
+        "pipeline_success": true,
+        "end_to_end_latency_seconds": 40.32,
+        "total_api_calls": 4,
+        "api_calls_per_agent": {
+            "simple_query_agent": 1,
+            "visualization_code_generator_agent": 1,
+            "goal_alignment_judge_agent": 1,
+            "visual_clarity_judge_agent": 1
+        },
+        "initial_code_generation_success": true,
+        "code_execution_attempts": 1,
+        "debugging_failed": false,
+        "judge_feedback_loops": 0,
+        "initial_goal_alignment_score": 4,
+        "initial_visual_clarity_score": 4,
+        "goal_alignment_scores": [
+            4
+        ],
+        "visual_clarity_scores": [
+            4
+        ],
+        "final_code_generated": true,
+        "error_message": null,
+        "input_data_snippet": "A function f(x) is said to achieve an absolute (or global) maximum at a point x = c if the value of f(x) does not exceed f(c) for all x in its domain. Conversely, we call a point x = c a relative (or local) maximum if, in some open interval around x = c, f(x) is less than or equal to f(c). Similarly, a function f(x) has an absolute (or global) minimum at x = c when f(x) is equal to or greater than f(c) across its entire domain. Additionally, a point x = c is identified as a relative (or local) minimum if, within some open interval surrounding x = c, f(x) maintains a value equal to or exceeding f(c)."
+    }
+}
